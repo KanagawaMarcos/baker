@@ -1,0 +1,11 @@
+=======tabela de erros=======
+  erro 01 - string passada igual à NULL.
+  erro 02 - string com tamanho maior a 256.
+  erro 03 - arquivo não está aberto.
+
+=======tabela de id de funções=======
+  dica: para achar a função procure por
+  "Função ID: xy", sem aspas, sendo x,y
+  números quaisquer.
+
+  ID 01 - checa se arquivo existe dentro da pasta atual do programa
