@@ -28,6 +28,5 @@ character* createChar(char text){
 }
 
 int destroyString(character** string){
-  int errorCode = 0;
-
+  return errorCode = 0;
 }
