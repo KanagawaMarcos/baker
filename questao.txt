@@ -1,10 +1,10 @@
 1) Dado um Banco de Dados de nomes próprios no Brasil, escreva uma função que descubra quais são os N nomes mais comuns, sendo N e o arquivo informados pelo usuário.
-- Indique do lado do nome a quantidade de ocorrências do mesmo.
-- O usuário deve informar também a quantidade máxima de nomes diferentes que existem
+  - Indique do lado do nome a quantidade de ocorrências do mesmo.
+  - O usuário deve informar também a quantidade máxima de nomes diferentes que existem
 2) Um usuário deseja um programa que seja capaz de substituir um texto por outro numa série de arquivos indicados por ele numa pasta. A lista de arquivos será informado através de um arquivo .txt, onde cada linha indica um arquivo que sofrerá alteração.
-- Atenção, a string a ser substituída pode ser menor que a nova string
-3) Escreva um pequeno programa de lembretes com as seguintes funcionalidades:
-a) registrar novo lembrete
-b) apagar lembrete
-c) ao fechar o programa, gravar todos os lembretes em disco
-d) ao abrir o programa, recuperar todos os lembretes do disco
+  - Atenção, a string a ser substituída pode ser menor que a nova string
+  3) Escreva um pequeno programa de lembretes com as seguintes funcionalidades:
+  a) registrar novo lembrete
+  b) apagar lembrete
+  c) ao fechar o programa, gravar todos os lembretes em disco
+  d) ao abrir o programa, recuperar todos os lembretes do disco
