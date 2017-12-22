@@ -1,20 +1,14 @@
 #ifndef BUFFER_H
   #define BUFFER_H
 
-  typedef struct doubleLinkedList{
-    char text;
-    struct doubleLinkedList* next;
-    struct doubleLinkedList* previous;
+  typedef struct _character{
+    char data;
+    int isNumber;
+    struct _character* next;
+    struct _character* prev;
   }character;
 
-  character* createChar(char text);
-
-  int addChar(character** string);
-
-  int removeChar(character** string, char text);
-
-  int removeCharAll(character** string, char text);
-
-  int destroyString(character** string);
-
+  character* createChar(char data);
+  void addChar(character** string, char data);
+  //int destroyChar(character* charToDestroy);
 #endif
