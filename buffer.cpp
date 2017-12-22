@@ -38,6 +38,57 @@ void addChar(character** string, char data){
 }
 
 /*
+* @parameters: The path, extension and name of the file.
+* @return: The first character of the BufferFile.
+*/
+character* createBufferFile(const char* fileName){
+
+  //The first character of a Buffer File
+  character* bufferFile = createChar('@');
+
+  //Create file a variable to read data from files
+  ifstream file;
+
+  //Trys to open the given file
+  file.open(fileName);
+
+  //Check if the file was open
+  if(!file.is_open()){
+
+    cerr << "Error while trying to open the file \"" << fileName << "\".";
+
+  }else{
+
+    //Create a temporary char to receive a file char by char
+    char currentChar;
+
+    //Iterate through file, char by char, without skip whitespaces
+    while(file >> noskipws >> currentChar){
+      addChar(&bufferFile, currentChar);
+    }
+
+    /*
+    //Get the reference to the first character
+    character* iterator = bufferFile;
+
+    //Skip the first character
+    iterator = iterator->next;
+
+    //While there is characters on the Buffer File
+    while(iterator != NULL){
+
+      //Print its text
+      cout << iterator->data;
+
+      //Go to the next character on the Buffer File
+      iterator = iterator->next;
+    }
+    */
+
+  }
+}
+
+/*
 * Se o char para destruir for o primeiro de um string:
 * @return: a string sem ele
 * Se o char estiver sozinho:

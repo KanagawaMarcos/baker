@@ -10,5 +10,12 @@
 
   character* createChar(char data);
   void addChar(character** string, char data);
+
+  /*
+  * A file buffer is a entire file loaded on
+  * memory using the structure "character"
+  * witch is a double linked list of char.
+  */
+  character* createBufferFile(const char* fileName);
   //int destroyChar(character* charToDestroy);
 #endif
