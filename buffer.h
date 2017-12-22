@@ -9,6 +9,7 @@
   }character;
 
   character* createChar(char data);
+  void destroyChar(character* charToDestroy);
   void addChar(character** string, char data);
 
   /*
@@ -17,5 +18,6 @@
   * witch is a double linked list of char.
   */
   character* createBufferFile(const char* fileName);
-  //int destroyChar(character* charToDestroy);
+  void destroyBufferFile(character** bufferFile);
+  void printBufferFile(character* bufferFile);
 #endif

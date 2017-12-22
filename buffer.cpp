@@ -20,6 +20,14 @@ character* createChar(char data){
   return newCharacter;
 }
 
+void destroyChar(character* charToDestroy){
+
+  //If the user actually pass a valid character
+  if(charToDestroy != NULL){
+    delete charToDestroy;
+  }
+}
+
 void addChar(character** string, char data){
   if(string != NULL){
     character* newChar = new character[1];
@@ -39,10 +47,9 @@ void addChar(character** string, char data){
 }
 
 /*
-* @parameters: The path, extension and name of the file.
 * @return: The first character of the BufferFile.
 */
-character* createBufferFile(const char* fileName){
+character* createBufferFile(const char* filePath){
 
   //The first character of a Buffer File
   character* bufferFile = createChar('@');
@@ -51,12 +58,12 @@ character* createBufferFile(const char* fileName){
   ifstream file;
 
   //Trys to open the given file
-  file.open(fileName);
+  file.open(filePath);
 
   //Check if the file was open
   if(!file.is_open()){
 
-    cerr << "Error while trying to open the file \"" << fileName << "\".";
+    cerr << "Error while trying to open the file \"" << filePath << "\".";
 
   }else{
 
@@ -94,29 +101,52 @@ character* createBufferFile(const char* fileName){
 }
 
 /*
-* Se o char para destruir for o primeiro de um string:
-* @return: a string sem ele
-* Se o char estiver sozinho:
-* @return: null
-* Se o char estiver no meio de uma string ou no fim:
-* @return null
+* @return: 1 for sucess or a error code
+*/
+void destroyBufferFile(character** bufferFile){
 
+  //If the user actually pass a valid buffer file
+  if(bufferFile != NULL){
 
-character* destroyChar(character** charToDestroy){
-  character* charAfterToDestroy = NULL;
-  if(charToDestroy != NULL){
-    character* tmp = NULL;
-    //Caso ele esteja no meio ou fim de uma string
-    tmp = charToDestroy->prev;
-    if(tmp != NULL){
-      previous->next = charToDestroy->next;
+    //Get the address of the first character
+    character* iterator = *bufferFile;
+
+    //Go to the end of the buffer file
+    while(iterator->next != NULL){
+        iterator = iterator->next;
     }
-    //Caso ele esteja no inicio
-    tmp = charToDestroy->next;
-    if(){
 
+    //Go to the start of the buffer
+    while(iterator->prev != NULL){
+
+      //Go backwards one character
+      iterator = iterator->prev;
+
+      //Desalocate the character that is after the current
+      destroyChar(iterator->next);
+    }
+
+    //Destroy the first character (the only one remaing)
+    destroyChar(iterator);
+  }
+}
+
+void printBufferFile(character* bufferFile){
+  if(bufferFile != NULL){
+    //Get the reference to the first character
+    character* iterator = bufferFile;
+
+    //Skip the first character
+    iterator = iterator->next;
+
+    //While there is characters on the Buffer File
+    while(iterator != NULL){
+
+      //Print its text
+      cout << iterator->data;
+
+      //Go to the next character on the Buffer File
+      iterator = iterator->next;
     }
   }
-  return charAfterToDestroy;
 }
-*/

@@ -10,10 +10,12 @@ using namespace std;
 
 int main (int argv, char* argc[]){
 
-    character* docenteCSV = createBufferFile("docentes.csv");
+    //Loads all ".csv" files into Buffers Files
+    character* docenteCSV = createBufferFile("csv/docentes.csv");
 
-    //Get the reference to the first character
-    character* iterator = docenteCSV;
+    printBufferFile(docenteCSV);
     
+    destroyBufferFile(&docenteCSV);
+
     return 0;
 }
