@@ -1,5 +1,6 @@
 #include "buffer.h"
 #include <iostream>
+#include <fstream>
 #include <string.h>
 
 using namespace std;
@@ -64,8 +65,12 @@ character* createBufferFile(const char* fileName){
 
     //Iterate through file, char by char, without skip whitespaces
     while(file >> noskipws >> currentChar){
+
+      //Add each char to buffer file
       addChar(&bufferFile, currentChar);
     }
+
+    return bufferFile;
 
     /*
     //Get the reference to the first character

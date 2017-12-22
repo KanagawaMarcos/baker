@@ -10,6 +10,10 @@ using namespace std;
 
 int main (int argv, char* argc[]){
 
-  
+    character* docenteCSV = createBufferFile("docentes.csv");
+
+    //Get the reference to the first character
+    character* iterator = docenteCSV;
+    
     return 0;
 }
