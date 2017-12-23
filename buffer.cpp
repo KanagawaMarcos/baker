@@ -43,17 +43,32 @@ void addChar(character** string, char data){
       //Check if the last character was not set yet
       if((*string)->last == NULL){
 
+        //Iterate through string until the its end
+        character* iterator = (*string);
+        while(iterator->next != NULL){
+          iterator = iterator->next;
+        }
+
         //Check if the string is not a sub-string
         if((*string)->prev == NULL){
 
-          //Iterate through string until the its end
-          character* iterator = (*string);
-          while(iterator->next != NULL){
-            iterator = iterator->next;
+          //Save the address of the last character
+          (*string)->last = iterator;
+        }else{
+
+          //Save the address of the last character
+          character* lastCharacterAddress = iterator;
+
+          //Go back until the given character as parameter
+          iterator = (*string);
+
+          //Iterate through string until the its head
+          while(iterator->prev != NULL){
+            iterator = iterator->prev;
           }
 
           //Save the address of the last character
-          (*string)->last = iterator;
+          iterator->last = lastCharacterAddress;
         }
       }
 
