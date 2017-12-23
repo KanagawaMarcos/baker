@@ -75,6 +75,10 @@ character* createBufferFile(const char* filePath){
 
   //The first character of a Buffer File
   character* bufferFile = createChar('@');
+  bufferFile->next = NULL;
+  bufferFile->prev = NULL;
+  bufferFile->last = NULL;
+  bufferFile->isNumber = -1;
 
   //Create file a variable to read data from files
   ifstream file;
@@ -100,25 +104,6 @@ character* createBufferFile(const char* filePath){
     }
 
     return bufferFile;
-
-    /*
-    //Get the reference to the first character
-    character* iterator = bufferFile;
-
-    //Skip the first character
-    iterator = iterator->next;
-
-    //While there is characters on the Buffer File
-    while(iterator != NULL){
-
-      //Print its text
-      cout << iterator->data;
-
-      //Go to the next character on the Buffer File
-      iterator = iterator->next;
-    }
-    */
-
   }
 }
 
