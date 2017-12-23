@@ -55,7 +55,6 @@ void addChar(character** string, char data){
           //Save the address of the last character
           (*string)->last = iterator;
         }else{
-
           //Save the address of the last character
           character* lastCharacterAddress = iterator;
 
@@ -79,6 +78,7 @@ void addChar(character** string, char data){
       newChar->prev = (*string)->last;
       //Update the new last character
       (*string)->last->next = newChar;
+      (*string)->last = newChar;
     }
   }
 }
@@ -90,10 +90,6 @@ character* createBufferFile(const char* filePath){
 
   //The first character of a Buffer File
   character* bufferFile = createChar('@');
-  bufferFile->next = NULL;
-  bufferFile->prev = NULL;
-  bufferFile->last = NULL;
-  bufferFile->isNumber = -1;
 
   //Create file a variable to read data from files
   ifstream file;
@@ -160,7 +156,6 @@ void printBufferFile(character* bufferFile){
 
     //While there is characters on the Buffer File
     while(iterator != NULL){
-
       //Print its text
       cout << iterator->data;
 
