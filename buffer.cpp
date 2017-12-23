@@ -37,7 +37,7 @@ void addChar(character** string, char data){
     //Create a new character
     character* newChar = new character[1];
 
-    //If the user actually pass a valid character
+    //Check if the new character was allocated
     if(newChar != NULL){
 
       //Check if the last character was not set yet
