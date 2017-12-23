@@ -165,3 +165,30 @@ void printBufferFile(character* bufferFile){
     }
   }
 }
+
+character* removeFirstBufferLine(character** bufferFile){
+  //If the user actually pass a valid buffer file
+  if(bufferFile != NULL){
+
+    //Get the address of the first character
+    character* iterator = *bufferFile;
+
+    //Go until the first ocurrence of '\n'
+    while(iterator->data != '\n'){
+        iterator = iterator->next;
+    }
+
+    //Save the address of the character after the last '\n'
+    character* newBufferFile = iterator->next;
+
+    //Remove the reference to new buffer file
+    iterator->next = NULL;
+
+    //Destroy the line
+    destroyBufferFile(bufferFile);
+
+    *bufferFile = newBufferFile;
+
+    return newBufferFile;
+  }
+}
