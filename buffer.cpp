@@ -78,7 +78,7 @@ void addChar(character** string, char data){
       //Save the adress of the old last character
       newChar->prev = (*string)->last;
       //Update the new last character
-      (*string)->last = newChar;
+      (*string)->last->next = newChar;
     }
   }
 }
