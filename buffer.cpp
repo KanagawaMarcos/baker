@@ -100,9 +100,6 @@ character* createBufferFile(const char* filePath){
   }
 }
 
-/*
-* @return: 1 for sucess or a error code
-*/
 void destroyBufferFile(character** bufferFile){
 
   //If the user actually pass a valid buffer file

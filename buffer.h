@@ -2,10 +2,17 @@
   #define BUFFER_H
 
   typedef struct _character{
+    //The actual text whitin
     char data;
+    //Flag to tell if the char is int
     int isNumber;
+
+    //Character next to cur
     struct _character* next;
+    //Character previous to cur
     struct _character* prev;
+    //Last character of this buffer
+    struct _character* last;
   }character;
 
   character* createChar(char data);

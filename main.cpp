@@ -11,10 +11,10 @@ using namespace std;
 int main (int argv, char* argc[]){
 
     //Loads all ".csv" files into Buffers Files
-    character* docenteCSV = createBufferFile("csv/docentes.csv");
+    character* docenteCSV = createBufferFile("csv/qualis_capes_periodicos.csv");
 
     printBufferFile(docenteCSV);
-    
+
     destroyBufferFile(&docenteCSV);
 
     return 0;
