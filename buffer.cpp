@@ -15,6 +15,7 @@ character* createChar(char data){
     newCharacter->isNumber = -1; //Default for "I dont know"
     newCharacter->next = NULL;
     newCharacter->prev = NULL;
+    newCharacter->last = NULL;
   }
 
   return newCharacter;
@@ -29,19 +30,40 @@ void destroyChar(character* charToDestroy){
 }
 
 void addChar(character** string, char data){
+
+  //If the user actually pass a valid string
   if(string != NULL){
+
+    //Create a new character
     character* newChar = new character[1];
+
+    //If the user actually pass a valid character
     if(newChar != NULL){
-      //Va até o final a string
-      character* iterator = (*string);
-      while(iterator->next != NULL){
-        iterator = iterator->next;
+
+      //Check if the last character was not set yet
+      if((*string)->last == NULL){
+
+        //Check if the string is not a sub-string
+        if((*string)->prev == NULL){
+
+          //Iterate through string until the its end
+          character* iterator = (*string);
+          while(iterator->next != NULL){
+            iterator = iterator->next;
+          }
+
+          //Save the address of the last character
+          (*string)->last = iterator;
+        }
       }
-      //adicione o novo character
+
+      //Insert the new character at the string
       newChar->data = data;
       newChar->next = NULL;
-      newChar->prev = iterator;
-      iterator->next = newChar;
+      //Save the adress of the old last character
+      newChar->prev = (*string)->last;
+      //Update the new last character
+      (*string)->last = newChar;
     }
   }
 }
