@@ -25,7 +25,7 @@ void destroyChar(character* charToDestroy){
 
   //If the user actually pass a valid character
   if(charToDestroy != NULL){
-    delete charToDestroy;
+    delete[] charToDestroy;
   }
 }
 
