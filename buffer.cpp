@@ -76,8 +76,9 @@ void addChar(character** string, char data){
       newChar->next = NULL;
       //Save the adress of the old last character
       newChar->prev = (*string)->last;
-      //Update the new last character
+      //Make the old last character point to the new one
       (*string)->last->next = newChar;
+      //Update the new last character
       (*string)->last = newChar;
     }
   }
@@ -87,9 +88,6 @@ void addChar(character** string, char data){
 * @return: The first character of the BufferFile.
 */
 character* createBufferFile(const char* filePath){
-
-  //The first character of a Buffer File
-  character* bufferFile = createChar('@');
 
   //Create file a variable to read data from files
   ifstream file;
@@ -106,6 +104,12 @@ character* createBufferFile(const char* filePath){
 
     //Create a temporary char to receive a file char by char
     char currentChar;
+
+    //Get the first character in the file
+    file >> noskipws >> currentChar;
+
+    //The first character of a Buffer File
+    character* bufferFile = createChar(currentChar);
 
     //Iterate through file, char by char, without skip whitespaces
     while(file >> noskipws >> currentChar){
@@ -150,9 +154,6 @@ void printBufferFile(character* bufferFile){
   if(bufferFile != NULL){
     //Get the reference to the first character
     character* iterator = bufferFile;
-
-    //Skip the first character
-    iterator = iterator->next;
 
     //While there is characters on the Buffer File
     while(iterator != NULL){

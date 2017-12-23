@@ -11,8 +11,7 @@ using namespace std;
 int main (int argv, char* argc[]){
 
     //Loads all ".csv" files into Buffers Files
-    character* docenteCSV = createBufferFile("csv/qualis_capes_periodicos.csv");
-
+    character* docenteCSV = createBufferFile("csv/docentes.csv");
     printBufferFile(docenteCSV);
 
     destroyBufferFile(&docenteCSV);
