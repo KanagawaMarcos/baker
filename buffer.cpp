@@ -209,23 +209,28 @@ character* removeCurBufferLine(character** bufferFile){
         return lineToRemove;
       }
 
-      /*
-      //If there is some '\n' character before the current character
-      if(findNthPrevious((*bufferFile)->prev, '\n',1) != NULL){
 
+      //If it is a single line
+      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL){
+
+        //Get this line
+        lineToRemove = findFirstCharacter(*bufferFile);
+
+        //Clean the current buffer
+        *bufferFile = NULL;
+
+        return lineToRemove;
+      }else{
+        /*
         //Go back until the first character after the last '\n' and save it
         lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
 
         findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
         lineToRemove->prev = NULL;
+        */
 
-        //Check if it's a single line
-      }else{
-
-        //
-        lineToRemove =
       }
-      */
+
 
     }
   }
