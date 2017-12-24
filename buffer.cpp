@@ -192,3 +192,94 @@ character* removeFirstBufferLine(character** bufferFile){
     return newBufferFile;
   }
 }
+
+character* removeCurBufferLine(character** bufferFile){
+  character* lineToRemove = NULL;
+
+  //Check if the buffer actually exist
+  if(*bufferFile != NULL){
+
+    //Check if it's the end of a line
+    if(bufferFile->next == NULL){
+
+      //Check if is a single character
+      if(bufferFile->prev == NULL){
+        lineToRemove = *bufferFile;
+        *bufferFile = NULL;
+        return lineToRemove;
+      }
+
+      /*
+      //If there is some '\n' character before the current character
+      if(findNthPrevious((*bufferFile)->prev, '\n',1) != NULL){
+
+        //Go back until the first character after the last '\n' and save it
+        lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
+
+        findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
+        lineToRemove->prev = NULL;
+
+        //Check if it's a single line
+      }else{
+
+        //
+        lineToRemove =
+      }
+      */
+
+    }
+  }
+  return lineToRemove;
+}
+
+/*
+//If the user actually pass a valid buffer file
+if(bufferFile != NULL){
+
+  //Check if there is a valid character after the current character
+  if((*bufferFile)->next != NULL){
+
+    //Find the first past occurrence of '\n', save the character after it
+    lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
+
+    //Change the previous character of the character after bufferFile to the character before lineToRemove
+    (*bufferFile)->next->prev = lineToRemove->prev;
+
+    //Make line a standalone line
+    lineToRemove->prev = NULL;
+
+    //Concatenate the text filling the removed line
+    (*bufferFile)->next->prev->next = findNthNext(lineToRemove, '\n',1)->next;
+
+    //Remove the end of the line for the rest of the text
+    findNthNext(lineToRemove, '\n', 1)->next = NULL;
+  }else{
+
+    //Check if buffer file is the end of a string
+    if((*bufferFile)->prev != NULL){
+
+      //Find the first past occurrence of '\n', save the character after it
+      lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
+
+      //Remove the line from the text
+      findNthPrevious((*bufferFile)->prev, '\n', 1)->next = NULL;
+
+      //Make line a standalone line
+      lineToRemove->prev = NULL;
+    }else{
+
+      //If the user pass a single character
+      lineToRemove = (*bufferFile);
+      (*bufferFile) = NULL;
+    }
+  }
+
+  //FAZ ELE VERIFICAR PRIMEIRO SE É UM CHARACTER UNICO E SÓ DEPOIS SE É \N
+  //Check if the buffer is already at the end of the string
+  if((*bufferFile)->data != '\n'){
+    (*bufferFile) = findNthNext((*bufferFile), '\n', 1);
+  }else{
+
+  }
+}
+*/

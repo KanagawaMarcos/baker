@@ -2,10 +2,15 @@
   #define DOCENTE_H
 
   typedef struct _docente{
+    //Basic info given on the file
     long id;
-    char* nome;
-    struct _docente* proximo;
-    struct _docente* anterior;
+    char* name;
+
+    //Info used during the processing
+    int totalPoints;
+        
+    struct _docente* next;
+    struct _docente* prev;
   }docente;
 
   docente* createDocente(long id, char* nome);

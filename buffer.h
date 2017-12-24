@@ -28,4 +28,5 @@
   void destroyBufferFile(character** bufferFile);
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
+  character* removeCurBufferLine(character** bufferLine);
 #endif
