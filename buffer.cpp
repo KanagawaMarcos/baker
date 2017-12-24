@@ -220,18 +220,17 @@ character* removeCurBufferLine(character** bufferFile){
         *bufferFile = NULL;
 
         return lineToRemove;
+
+      //If there is at least one '\n' in the text
       }else{
-        /*
+
         //Go back until the first character after the last '\n' and save it
         lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
 
         findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
         lineToRemove->prev = NULL;
-        */
-
+        return lineToRemove;
       }
-
-
     }
   }
   return lineToRemove;
