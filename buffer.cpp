@@ -211,7 +211,7 @@ character* removeCurBufferLine(character** bufferFile){
 
 
       //If it is a single line
-      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL){
+      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL && findNthNext((*bufferFile)->next, '\n',1) == NULL){
 
         //Get this line
         lineToRemove = findFirstCharacter(*bufferFile);
@@ -227,8 +227,12 @@ character* removeCurBufferLine(character** bufferFile){
         //Go back until the first character after the last '\n' and save it
         lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
 
+        //Make the last '\n' become the last character
         findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
+
+        //Make the line to remove a singl line
         lineToRemove->prev = NULL;
+
         return lineToRemove;
       }
     }
