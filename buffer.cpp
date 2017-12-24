@@ -220,12 +220,16 @@ character* removeCurBufferLine(character** bufferFile){
         //Make bufferFile point to the rest of the text
         *bufferFile = NULL;
 
-        //tudo correto até aqui
         return lineToRemove;
       }else{
 
+        //Get te first character of the line to be removed
+        lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
+        lineToRemove->prev = NULL;
 
-
+        //Remove the line from the text
+        findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
+        
         return lineToRemove;
       }
     }
