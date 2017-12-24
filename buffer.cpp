@@ -209,8 +209,6 @@ character* removeCurBufferLine(character** bufferFile){
         return lineToRemove;
       }
 
-
-
       //If it is a single line
       if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL ){
 
@@ -229,62 +227,10 @@ character* removeCurBufferLine(character** bufferFile){
 
         //Remove the line from the text
         findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
-        
+
         return lineToRemove;
       }
     }
   }
   return lineToRemove;
 }
-
-/*
-//If the user actually pass a valid buffer file
-if(bufferFile != NULL){
-
-  //Check if there is a valid character after the current character
-  if((*bufferFile)->next != NULL){
-
-    //Find the first past occurrence of '\n', save the character after it
-    lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
-
-    //Change the previous character of the character after bufferFile to the character before lineToRemove
-    (*bufferFile)->next->prev = lineToRemove->prev;
-
-    //Make line a standalone line
-    lineToRemove->prev = NULL;
-
-    //Concatenate the text filling the removed line
-    (*bufferFile)->next->prev->next = findNthNext(lineToRemove, '\n',1)->next;
-
-    //Remove the end of the line for the rest of the text
-    findNthNext(lineToRemove, '\n', 1)->next = NULL;
-  }else{
-
-    //Check if buffer file is the end of a string
-    if((*bufferFile)->prev != NULL){
-
-      //Find the first past occurrence of '\n', save the character after it
-      lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
-
-      //Remove the line from the text
-      findNthPrevious((*bufferFile)->prev, '\n', 1)->next = NULL;
-
-      //Make line a standalone line
-      lineToRemove->prev = NULL;
-    }else{
-
-      //If the user pass a single character
-      lineToRemove = (*bufferFile);
-      (*bufferFile) = NULL;
-    }
-  }
-
-  //FAZ ELE VERIFICAR PRIMEIRO SE É UM CHARACTER UNICO E SÓ DEPOIS SE É \N
-  //Check if the buffer is already at the end of the string
-  if((*bufferFile)->data != '\n'){
-    (*bufferFile) = findNthNext((*bufferFile), '\n', 1);
-  }else{
-
-  }
-}
-*/
