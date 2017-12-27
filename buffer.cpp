@@ -147,11 +147,13 @@ void destroyBufferFile(character** bufferFile){
 
     //Destroy the first character (the only one remaing)
     destroyChar(iterator);
+    iterator = NULL;
   }
 }
 
 void printBufferFile(character* bufferFile){
   if(bufferFile != NULL){
+
     //Get the reference to the first character
     character* iterator = bufferFile;
 
@@ -188,6 +190,9 @@ character* removeFirstBufferLine(character** bufferFile){
 
     //Remove the reference to new buffer file
     iterator->next = NULL;
+
+    //Separete the buffer file from the old line
+    *bufferFile->prev = NULL;
 
     //Go back to the head of the line
     while(iterator->prev != NULL){
