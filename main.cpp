@@ -10,13 +10,15 @@ int main (int argv, char* argc[]){
 
     //Loads all ".csv" files into a Buffer Files
     character* docenteCSV = createBufferFile("csv/docentes.csv");
-    //Remove the line that does not contain valuable data
-    character* removedLine = removeCurBufferLine(&docenteCSV);
     printBufferFile(docenteCSV);
+    //Remove the line that does not contain valuable data
+    character* removedLine = removeFirstBufferLine(&docenteCSV);
     cout << endl <<endl<<endl;
     printBufferFile(removedLine);
+    printBufferFile(docenteCSV);
 
     destroyBufferFile(&docenteCSV);
+    destroyBufferFile(&removedLine);
 
     return 0;
 }

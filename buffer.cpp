@@ -170,8 +170,13 @@ character* removeFirstBufferLine(character** bufferFile){
   //If the user actually pass a valid buffer file
   if(bufferFile != NULL){
 
-    //Get the address of the first character
+    //Get the address of the current character
     character* iterator = *bufferFile;
+
+    //Go until the head of the file (for safety)
+    while(iterator->prev != NULL){
+      iterator = iterator->prev;
+    }
 
     //Go until the first ocurrence of '\n'
     while(iterator->data != '\n'){
@@ -179,118 +184,16 @@ character* removeFirstBufferLine(character** bufferFile){
     }
 
     //Save the address of the character after the last '\n'
-    character* newBufferFile = iterator->next;
+    *bufferFile = iterator->next;
 
     //Remove the reference to new buffer file
     iterator->next = NULL;
 
-    //Destroy the line
-    destroyBufferFile(bufferFile);
-
-    *bufferFile = newBufferFile;
-
-    return newBufferFile;
-  }
-}
-
-character* removeCurBufferLine(character** bufferFile){
-  character* lineToRemove = NULL;
-
-  //Check if the buffer actually exist
-  if(*bufferFile != NULL){
-
-    //Check if it's the end of a line
-    if(bufferFile->next == NULL){
-
-      //Check if is a single character
-      if(bufferFile->prev == NULL){
-        lineToRemove = *bufferFile;
-        *bufferFile = NULL;
-        return lineToRemove;
-      }
-
-      //If it is a single line
-      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL ){
-
-        //Get the first line of the text
-        lineToRemove = findFirstCharacter(*bufferFile);
-
-        //Make bufferFile point to the rest of the text
-        *bufferFile = NULL;
-
-        return lineToRemove;
-
-      //Last character of the text
-      }else{
-
-        //Get te first character of the line to be removed
-        lineToRemove = findNthPrevious((*bufferFile)->prev, '\n',1)->next;
-        lineToRemove->prev = NULL;
-
-        //Remove the line from the text
-        findNthPrevious((*bufferFile)->prev, '\n',1)->next = NULL;
-
-        return lineToRemove;
-      }
-
-    //There is any character after the given
-    }else{
-
-      //First character of the text
-      if(bufferFile->prev == NULL){
-
-        //Save its head
-        lineToRemove = *bufferFile;
-
-        //Save the new file
-        (*bufferFile) = findNthNext((*bufferFile), '\n', 1)->next;
-        (*bufferFile)->prev = NULL;
-
-        //Remove the line from the text
-        findNthNext(lineToRemove, '\n', 1)->next = NULL;
-
-        return lineToRemove;
-      }
-
-      //This is the first line of the text
-      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL){
-
-        //Save its reference
-        lineToRemove = findFirstCharacter(*bufferFile);
-
-        //Find begin of the second line and save it
-        (*bufferFile) = findNthNext((*bufferFile), '\n', 1)->next;
-        (*bufferFile)->prev = NULL;
-
-        //Remove the line from the text
-        findNthNext(lineToRemove, '\n', 1)->next = NULL;
-
-        return lineToRemove;
-      }else{
-
-        //This is the last line of the text
-        if(findNthNext((*bufferFile), '\n',1) == NULL){
-
-          //Move the cursor to last character
-          *bufferFile = findNthNext((*bufferFile)->next, '\n', 1);
-
-          //Get the first character after the new last character of the text
-          lineToRemove = (*bufferFile)->next;
-
-          //Make it a single line
-          lineToRemove->prev = NULL;
-
-          return lineToRemove;
-
-        //This is some random line in the text
-        }else{
-
-        }
-      }
-
-
-
+    //Go back to the head of the line
+    while(iterator->prev != NULL){
+      iterator = iterator->prev;
     }
+
+    return iterator;
   }
-  return lineToRemove;
 }
