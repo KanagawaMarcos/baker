@@ -27,5 +27,5 @@
   character* createBufferFile(const char* fileName);
   void destroyBufferFile(character** bufferFile);
   void printBufferFile(character* bufferFile);
-  character* removeCurBufferLine(character** bufferLine);
+  character* removeFirstBufferLine(character** bufferFile);
 #endif
