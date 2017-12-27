@@ -220,7 +220,7 @@ character* removeCurBufferLine(character** bufferFile){
 
         return lineToRemove;
 
-      //Last line of the text
+      //Last character of the text
       }else{
 
         //Get te first character of the line to be removed
@@ -266,7 +266,28 @@ character* removeCurBufferLine(character** bufferFile){
         findNthNext(lineToRemove, '\n', 1)->next = NULL;
 
         return lineToRemove;
+      }else{
+
+        //This is the last line of the text
+        if(findNthNext((*bufferFile), '\n',1) == NULL){
+
+          //Move the cursor to last character
+          *bufferFile = findNthNext((*bufferFile)->next, '\n', 1);
+
+          //Get the first character after the new last character of the text
+          lineToRemove = (*bufferFile)->next;
+
+          //Make it a single line
+          lineToRemove->prev = NULL;
+
+          return lineToRemove;
+
+        //This is some random line in the text
+        }else{
+
+        }
       }
+
 
 
     }
