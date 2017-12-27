@@ -219,6 +219,8 @@ character* removeCurBufferLine(character** bufferFile){
         *bufferFile = NULL;
 
         return lineToRemove;
+
+      //Last line of the text
       }else{
 
         //Get te first character of the line to be removed
@@ -230,6 +232,43 @@ character* removeCurBufferLine(character** bufferFile){
 
         return lineToRemove;
       }
+
+    //There is any character after the given
+    }else{
+
+      //First character of the text
+      if(bufferFile->prev == NULL){
+
+        //Save its head
+        lineToRemove = *bufferFile;
+
+        //Save the new file
+        (*bufferFile) = findNthNext((*bufferFile), '\n', 1)->next;
+        (*bufferFile)->prev = NULL;
+
+        //Remove the line from the text
+        findNthNext(lineToRemove, '\n', 1)->next = NULL;
+
+        return lineToRemove;
+      }
+
+      //This is the first line of the text
+      if(findNthPrevious((*bufferFile)->prev, '\n',1) == NULL){
+
+        //Save its reference
+        lineToRemove = findFirstCharacter(*bufferFile);
+
+        //Find begin of the second line and save it
+        (*bufferFile) = findNthNext((*bufferFile), '\n', 1)->next;
+        (*bufferFile)->prev = NULL;
+
+        //Remove the line from the text
+        findNthNext(lineToRemove, '\n', 1)->next = NULL;
+
+        return lineToRemove;
+      }
+
+
     }
   }
   return lineToRemove;
