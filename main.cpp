@@ -10,15 +10,19 @@ int main (int argv, char* argc[]){
 
     //Load the docente text into memory
     character* docenteCSV = createBufferFile("csv/docentes.csv");
+
     //Remove the first line of the text (it is useless)
     character* currentLine = removeFirstBufferLine(&docenteCSV);
 
+    //Iterate line by line of "docentes.csv" removing them
     while(currentLine = removeFirstBufferLine(&docenteCSV)){
-      printBufferFile(currentLine);
+
+      
+
+      destroyBufferFile(&currentLine);
     }
 
-    destroyBufferFile(&currentLine);
-    destroyBufferFile(&docenteCSV);
+
 
     return 0;
 }
