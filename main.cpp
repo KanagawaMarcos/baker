@@ -13,15 +13,20 @@ int main (int argv, char* argc[]){
 
     //Remove the first line of the text (it is useless)
     character* currentLine = removeFirstBufferLine(&docenteCSV);
-
+    currentLine = removeFirstBufferLine(&docenteCSV);
+    character* idFirst = getNthCommaData(currentLine, 1);
+    printBufferFile(idFirst);
+    
     //Iterate line by line of "docentes.csv" removing them
+    /*
     while(currentLine = removeFirstBufferLine(&docenteCSV)){
-
-      
 
       destroyBufferFile(&currentLine);
     }
+    */
 
+    destroyBufferFile(&docenteCSV);
+    destroyBufferFile(&idFirst);
 
 
     return 0;

@@ -31,8 +31,8 @@ void destroyChar(character* charToDestroy){
 
 void addChar(character** string, char data){
 
-  //If the user actually pass a valid string
-  if(string != NULL){
+  //If the user actually pass a empty string
+  if(*string != NULL){
 
     //Create a new character
     character* newChar = new character[1];
@@ -81,6 +81,10 @@ void addChar(character** string, char data){
       //Update the new last character
       (*string)->last = newChar;
     }
+  }else{
+    character* newString = createChar(data);
+    newString->last = newString;
+    *string = newString;
   }
 }
 
@@ -208,4 +212,82 @@ character* removeFirstBufferLine(character** bufferFile){
     }
   }
   return iterator;
+}
+
+
+
+//Didn't make yet
+//void removeQuotes(){};
+
+character* getNthCommaData(character* bufferFile, int position){
+  //A buffer line with a copy of the N position data
+  character* nthText = NULL;
+
+  if(bufferFile != NULL){
+    if(position > 0){
+
+      //The first character of the right data
+      character* startPoint = NULL;
+      //The last character of the right data
+      character* finishPoint = NULL;
+
+      int numberOfCommas = 0;
+
+      //Go to the head of the bufferfile
+      character* iterator = bufferFile;
+      while(iterator->prev != NULL){
+        iterator = iterator->prev;
+      }
+
+      //Make a backup of the first character address
+      character* firstCharAddress = iterator;
+
+      //Count the number of commas int the text
+      while(iterator->next != NULL){
+        if((iterator->data == ',') || (iterator->data == ';')){
+          numberOfCommas++;
+        }
+        iterator = iterator->next;
+      }
+      cout << "number of commas: " << numberOfCommas << "\n";
+      //If the number of open commas is equals to the closed
+      if((numberOfCommas%2) == 0 ){
+
+        iterator = firstCharAddress;
+        int currrentCommaPos = 0;
+
+        //Iterate through the text
+        while(iterator->next != NULL){
+
+          //Count, if the current char is a comma
+          if((iterator->data == ',') || (iterator->data == ';')){
+            currrentCommaPos++;
+          }
+
+          //If the current char is the first comma that we're looking for
+          if(currrentCommaPos == ((position/2)-1)){
+            startPoint = iterator->next;
+          }
+
+          //If the current char is the second comma that we're looking for
+          if(currrentCommaPos == ((position/2))){
+            finishPoint = iterator->prev;
+
+            //The data is already marked, It's no longer need to iterate
+            break;
+          }
+          iterator = iterator->next;
+        }
+
+        //Copy the data to return
+        iterator = startPoint;
+        while(iterator->next != NULL && iterator != finishPoint){
+          addChar(&nthText, iterator->data);
+          iterator = iterator->next;
+        }
+
+      }
+    }
+  }
+  return nthText;
 }
