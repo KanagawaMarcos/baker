@@ -8,17 +8,17 @@ using namespace std;
 
 int main (int argv, char* argc[]){
 
-    //Loads all ".csv" files into a Buffer Files
+    //Load the docente text into memory
     character* docenteCSV = createBufferFile("csv/docentes.csv");
-    printBufferFile(docenteCSV);
-    //Remove the line that does not contain valuable data
-    character* removedLine = removeFirstBufferLine(&docenteCSV);
-    cout << endl <<endl<<endl;
-    printBufferFile(removedLine);
-    printBufferFile(docenteCSV);
+    //Remove the first line of the text (it is useless)
+    character* currentLine = removeFirstBufferLine(&docenteCSV);
 
+    while(currentLine = removeFirstBufferLine(&docenteCSV)){
+      printBufferFile(currentLine);
+    }
+
+    destroyBufferFile(&currentLine);
     destroyBufferFile(&docenteCSV);
-    destroyBufferFile(&removedLine);
 
     return 0;
 }

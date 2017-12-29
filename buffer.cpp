@@ -147,7 +147,7 @@ void destroyBufferFile(character** bufferFile){
 
     //Destroy the first character (the only one remaing)
     destroyChar(iterator);
-    iterator = NULL;
+    *bufferFile = NULL;
   }
 }
 
@@ -169,11 +169,12 @@ void printBufferFile(character* bufferFile){
 }
 
 character* removeFirstBufferLine(character** bufferFile){
+  character* iterator = NULL;
   //If the user actually pass a valid buffer file
-  if(bufferFile != NULL){
+  if(*bufferFile != NULL){
 
     //Get the address of the current character
-    character* iterator = *bufferFile;
+    iterator = *bufferFile;
 
     //Go until the head of the file (for safety)
     while(iterator->prev != NULL){
@@ -181,24 +182,30 @@ character* removeFirstBufferLine(character** bufferFile){
     }
 
     //Go until the first ocurrence of '\n'
-    while(iterator->data != '\n'){
+    while(iterator->next != NULL && iterator->data != '\n'){
         iterator = iterator->next;
     }
 
-    //Save the address of the character after the last '\n'
-    *bufferFile = iterator->next;
+    //Save the address of the character after the last '\n' if exist
+    if(iterator->next != NULL){
+      *bufferFile = iterator->next;
+    }else{
+      *bufferFile = NULL;
+    }
 
     //Remove the reference to new buffer file
     iterator->next = NULL;
 
-    //Separete the buffer file from the old line
-    *bufferFile->prev = NULL;
+    //If the line is not the last one
+    if(*bufferFile != NULL){
+      //Separete the buffer file from the old line
+      (*bufferFile)->prev = NULL;
+    }
 
     //Go back to the head of the line
     while(iterator->prev != NULL){
       iterator = iterator->prev;
     }
-
-    return iterator;
   }
+  return iterator;
 }
