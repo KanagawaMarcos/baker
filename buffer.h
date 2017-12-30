@@ -29,4 +29,5 @@
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
   char* getNthColumnData(character* bufferFile, int position);
+  long stringToLong(char* numberToConvert);
 #endif

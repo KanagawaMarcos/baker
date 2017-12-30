@@ -11,9 +11,12 @@
 
     struct _docente* next;
     struct _docente* prev;
+    struct _docente* last;
   }docente;
 
   docente* createDocente(long id, char* nome);
   void destroyDocente(docente* docenteToDestroy);
 
+  void addDocente(docente** docenteList, long id, char* name);
+  void destroyAllDocente(docente** docentes);
 #endif

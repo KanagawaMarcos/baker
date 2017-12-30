@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -396,4 +397,8 @@ char* getNthColumnData(character* bufferFile, int position){
     }
 
   return nthText;
+}
+
+long stringToLong(char* numberToConvert){
+  return atol(numberToConvert);
 }
