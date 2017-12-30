@@ -1,3 +1,5 @@
+all: baker
+
 baker : main.o buffer.o docente.o
 	g++ main.o buffer.o -o baker -o baker
 
