@@ -219,9 +219,9 @@ character* removeFirstBufferLine(character** bufferFile){
 //Didn't make yet
 //void removeQuotes(){};
 
-character* getNthCommaData(character* bufferFile, int position){
+char* getNthCommaData(character** bufferFile, int position){
   //A buffer line with a copy of the N position data
-  character* nthText = NULL;
+  char* nthText = NULL;
 
   if(bufferFile != NULL){
     if(position > 0){
@@ -234,7 +234,7 @@ character* getNthCommaData(character* bufferFile, int position){
       int numberOfCommas = 0;
 
       //Go to the head of the bufferfile
-      character* iterator = bufferFile;
+      character* iterator = *bufferFile;
       while(iterator->prev != NULL){
         iterator = iterator->prev;
       }
@@ -244,50 +244,65 @@ character* getNthCommaData(character* bufferFile, int position){
 
       //Count the number of commas int the text
       while(iterator->next != NULL){
-        if((iterator->data == ',') || (iterator->data == ';')){
+        if(iterator->data == ','){
           numberOfCommas++;
+        }
+
+        //Everything behind this comma until another is the wanted data
+        if(numberOfCommas == position){
+
+          //Count how many valid characters there's (Quotes are not valid)
+          character* commaPosition = iterator;
+          int numberOfChars = 0;
+          while(iterator->prev != NULL){
+
+            //everything before this quotes, belongs to other data
+            if(iterator->data == ','){
+
+              break;
+            }
+
+            //if the character is diferent of a quote
+            if(iterator->data != '"'){
+              numberOfChars++;
+            }
+            iterator = iterator->prev;
+          }
+          cout << numberOfChars << endl;
+          //Alocate the string to receive each character
+          nthText = new char[numberOfChars];
+          int i = numberOfChars;
+          //Because an array starts from 0 and goes to n-1
+          i = i-1;
+          if(nthText != NULL){
+            iterator = commaPosition;
+            while(iterator->prev != NULL){
+
+              //Everything before this quotes, belongs to other data
+              if(iterator->data == ','){
+                break;
+              }
+              //if the character is diferent of a quote
+              if(iterator->data != '"'){
+                nthText[i] = iterator->data;
+                i--;
+              }
+              iterator = iterator->prev;
+            }
+
+          }else{
+            cerr << "Error: Function: getNthCommaData. Desc: error while allocating nthText." << endl;
+          }
+
+          //Make the iterator go back to the position where it was
+          iterator = commaPosition;
+          //End the function
+          break;
         }
         iterator = iterator->next;
       }
-      cout << "number of commas: " << numberOfCommas << "\n";
-      //If the number of open commas is equals to the closed
-      if((numberOfCommas%2) == 0 ){
-
-        iterator = firstCharAddress;
-        int currrentCommaPos = 0;
-
-        //Iterate through the text
-        while(iterator->next != NULL){
-
-          //Count, if the current char is a comma
-          if((iterator->data == ',') || (iterator->data == ';')){
-            currrentCommaPos++;
-          }
-
-          //If the current char is the first comma that we're looking for
-          if(currrentCommaPos == ((position/2)-1)){
-            startPoint = iterator->next;
-          }
-
-          //If the current char is the second comma that we're looking for
-          if(currrentCommaPos == ((position/2))){
-            finishPoint = iterator->prev;
-
-            //The data is already marked, It's no longer need to iterate
-            break;
-          }
-          iterator = iterator->next;
-        }
-
-        //Copy the data to return
-        iterator = startPoint;
-        while(iterator->next != NULL && iterator != finishPoint){
-          addChar(&nthText, iterator->data);
-          iterator = iterator->next;
-        }
-
       }
     }
-  }
+
   return nthText;
 }

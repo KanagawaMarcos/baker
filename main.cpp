@@ -13,20 +13,16 @@ int main (int argv, char* argc[]){
 
     //Remove the first line of the text (it is useless)
     character* currentLine = removeFirstBufferLine(&docenteCSV);
+
+
+    //Remove the first docente
     currentLine = removeFirstBufferLine(&docenteCSV);
-    character* idFirst = getNthCommaData(currentLine, 1);
-    printBufferFile(idFirst);
-    
-    //Iterate line by line of "docentes.csv" removing them
-    /*
-    while(currentLine = removeFirstBufferLine(&docenteCSV)){
+    char* idFirst = getNthCommaData(&currentLine, 1);
+    cout << idFirst << endl;
 
-      destroyBufferFile(&currentLine);
-    }
-    */
 
+    destroyBufferFile(&currentLine);
     destroyBufferFile(&docenteCSV);
-    destroyBufferFile(&idFirst);
 
 
     return 0;
