@@ -1,5 +1,8 @@
 all: baker
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4b89264fdf1c04e2cba8887827586045edd34444
 baker : main.o buffer.o docente.o
 	g++ main.o buffer.o -o baker -o baker
 
