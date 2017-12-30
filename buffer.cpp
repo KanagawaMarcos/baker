@@ -239,6 +239,7 @@ char* getNthCommaData(character* bufferFile, int position){
         iterator = iterator->prev;
       }
 
+
       //Make a backup of the first character address
       character* firstCharAddress = iterator;
 
@@ -254,6 +255,9 @@ char* getNthCommaData(character* bufferFile, int position){
           //Count how many valid characters there's (Quotes are not valid)
           character* commaPosition = iterator;
           int numberOfChars = 0;
+
+          //Go backwards one char, to ignore read the comma
+          iterator = iterator->prev;
           while(iterator->prev != NULL){
 
             //everything before this quotes, belongs to other data
@@ -263,19 +267,20 @@ char* getNthCommaData(character* bufferFile, int position){
             }
 
             //if the character is diferent of a quote
-            if(iterator->data != '"'){
+            if(iterator->data != '\"'){
               numberOfChars++;
             }
             iterator = iterator->prev;
           }
-          cout << numberOfChars << endl;
           //Alocate the string to receive each character
-          nthText = new char[numberOfChars];
-          int i = numberOfChars;
-          //Because an array starts from 0 and goes to n-1
-          i = i-1;
+          nthText = new char[numberOfChars+1];
+          //The extra char is for \0
+          nthText[numberOfChars] = '\0';
+          //The last valid character 
+          int i = (numberOfChars-1);
+
           if(nthText != NULL){
-            iterator = commaPosition;
+            iterator = commaPosition->prev;
             while(iterator->prev != NULL){
 
               //Everything before this quotes, belongs to other data
