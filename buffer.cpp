@@ -219,7 +219,7 @@ character* removeFirstBufferLine(character** bufferFile){
 //Didn't make yet
 //void removeQuotes(){};
 
-char* getNthCommaData(character* bufferFile, int position){
+char* getNthColumnData(character* bufferFile, int position){
   //A buffer line with a copy of the N position data
   char* nthText = NULL;
 
@@ -248,63 +248,149 @@ char* getNthCommaData(character* bufferFile, int position){
         if(iterator->data == ','){
           numberOfCommas++;
         }
+        iterator = iterator->next;
+      }
 
-        //Everything behind this comma until another is the wanted data
-        if(numberOfCommas == position){
+      iterator = firstCharAddress;
 
-          //Count how many valid characters there's (Quotes are not valid)
-          character* commaPosition = iterator;
-          int numberOfChars = 0;
+      //The required collumn does not exist
+      if(position > (numberOfCommas+1)){
 
-          //Go backwards one char, to ignore read the comma
-          iterator = iterator->prev;
-          while(iterator->prev != NULL){
-
-            //everything before this quotes, belongs to other data
-            if(iterator->data == ','){
-
-              break;
-            }
-
-            //if the character is diferent of a quote
-            if(iterator->data != '\"'){
-              numberOfChars++;
-            }
-            iterator = iterator->prev;
+      //The last collumn is bein required
+      }else if (position == (numberOfCommas+1)){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->data == ','){
+            numberOfCommas++;
           }
-          //Alocate the string to receive each character
-          nthText = new char[numberOfChars+1];
-          //The extra char is for \0
-          nthText[numberOfChars] = '\0';
-          //The last valid character 
-          int i = (numberOfChars-1);
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == (position-1)){
 
-          if(nthText != NULL){
-            iterator = commaPosition->prev;
-            while(iterator->prev != NULL){
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
 
-              //Everything before this quotes, belongs to other data
+            //Go foward one char, to ignore read the comma
+            iterator = iterator->next;
+            while(iterator->next != NULL){
+
+              //everything before this quotes, belongs to other data
               if(iterator->data == ','){
+
                 break;
               }
+
               //if the character is diferent of a quote
-              if(iterator->data != '"'){
-                nthText[i] = iterator->data;
-                i--;
+              if(iterator->data != '\"'){
+                numberOfChars++;
+              }
+              iterator = iterator->next;
+            }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            //int i = (numberOfChars-1);
+            int i = 0;
+
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->next;
+              while(iterator->next != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->data == ','){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i++;
+                }
+                iterator = iterator->next;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
+          }
+
+          iterator = iterator->next;
+        }
+      //The collumn given is anyone but the last
+      }else if((position < (numberOfCommas+1)) && position > 0){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->data == ','){
+            numberOfCommas++;
+          }
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == position){
+
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
+
+            //Go backwards one char, to ignore read the comma
+            iterator = iterator->prev;
+            while(iterator->prev != NULL){
+
+              //everything before this quotes, belongs to other data
+              if(iterator->data == ','){
+
+                break;
+              }
+
+              //if the character is diferent of a quote
+              if(iterator->data != '\"'){
+                numberOfChars++;
               }
               iterator = iterator->prev;
             }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            int i = (numberOfChars-1);
 
-          }else{
-            cerr << "Error: Function: getNthCommaData. Desc: error while allocating nthText." << endl;
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->prev;
+              while(iterator->prev != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->data == ','){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i--;
+                }
+                iterator = iterator->prev;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
           }
 
-          //Make the iterator go back to the position where it was
-          iterator = commaPosition;
-          //End the function
-          break;
+          iterator = iterator->next;
         }
-        iterator = iterator->next;
       }
       }
     }

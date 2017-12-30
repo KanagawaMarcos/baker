@@ -1,4 +1,4 @@
-all: baker
+all: baker clean
 
 baker : main.o buffer.o docente.o
 	g++ main.o buffer.o docente.o -o baker

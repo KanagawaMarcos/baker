@@ -17,9 +17,14 @@ int main (int argv, char* argc[]){
 
     //Remove the first docente
     currentLine = removeFirstBufferLine(&docenteCSV);
-    char* idFirst = getNthCommaData(currentLine, 1);
+    char* id = getNthColumnData(currentLine, 1);
+    char* name = getNthColumnData(currentLine, 2);
+
+    cout << "====Source Text====" << endl;
     printBufferFile(currentLine);
-    cout << idFirst << endl;
+    cout << endl << "===Removed Data===" << endl;
+    cout << "ID: " << id << endl;
+    cout << "Name: " << name << endl;
 
 
     destroyBufferFile(&currentLine);
