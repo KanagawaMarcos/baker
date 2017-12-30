@@ -18,5 +18,7 @@
   void destroyDocente(docente* docenteToDestroy);
 
   void addDocente(docente** docenteList, long id, char* name);
-  void destroyAllDocente(docente** docentes);
+  void destroyAllDocentes(docente** docentes);
+
+  docente* loadAllDocentes(const char* filePath);
 #endif

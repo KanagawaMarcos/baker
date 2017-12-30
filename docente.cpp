@@ -1,8 +1,40 @@
 #include "docente.h"
+#include "buffer.h"
 #include <iostream>
 #include <string.h>
 
 using namespace std;
+
+docente* loadAllDocentes(const char* filePath){
+
+  //A double linked list of type "docente"
+  docente* docentes = NULL;
+
+  if(filePath != NULL){
+    //Load the docente.csv file into a Buffer File
+    character* docenteCSV = createBufferFile(filePath);
+
+    //Remove the first line of the text (it is useless)
+    character* currentLine = removeFirstBufferLine(&docenteCSV);
+    destroyBufferFile(&currentLine);
+
+    //Create each "docente" based on the Buffer File
+    while(currentLine = removeFirstBufferLine(&docenteCSV)){
+
+      //Get docente's ID
+      long id = stringToLong(getNthColumnData(currentLine, 1));
+      //Get docente's name
+      char* name = getNthColumnData(currentLine, 2);
+
+      //Destroy the removed line (Only the text inside of it)
+      destroyBufferFile(&currentLine);
+
+      //Create a docente with the given data and add it to a list
+      addDocente(&docentes, id, name);
+    }
+  }
+  return docentes;
+}
 
 docente* createDocente(long id, char* name){
   docente* newDocente = NULL;
@@ -86,7 +118,7 @@ void addDocente(docente** docenteList, long id, char* name){
   }
 }
 
-void destroyAllDocente(docente** docentes){
+void destroyAllDocentes(docente** docentes){
 
   //If the user actually pass a valid double linked list of docente
   if(docentes != NULL){
