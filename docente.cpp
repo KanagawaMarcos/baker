@@ -17,3 +17,10 @@ docente* createDocente(long id, char* name){
 
   return newDocente;
 }
+
+void destroyDocente(docente* docenteToDestroy){
+  //If the user actually pass a valid "docente"
+  if(docenteToDestroy != NULL){
+    delete[] docenteToDestroy;
+  }
+}

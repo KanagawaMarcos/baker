@@ -8,11 +8,12 @@
 
     //Info used during the processing
     int totalPoints;
-        
+
     struct _docente* next;
     struct _docente* prev;
   }docente;
 
   docente* createDocente(long id, char* nome);
+  void destroyDocente(docente* docenteToDestroy);
 
 #endif
