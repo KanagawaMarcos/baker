@@ -17,7 +17,7 @@ int main (int argv, char* argc[]){
 
     //Remove the first docente
     currentLine = removeFirstBufferLine(&docenteCSV);
-    char* idFirst = getNthCommaData(&currentLine, 1);
+    char* idFirst = getNthCommaData(currentLine, 1);
     cout << idFirst << endl;
 
 

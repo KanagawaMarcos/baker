@@ -28,5 +28,5 @@
   void destroyBufferFile(character** bufferFile);
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
-  char* getNthCommaData(character** bufferFile, int position);
+  char* getNthCommaData(character* bufferFile, int position);
 #endif

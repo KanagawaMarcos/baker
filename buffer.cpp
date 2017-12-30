@@ -219,7 +219,7 @@ character* removeFirstBufferLine(character** bufferFile){
 //Didn't make yet
 //void removeQuotes(){};
 
-char* getNthCommaData(character** bufferFile, int position){
+char* getNthCommaData(character* bufferFile, int position){
   //A buffer line with a copy of the N position data
   char* nthText = NULL;
 
@@ -234,7 +234,7 @@ char* getNthCommaData(character** bufferFile, int position){
       int numberOfCommas = 0;
 
       //Go to the head of the bufferfile
-      character* iterator = *bufferFile;
+      character* iterator = bufferFile;
       while(iterator->prev != NULL){
         iterator = iterator->prev;
       }
