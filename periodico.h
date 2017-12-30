@@ -17,8 +17,11 @@
   periodico* createPeriodico(long id, char* nome);
   void destroyPeriodico(periodico* periodicoToDestroy);
 
-  void addPeriodico(periodico** tree, periodico* periodicoToAdd);
+  void insertPeriodico(periodico** tree, periodico* periodicoToAdd);
+  void removePeriodico(periodico** tree, periodico* periodicoToRemove);
   void destroyAllPeriodicos(periodico** tree);
 
-  docente* loadAllPeriodicos(const char* filePath);
+  periodico* loadAllPeriodicos(const char* filePath);
+
+  int qualisValue(char* qualis);
 #endif
