@@ -32,13 +32,6 @@ int main (int argv, char* argc[]){
       addDocente(&docentes, id, name);
     }
 
-    docente* i = docentes;
-    while(i->next != NULL){
-      cout << "======================="<<endl;
-      cout << "ID: " << i->id << endl;
-      cout << "Name: " << i->name << endl;
-    }
-
     destroyAllDocente(&docentes);
     return 0;
 }

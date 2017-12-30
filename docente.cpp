@@ -10,7 +10,7 @@ docente* createDocente(long id, char* name){
 
   if(newDocente != NULL){
     newDocente->id = id;
-    strcpy((newDocente->name),name); //??? strcpy = ponteiros?
+    newDocente->name = name;
     newDocente->next = NULL;
     newDocente->prev = NULL;
     newDocente->last = NULL;
