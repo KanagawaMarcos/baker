@@ -12,10 +12,11 @@ int main (int argv, char* argc[]){
     docente* docentes = loadAllDocentes("csv/docentes.csv");
     character* regras = createBufferFile("csv/regras/regraComp");
 
-    char* qualis = new char[2];
-    qualis[0] = '5';
-    //qualis[0] = ':';
-    qualis[1] = '\0';
+    char* qualis = new char[4];
+    qualis[0] = '1';
+    qualis[1] = '6';
+    qualis[2] = ':';
+    qualis[3] = '\0';
 
     int valor = getRuleValue(regras,qualis);
     cout << "valor: " << valor << endl;
