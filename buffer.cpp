@@ -73,10 +73,17 @@ int getRuleValue(character* bufferFile, char* qualis){
 
             //If the current character is double point
             if(ruleFirstChar->data == ':'){
-              firstNumberDigit = ruleFirstChar->next;
-              char* ruleValueString = NULL;
-              ruleValueString = bufferStringToString(firstNumberDigit);
-              ruleValue = atoi(ruleValueString);
+              if(ruleFirstChar->next->data != 'n' && ruleFirstChar->next->data != 'N'){
+                firstNumberDigit = ruleFirstChar->next;
+                char* ruleValueString = NULL;
+                ruleValueString = bufferStringToString(firstNumberDigit);
+                ruleValue = atoi(ruleValueString);
+
+              //If the value is not set
+              }else{
+                ruleValue = 0;
+                return ruleValue;
+              }
             }
           }
         }
