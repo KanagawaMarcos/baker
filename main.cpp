@@ -13,7 +13,7 @@ int main (int argv, char* argc[]){
     character* regras = createBufferFile("csv/regras/regraComp");
 
     char* qualis = new char[2];
-    qualis[0] = '0';
+    qualis[0] = ' ';
     qualis[1] = '\0';
 
     int valor = getRuleValue(regras,qualis);

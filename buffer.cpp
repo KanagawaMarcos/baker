@@ -52,30 +52,32 @@ char* bufferStringToString(character* bufferString){
     return string;
 }
 
-int getRuleValue(character* bufferFile,char* qualis){
+int getRuleValue(character* bufferFile, char* qualis){
   int ruleValue = -1;
   if(bufferFile != NULL){
-    if(qualis != NULL){
-      int qualisSize = strlen(qualis);
-      if(qualisSize > 0){
+    if(qualis != NULL ){
+      if(atoi(qualis)>0){
+        int qualisSize = strlen(qualis);
+        if(qualisSize > 0){
 
-        character* ruleFirstChar = find(bufferFile,qualis);
-        //If the rule actually exist
-        if(ruleFirstChar != NULL){
+          character* ruleFirstChar = find(bufferFile,qualis);
+          //If the rule actually exist
+          if(ruleFirstChar != NULL){
 
-          //Go until its value
-          while(ruleFirstChar->next != NULL && ruleFirstChar->data != '\0' && ruleFirstChar->data != ':'){
-            ruleFirstChar = ruleFirstChar->next;
-          }
+            //Go until its value
+            while(ruleFirstChar->next != NULL && ruleFirstChar->data != '\0' && ruleFirstChar->data != ':'){
+              ruleFirstChar = ruleFirstChar->next;
+            }
 
-          character* firstNumberDigit = NULL;
+            character* firstNumberDigit = NULL;
 
-          //If the current character is double point
-          if(ruleFirstChar->data == ':'){
-            firstNumberDigit = ruleFirstChar->next;
-            char* ruleValueString = NULL;
-            ruleValueString = bufferStringToString(firstNumberDigit);
-            ruleValue = atoi(ruleValueString);
+            //If the current character is double point
+            if(ruleFirstChar->data == ':'){
+              firstNumberDigit = ruleFirstChar->next;
+              char* ruleValueString = NULL;
+              ruleValueString = bufferStringToString(firstNumberDigit);
+              ruleValue = atoi(ruleValueString);
+            }
           }
         }
       }
