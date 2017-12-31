@@ -14,7 +14,7 @@
     struct _periodico* right;
   }periodico;
 
-  periodico* createPeriodico(long id, char* nome);
+  periodico* createPeriodico(long id, char* name);
   void destroyPeriodico(periodico* periodicoToDestroy);
 
   void insertPeriodico(periodico** tree, periodico* periodicoToAdd);

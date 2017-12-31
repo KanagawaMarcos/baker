@@ -15,7 +15,7 @@
     struct _docente* last;
   }docente;
 
-  docente* createDocente(long id, char* nome);
+  docente* createDocente(long id, char* name);
   void destroyDocente(docente* docenteToDestroy);
 
   void addDocente(docente** docenteList, long id, char* name);

@@ -1,3 +1,4 @@
+
 periodico* createPeriodico(char* issn, char* name, char*area, char* qualis){
   periodico* newPeriodico = NULL;
   newPeriodico = new periodico[1];
@@ -8,7 +9,7 @@ periodico* createPeriodico(char* issn, char* name, char*area, char* qualis){
     newPeriodico->area = area;
     newPeriodico->qualis = qualis;
 
-    newPeriodico->value = qualisValue(qualis);
+    newPeriodico->value = 0;//qualisValue(qualis);
     newPeriodico->left = NULL;
     newPeriodico->right = NULL;
   }
