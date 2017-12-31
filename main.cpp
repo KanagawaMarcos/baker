@@ -12,14 +12,6 @@ int main (int argv, char* argc[]){
     docente* docentes = loadAllDocentes("csv/docentes.csv");
     character* regras = createBufferFile("csv/regras/regraComp");
 
-    char* qualis = new char[2];
-    qualis[0] = ' ';
-    qualis[1] = '\0';
-
-    int valor = getRuleValue(regras,qualis);
-    cout << "valor: " << valor << endl;
-    delete[] qualis;
-
     //Create a binary search tree of all "periodicos"
     //periodico* periodicos = loadAllPeriodicos("csv/qualis_capes_periodicos.csv");
 
