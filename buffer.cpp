@@ -6,6 +6,132 @@
 
 using namespace std;
 
+
+char* bufferStringToString(character* bufferString){
+    char* string = NULL;
+    if(bufferString != NULL){
+
+      int numberOfChars = 0;
+
+      //Move through the line char by char
+      character* iterator = bufferString;
+      while(iterator->next != NULL && iterator->data != '\0'){
+
+        //Count how many character there are
+        numberOfChars++;
+        iterator = iterator->next;
+      }
+
+      if(iterator->next == NULL){
+        //Count how many character there are
+        numberOfChars++;
+
+      }
+
+
+      //Alocate a new string
+      string = new char[(numberOfChars+1)];
+      if(string != NULL){
+
+        //Copy the buffer line content to the string
+        iterator = bufferString;
+
+        int i = 0;
+        while (iterator->next != NULL && iterator->data != '\0'){
+          string[i] = iterator->data;
+          i++;
+          iterator = iterator->next;
+        }
+        if(iterator->next == NULL){
+          string[(numberOfChars-1)] = iterator->data;
+        }else{
+          string[numberOfChars] = '\0';
+        }
+      }
+    }
+    return string;
+}
+
+int getRuleValue(character* bufferFile,char* qualis){
+  int ruleValue = -1;
+  if(bufferFile != NULL){
+    if(qualis != NULL){
+      int qualisSize = strlen(qualis);
+      if(qualisSize > 0){
+
+        character* ruleFirstChar = find(bufferFile,qualis);
+        //If the rule actually exist
+        if(ruleFirstChar != NULL){
+
+          //Go until its value
+          while(ruleFirstChar->next != NULL && ruleFirstChar->data != '\0' && ruleFirstChar->data != ':'){
+            ruleFirstChar = ruleFirstChar->next;
+          }
+
+          character* firstNumberDigit = NULL;
+
+          //If the current character is double point
+          if(ruleFirstChar->data == ':'){
+            firstNumberDigit = ruleFirstChar->next;
+            char* ruleValueString = NULL;
+            ruleValueString = bufferStringToString(firstNumberDigit);
+            ruleValue = atoi(ruleValueString);
+          }
+        }
+      }
+    }
+  }
+  return ruleValue;
+}
+
+character* find(character* bufferFile, char* string){
+  character* wordFound = NULL;
+
+  if(bufferFile != NULL){
+    if(string != NULL){
+      int stringSize = strlen(string);
+      int foundIt = 0;
+
+      character* iterator = bufferFile;
+      while(iterator->next){
+
+        //Make a copy of iterator to no lost the addres of the current character
+        character* iteratorCopy = iterator;
+
+        for(int i=0 ; i<stringSize ; i++){
+
+          //If the current char is equal to current character
+          if(string[i] != iteratorCopy->data){
+            break;
+          }
+
+          //Sinalize if some error happened
+          if(iteratorCopy->next == NULL){
+            foundIt = -1;
+            break;
+          }else{
+            iteratorCopy = iteratorCopy->next;
+          }
+
+          //If the last char of the string is equal as well
+          if(i == (stringSize-1)){
+            foundIt = 1;
+          }
+        }
+        //If the string was found
+        if(foundIt == 1){
+
+          //Copy the addres of its first character
+          wordFound = iterator;
+          break;
+        }
+        iterator = iterator->next;
+      }
+    }
+  }
+  return wordFound;
+}
+
 character* createChar(char data){
   character* newCharacter = NULL;
 

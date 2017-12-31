@@ -28,6 +28,14 @@
   void destroyBufferFile(character** bufferFile);
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
+  character* find(character* bufferFile, char* string);
+  char* bufferStringToString(character* string);
+
+  //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
+
+  //Function to use with the "rules files"
+  int getRuleValue(character* bufferFile,char* qualis);
+
   long stringToLong(char* numberToConvert);
 #endif

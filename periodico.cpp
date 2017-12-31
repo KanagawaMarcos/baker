@@ -1,3 +1,6 @@
+#include <iostream>
+
+using namespace std;
 
 periodico* createPeriodico(char* issn, char* name, char*area, char* qualis){
   periodico* newPeriodico = NULL;
