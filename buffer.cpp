@@ -6,6 +6,28 @@
 
 using namespace std;
 
+character* intToBufferString(int integer){
+  character* bufferInteger = NULL;
+  char charArray = NULL;
+
+  //All numbers that are representable by int will fit in a 12-char-array without overflow
+  charArray = new char[12];
+  if(bufferChar != NULL){
+    int bufferRealSize = 0;
+
+    //Will convert the integer given to a char array (charArray) and save its size (bufferRealSize)
+    bufferRealSize = sprintf (charArray, " ", integer);
+
+    if(bufferRealSize > 0){
+
+      //Create the buffer string
+      for(int i=0; i < bufferRealSize; i++){
+        addChar(&bufferInteger,charArray[i]);
+      }
+    }
+  }
+  return bufferInteger;
+}
 
 char* bufferStringToString(character* bufferString){
     char* string = NULL;

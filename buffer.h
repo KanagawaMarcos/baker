@@ -29,7 +29,9 @@
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
   character* find(character* bufferFile, char* string);
+
   char* bufferStringToString(character* string);
+  character* intToBufferString(int integer);
 
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
