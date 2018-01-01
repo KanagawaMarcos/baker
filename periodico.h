@@ -24,5 +24,5 @@
   periodico* loadAllPeriodicos(const char* filePath);
 
   int qualisValue(char* qualis);
-  int* loadAllRules(int amountOfRules);
+  int* loadAllRules(const char* filePath,int rulesNum);
 #endif

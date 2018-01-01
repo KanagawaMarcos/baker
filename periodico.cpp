@@ -1,6 +1,7 @@
 #include "periodico.h"
 #include "buffer.h"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -22,44 +23,70 @@ periodico* createPeriodico(char* issn, char* name, char*area, char* qualis){
   return newPeriodico;
 }
 
-int* loadAllRules(int amountOfRules){
-  if(amountOfRules <= 25){
-    int* regras = NULL;
-    character* regrasTXT = createBufferFile("csv/regras/regraComp");
-    //Create an array of rules values
-    regras = new int[amountOfRules];
+int* loadAllRules(const char* filePath,int rulesNum){
+  if(rulesNum <= 25){
+    int amountOfRules = rulesNum + 1;
+    int* rulesTemporary = NULL;
+    int* rules = NULL;
+    character* rulesTemporaryTXT = createBufferFile(filePath);
 
-    if(regras != NULL){
+    //Create an array of rules values + 1
+    rulesTemporary = new int[amountOfRules];
 
-      //Look in each rule whitin the file
+    //Create an array of the rules to return starting from 0
+    rules = new int[rulesNum];
+
+    if(rulesTemporary != NULL){
+
+      //Look in each rule whitin the file(start at rule num 1)
       for(int i=1; i<amountOfRules;i++){
         if(i < 10){
 
           //Create the rule name
           char* qualis = new char[3];
-          qualis[0] = '0' + i;
+          qualis[0] = ('0' + i);
           qualis[1] = ':';
           qualis[2] = '\0';
 
           //Save its value
-          regras[i] = getRuleValue(regrasTXT,qualis);
+          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
           delete[] qualis;
         }
-        if(i >= 10){
+        if(i >= 10  && i < 20){
 
           //Create the rule name
           char* qualis = new char[4];
           qualis[0] = '1';
-          qualis[1] = '0' + (i-10);
+          qualis[1] = ('0' + (i-10));
           qualis[2] = ':';
           qualis[3] = '\0';
 
           //Save its value
-          regras[i] = getRuleValue(regrasTXT,qualis);
+          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
+          delete[] qualis;
+        }
+        if(i >= 20){
+
+          //Create the rule name
+          char* qualis = new char[4];
+          qualis[0] = '2';
+          qualis[1] = ('0' + (i-20));
+          qualis[2] = ':';
+          qualis[3] = '\0';
+
+          //Save its value
+          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
           delete[] qualis;
         }
       }
-      destroyBufferFile(&regrasTXT);
+      destroyBufferFile(&rulesTemporaryTXT);
+
+      //Copy and past the values to return
+      for(int i=0; i<rulesNum;i++){
+        rules[i] = rulesTemporary[i+1];
+      }
+      delete[] rulesTemporary;
+      return rules;
     }
   }
 }

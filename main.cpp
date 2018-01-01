@@ -10,16 +10,17 @@ int main (int argv, char* argc[]){
 
     //Create a double linked list of all "docentes"
     docente* docentes = loadAllDocentes("csv/docentes.csv");
-    character* regras = createBufferFile("csv/regras/regraComp");
 
-    int* rules = loadAllRules(22);
-    for(int i=0;i<22;i++)
+
+    int* rules = loadAllRules("csv/regras/regraComp",23);
+    for(int i=0;i<23;i++)
       cout << rules[i] << endl;
     //Create a binary search tree of all "periodicos"
     //periodico* periodicos = loadAllPeriodicos("csv/qualis_capes_periodicos.csv");
 
     //destroyAllPeriodicos(&periodicos);
     destroyAllDocentes(&docentes);
-    destroyBufferFile(&regras);
+
     return 0;
+
 }
