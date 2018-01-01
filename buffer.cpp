@@ -6,8 +6,9 @@
 
 using namespace std;
 
-void concatenate(character** string, character** newChar){
+character* concatenate(character** string, character** newChar){
 
+  character* sucess = NULL;
   //If the user actually pass a empty string
   if(*string != NULL){
 
@@ -53,8 +54,11 @@ void concatenate(character** string, character** newChar){
       (*string)->last->next = (*newChar);
       //Update the new last character
       (*string)->last = (*newChar);
+
+      sucess = (*string);
     }
   }
+  return sucess;
 }
 
 character* intToBufferString(int integer){

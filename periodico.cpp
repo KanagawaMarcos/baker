@@ -40,50 +40,16 @@ int* loadAllRules(const char* filePath,int rulesNum){
 
       //Look in each rule whitin the file(start at rule num 1)
       for(int i=1; i<amountOfRules;i++){
-        /*
+
         character* iteratorChar = intToBufferString(i);
         character* colon = createChar(':');
-        character* qualisBufferString = concatenate(iteratorChar,colon);
+        character* qualisBufferString = concatenate(&iteratorChar,&colon);
         char* qualis = bufferStringToString(qualisBufferString);
-        */
-        if(i < 10){
+        cout << "qualis: " << qualis << endl;
 
-          //Create the rule name
-          char* qualis = new char[3];
-          qualis[0] = ('0' + i);
-          qualis[1] = ':';
-          qualis[2] = '\0';
-
-          //Save its value
-          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
-          delete[] qualis;
-        }
-        if(i >= 10  && i < 20){
-
-          //Create the rule name
-          char* qualis = new char[4];
-          qualis[0] = '1';
-          qualis[1] = ('0' + (i-10));
-          qualis[2] = ':';
-          qualis[3] = '\0';
-
-          //Save its value
-          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
-          delete[] qualis;
-        }
-        if(i >= 20){
-
-          //Create the rule name
-          char* qualis = new char[4];
-          qualis[0] = '2';
-          qualis[1] = ('0' + (i-20));
-          qualis[2] = ':';
-          qualis[3] = '\0';
-
-          //Save its value
-          rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
-          delete[] qualis;
-        }
+        //Save its value
+        rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);
+        delete[] qualis;
       }
       destroyBufferFile(&rulesTemporaryTXT);
 
