@@ -8,15 +8,15 @@ using namespace std;
 
 character* intToBufferString(int integer){
   character* bufferInteger = NULL;
-  char charArray = NULL;
+  char* charArray = NULL;
 
   //All numbers that are representable by int will fit in a 12-char-array without overflow
   charArray = new char[12];
-  if(bufferChar != NULL){
+  if(charArray != NULL){
     int bufferRealSize = 0;
 
     //Will convert the integer given to a char array (charArray) and save its size (bufferRealSize)
-    bufferRealSize = sprintf (charArray, " ", integer);
+    bufferRealSize = sprintf (charArray,"%d", integer);
 
     if(bufferRealSize > 0){
 

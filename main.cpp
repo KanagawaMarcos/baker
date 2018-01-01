@@ -21,6 +21,7 @@ int main (int argv, char* argc[]){
     //destroyAllPeriodicos(&periodicos);
     destroyAllDocentes(&docentes);
 
+
     return 0;
 
 }
