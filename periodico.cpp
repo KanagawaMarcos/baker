@@ -40,6 +40,12 @@ int* loadAllRules(const char* filePath,int rulesNum){
 
       //Look in each rule whitin the file(start at rule num 1)
       for(int i=1; i<amountOfRules;i++){
+        /*
+        character* iteratorChar = intToBufferString(i);
+        character* colon = createChar(':');
+        character* qualisBufferString = concatenate(iteratorChar,colon);
+        char* qualis = bufferStringToString(qualisBufferString);
+        */
         if(i < 10){
 
           //Create the rule name
