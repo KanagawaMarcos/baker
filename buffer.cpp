@@ -6,24 +6,53 @@
 
 using namespace std;
 
-void concatenate(character** destination, character** stringToConcatenate){
-  if((*destination) != NULL){
-    if((*stringToConcatenate) != NULL){
+void concatenate(character** string, character** newChar){
 
-      //If the last character was set
-      if((*destination)->last != NULL){
+  //If the user actually pass a empty string
+  if(*string != NULL){
 
-        character* lastCharacterAddress = (*destination)->last;
+    //Check if the new character was allocated
+    if(*newChar != NULL){
 
-        //If it is actually the last character
-        if(lastCharacterAddress->next == NULL){
+      //Check if the last character was not set yet
+      if((*string)->last == NULL){
 
-          //Concatenate the two buffer strings
-          (*stringToConcatenate)->prev = lastCharacterAddress;
-          (*destination)->last->next = lastCharacterAddress;
-          (*destination)->last = lastCharacterAddress;
+        //Iterate through string until the its end
+        character* iterator = (*string);
+        while(iterator->next != NULL){
+          iterator = iterator->next;
+        }
+
+        //Check if the string is not a sub-string
+        if((*string)->prev == NULL){
+
+          //Save the address of the last character
+          (*string)->last = iterator;
+        }else{
+          //Save the address of the last character
+          character* lastCharacterAddress = iterator;
+
+          //Go back until the given character as parameter
+          iterator = (*string);
+
+          //Iterate through string until the its head
+          while(iterator->prev != NULL){
+            iterator = iterator->prev;
+          }
+
+          //Save the address of the last character
+          iterator->last = lastCharacterAddress;
         }
       }
+
+      //Make the second string a sub-string
+      (*newChar)->last = NULL;
+      //Save the adress of the old last character
+      (*newChar)->prev = (*string)->last;
+      //Make the old last character point to the new one
+      (*string)->last->next = (*newChar);
+      //Update the new last character
+      (*string)->last = (*newChar);
     }
   }
 }

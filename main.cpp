@@ -11,8 +11,8 @@ int main (int argv, char* argc[]){
   character* texto2 = createBufferFile("csv/docentes.csv");
 
   concatenate(&texto1, &texto2);
-  
-  printBufferFile(texto1);
+
+  printBufferFile(texto2);
   destroyBufferFile(&texto1);
   destroyBufferFile(&texto2);
     /*
