@@ -7,7 +7,15 @@
 using namespace std;
 
 int main (int argv, char* argc[]){
+  character* texto1 = createBufferFile("csv/docentes.csv");
+  character* texto2 = createBufferFile("csv/docentes.csv");
 
+  concatenate(&texto1, &texto2);
+  
+  printBufferFile(texto1);
+  destroyBufferFile(&texto1);
+  destroyBufferFile(&texto2);
+    /*
     //Create a double linked list of all "docentes"
     docente* docentes = loadAllDocentes("csv/docentes.csv");
 
@@ -21,6 +29,7 @@ int main (int argv, char* argc[]){
     //destroyAllPeriodicos(&periodicos);
     destroyAllDocentes(&docentes);
 
+*/
 
     return 0;
 

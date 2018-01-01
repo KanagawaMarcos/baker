@@ -29,6 +29,7 @@
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
   character* find(character* bufferFile, char* string);
+  void concatenate(character** destination, character** stringToConcatenate);
 
   char* bufferStringToString(character* string);
   character* intToBufferString(int integer);

@@ -6,6 +6,28 @@
 
 using namespace std;
 
+void concatenate(character** destination, character** stringToConcatenate){
+  if((*destination) != NULL){
+    if((*stringToConcatenate) != NULL){
+
+      //If the last character was set
+      if((*destination)->last != NULL){
+
+        character* lastCharacterAddress = (*destination)->last;
+
+        //If it is actually the last character
+        if(lastCharacterAddress->next == NULL){
+
+          //Concatenate the two buffer strings
+          (*stringToConcatenate)->prev = lastCharacterAddress;
+          (*destination)->last->next = lastCharacterAddress;
+          (*destination)->last = lastCharacterAddress;
+        }
+      }
+    }
+  }
+}
+
 character* intToBufferString(int integer){
   character* bufferInteger = NULL;
   char* charArray = NULL;
@@ -271,7 +293,7 @@ character* createBufferFile(const char* filePath){
       //Add each char to buffer file
       addChar(&bufferFile, currentChar);
     }
-
+    file.close();
     return bufferFile;
   }
 }
