@@ -115,8 +115,8 @@ char* bufferStringToString(character* bufferString){
         }
 
         //Put the special character at it's end
-        string[numberOfChars] = '\0';        
-        
+        string[numberOfChars] = '\0';
+
       }
     }
     return string;
@@ -286,9 +286,6 @@ void addChar(character** string, char data){
   }
 }
 
-/*
-* @return: The first character of the BufferFile.
-*/
 character* createBufferFile(const char* filePath){
 
   //Create file a variable to read data from files
@@ -411,11 +408,6 @@ character* removeFirstBufferLine(character** bufferFile){
   }
   return iterator;
 }
-
-
-
-//Didn't make yet
-//void removeQuotes(){};
 
 char* getNthColumnData(character* bufferFile, int position){
   //A buffer line with a copy of the N position data
