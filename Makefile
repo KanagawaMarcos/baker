@@ -14,6 +14,6 @@ docente.o: docente.cpp
 
 periodico.o:
 	g++ -c periodico.cpp
-	
+
 clean:
 	rm -rf *.o
