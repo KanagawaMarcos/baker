@@ -92,38 +92,31 @@ char* bufferStringToString(character* bufferString){
 
       //Move through the line char by char
       character* iterator = bufferString;
-      while(iterator->next != NULL && iterator->data != '\0'){
+      while(iterator->next != NULL){
 
         //Count how many character there are
         numberOfChars++;
         iterator = iterator->next;
       }
-
-      if(iterator->next == NULL){
-        //Count how many character there are
-        numberOfChars++;
-
-      }
-
+      //Count the last character
+      numberOfChars++;
 
       //Alocate a new string
       string = new char[(numberOfChars+1)];
       if(string != NULL){
 
-        //Copy the buffer line content to the string
+        //Load the first character again to move throught the line
         iterator = bufferString;
 
-        int i = 0;
-        while (iterator->next != NULL && iterator->data != '\0'){
+        //Copy all chars from the buffer file to the new char array
+        for(int i=0; i<(numberOfChars); i++){
           string[i] = iterator->data;
-          i++;
           iterator = iterator->next;
         }
-        if(iterator->next == NULL){
-          string[(numberOfChars-1)] = iterator->data;
-        }else{
-          string[numberOfChars] = '\0';
-        }
+
+        //Put the special character at it's end
+        string[numberOfChars] = '\0';        
+        
       }
     }
     return string;
