@@ -6,6 +6,23 @@
 
 using namespace std;
 
+producao* getAllProducoesFromThatDocente(producao** producoes, int docenteId){
+
+    if((*producoes) != NULL){
+      if(docenteId > -1){
+        if(docenteId == (*producoes)->docenteId){
+          return (*producoes);
+        }
+        if(docenteId < (*producoes)->docenteId){
+          return getAllProducoesFromThatDocente(&((*producoes)->left), docenteId);
+        }
+        if(docenteId > (*producoes)->docenteId){
+          return getAllProducoesFromThatDocente(&((*producoes)->right), docenteId);
+        }
+      }
+    }
+}
+
 void printProducoes(producao* producaoNode){
   if(producaoNode != NULL){
     producao* iterator = producaoNode;
@@ -151,7 +168,7 @@ producao* createProducao(long docenteId,long id, char* issn, char* type, char* t
 
     //Baker atributes
     newProducao->isUsedAlready = 0;
-    
+
   }
 
   return newProducao;

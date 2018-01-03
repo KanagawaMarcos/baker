@@ -23,19 +23,25 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       while(currentDocente != NULL){
 
         //Store the every single "producao" from the current docente
-        producao * currentProducao = NULL;
+        producao* allProducao = NULL;
 
         //It will receive the last "producao" whithing the current docente node at the BST
-        //currentProducao = getProducaoFromThatDocente( &producoes, currentDocente->id);
+        allProducao = getAllProducoesFromThatDocente( &producoes, currentDocente->id);
 
-        if(currentProducao != NULL){
+        //If the docente has some producao
+        if(allProducao != NULL){
 
-          //If the current producao has the correct type for this program
-          if(currentProducao->type == "ARTIGO-PUBLICADO" || currentProducao->type == "ARTIGO-ACEITO-PARA-PUBLICACAO"){
+          //Iterate through all producoes
+          producao* currentProducao = NULL;
+          while(currentProducao = removeProducao(&allProducao)){
 
-          }else{
-            destroyProducao(&currentProducao);
-            sucess = -2;
+            //If the current producao has the correct type for this program
+            if(currentProducao->type == "ARTIGO-PUBLICADO" || currentProducao->type == "ARTIGO-ACEITO-PARA-PUBLICACAO"){
+              cout << "tipo certo" << endl;
+            }else{
+              destroyProducao(&currentProducao);
+              sucess = -2;
+            }
           }
         }else{
           sucess = -1;
