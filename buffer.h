@@ -15,6 +15,7 @@
     struct _character* last;
   }character;
 
+
   character* createChar(char data);
   void destroyChar(character* charToDestroy);
   void addChar(character** string, char data);
@@ -36,6 +37,8 @@
 
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
+  
+  int* loadAllRules(const char* filePath,int rulesNum);
 
   //Function to use with the "rules files"
   int getRuleValue(character* bufferFile,char* qualis);

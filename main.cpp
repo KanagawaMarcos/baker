@@ -15,9 +15,23 @@ int main (int argv, char* argc[]){
     //A binary search tree for producoes (key = docenteId/ Value = list of producao)
     producao* producoes = loadAllProducoes("csv/producao_V2.csv");
 
+    //Buffer files contain all valid "capes" and "orientações"
+    character* orientacoes = createBufferFile("csv/qualis_capes_congressos.csv");
+    character* congressos = createBufferFile("csv/qualis_capes_congressos.csv");
+    character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
+
+    //Will fill all give a pontuation to all variables of type "docente"
+    baker(docentes,rules,producoes, orientacoes, congressos,periodicos);
+
+
+
     destroyAllProducoes(&producoes);
     destroyAllDocentes(&docentes);
 
+    destroyBufferFile(&orientacoes);
+    destroyBufferFile(&congressos);
+    destroyBufferFile(&periodicos);
+    
     return 0;
 
 }
