@@ -1,12 +1,15 @@
 #include "buffer.h"
+#include "producao.h"
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include <stdlib.h>
 
+
 using namespace std;
 
 int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos){
+  int sucess = 1;
 
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
@@ -18,11 +21,31 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
       //Iterate through all docentes
       while(currentDocente != NULL){
-        
+
+        //Store the every single "producao" from the current docente
+        producao * currentProducao = NULL;
+
+        //It will receive the last "producao" whithing the current docente node at the BST
+        //currentProducao = getProducaoFromThatDocente( &producoes, currentDocente->id);
+
+        if(currentProducao != NULL){
+
+          //If the current producao has the correct type for this program
+          if(currentProducao->type == "ARTIGO-PUBLICADO" || currentProducao->type == "ARTIGO-ACEITO-PARA-PUBLICACAO"){
+
+          }else{
+            destroyProducao(&currentProducao);
+            sucess = -2;
+          }
+        }else{
+          sucess = -1;
+        }
+
         currentDocente = currentDocente->next;
       }
     }
   }
+  return sucess;
 }
 
 int* loadAllRules(const char* filePath,int rulesNum){

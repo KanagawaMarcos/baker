@@ -1,9 +1,9 @@
 #include <iostream>
 #include "buffer.h"
 #include "docente.h"
-#include "periodico.h"
 #include "producao.h"
-
+#include <ctype.h>
+using namespace std;
 int main (int argv, char* argc[]){
 
     //Create a double linked list of all "docentes"
@@ -21,9 +21,12 @@ int main (int argv, char* argc[]){
     character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
 
     //Will fill all give a pontuation to all variables of type "docente"
-    int e = baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos);
+    //int e = baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos);
+    const char* array = "1415899X";
 
-    cout << "Error code : " << e << end;
+    //cout << atoi(array) << endl;
+
+    //cout << "Error code : " << e << end;
 
     destroyAllProducoes(&producoes);
     destroyAllDocentes(&docentes);

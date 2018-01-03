@@ -1,6 +1,9 @@
 #ifndef BUFFER_H
   #define BUFFER_H
 
+  #include "producao.h"
+  #include "docente.h"
+
   typedef struct _character{
     //The actual text whitin
     char data;
@@ -14,6 +17,7 @@
     //Last character of this buffer
     struct _character* last;
   }character;
+
 
   int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos);
 
