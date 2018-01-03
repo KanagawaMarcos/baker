@@ -11,6 +11,16 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
 
+      docente* currentDocente = NULL;
+
+      //Get the first node from the Double Linked List
+      currentDocente = (*docentes);
+
+      //Iterate through all docentes
+      while(currentDocente != NULL){
+        
+        currentDocente = currentDocente->next;
+      }
     }
   }
 }
