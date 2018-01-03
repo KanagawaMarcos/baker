@@ -16,13 +16,13 @@ int main (int argv, char* argc[]){
     int* rules = loadAllRules("csv/regras/regraComp",22);
 
     //A binary search tree for producoes (it uses docenteId as key)
-    producao* producoes = loadAllProducoes ("csv/producao_V2.csv");
-
+    producao* producoes = loadAllProducoes("csv/producao_V2.csv");
+    postorderProducao(producoes);
     //=========================================================================
     //Create a binary search tree of all "periodicos"
     //periodico* periodicos = loadAllPeriodicos("csv/qualis_capes_periodicos.csv");
     //=========================================================================
-    
+
     destroyAllDocentes(&docentes);
     //destroyAllPeriodicos(&periodicos);
 

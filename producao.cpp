@@ -51,6 +51,7 @@ producao* loadAllProducoes (const char* filePath){
     insertProducao(&producaoBST,docenteId, id,  issn,  type,  title,  local,  year);
 
   }
+  return producaoBST;
 }
 void postorderProducao(producao* producaoNode){
      if (producaoNode != NULL){
@@ -62,7 +63,7 @@ void postorderProducao(producao* producaoNode){
        postorderProducao(producaoNode->right);
 
        // now print the current node title
-       cout << producaoNode->title << endl;
+       cout << producaoNode->docenteId << endl;
      }
 }
 
