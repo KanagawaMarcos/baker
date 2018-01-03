@@ -5,6 +5,74 @@
 #include "buffer.h"
 using namespace std;
 
+void printProducoes(producao* producaoNode){
+  if(producaoNode != NULL){
+    producao* iterator = producaoNode;
+    while(iterator->next != NULL){
+      cout << "\t" << iterator->title << endl;
+      iterator = iterator->next;
+    }
+    cout << "\t" << iterator->title << endl;
+  }
+}
+
+void postorderProducao(producao* producaoNode){
+     if (producaoNode != NULL){
+
+       // first recur on left subtree
+       postorderProducao(producaoNode->left);
+
+       // then recur on right subtree
+       postorderProducao(producaoNode->right);
+
+       // now print the current node title
+       cout << producaoNode->docenteId << endl;
+       printProducoes(producaoNode);
+     }
+}
+
+void destroyAllProducoes(producao** producoes){
+  //If the user actually pass a valid double linked list of docente
+  if(*producoes != NULL){
+
+    //Get the address of the first docente
+    producao* iterator = *producoes;
+
+    //Go to the end of the double linked list of docente
+    while(iterator->next != NULL){
+        iterator = iterator->next;
+    }
+
+    //Go to the start of the double linked list of docente
+    while(iterator->prev != NULL){
+
+      //Go backwards one docente
+      iterator = iterator->prev;
+
+      //Desalocate the docente that is after the current
+      destroyProducao(&iterator->next);
+    }
+
+    //Destroy the first docente (the only one remaing)
+    destroyProducao(&iterator);
+    *producoes = NULL;
+  }
+}
+
+void destroyProducao(producao** producao){
+  if(*producao != NULL){
+    if((*producao)->left == NULL){
+      if((*producao)->right == NULL){
+        if((*producao)->next == NULL){
+
+          delete[] *producao;
+        }
+      }
+    }
+  }
+  *producao = NULL;
+}
+
 producao* loadAllProducoes (const char* filePath){
 
   //Load qualis_capes_periodicos.csv into memory
@@ -53,19 +121,7 @@ producao* loadAllProducoes (const char* filePath){
   }
   return producaoBST;
 }
-void postorderProducao(producao* producaoNode){
-     if (producaoNode != NULL){
 
-       // first recur on left subtree
-       postorderProducao(producaoNode->left);
-
-       // then recur on right subtree
-       postorderProducao(producaoNode->right);
-
-       // now print the current node title
-       cout << producaoNode->docenteId << endl;
-     }
-}
 
 producao* createProducao(long docenteId,long id, char* issn, char* type, char* title, char* local, int year){
   producao* newProducao = NULL;

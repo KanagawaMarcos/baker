@@ -27,6 +27,10 @@
 
   producao* loadAllProducoes (const char* filePath);
   void postorderProducao(producao* producaoNode);
+  void printProducoes(producao* producaoNode);
+
+  void destroyAllProducoes(producao** producoes);
+  void destroyProducao(producao** producao);
 
   producao* createProducao(
         long docenteId,
