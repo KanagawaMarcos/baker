@@ -41,4 +41,5 @@
   int getRuleValue(character* bufferFile,char* qualis);
 
   long stringToLong(char* numberToConvert);
+  int stringToInt(char* numberToConvert);
 #endif

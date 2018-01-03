@@ -591,3 +591,7 @@ char* getNthColumnData(character* bufferFile, int position){
 long stringToLong(char* numberToConvert){
   return atol(numberToConvert);
 }
+
+int stringToInt(char* numberToConvert){
+  return atoi(numberToConvert);
+}
