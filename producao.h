@@ -24,6 +24,10 @@
 
   }producao;
 
+
+  producao* loadAllProducoes (const char* filePath);
+  void postorderProducao(producao* producaoNode);
+
   producao* createProducao(
         long docenteId,
         long id,
@@ -43,5 +47,6 @@
         int year
   );
   void insertProducao(producao** producaoTree, long docenteId,long id, char* issn, char* type, char* title, char* local, int year);
+
 
 #endif

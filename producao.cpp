@@ -5,6 +5,67 @@
 #include "buffer.h"
 using namespace std;
 
+producao* loadAllProducoes (const char* filePath){
+
+  //Load qualis_capes_periodicos.csv into memory
+  character* producaoCSV = createBufferFile(filePath);
+  character* currentLine = NULL;
+
+  //Remove the file header, it's useless
+  currentLine = removeFirstBufferLine(&producaoCSV);
+  destroyBufferFile(&currentLine);
+  int maxNodeNum = 20;
+
+  //A binary search tree for all producao data type (it use docenteId as key)
+  producao* producaoBST = NULL;
+
+  //Remove line by line from qualis_capes_periodicos.csv
+  while(currentLine = removeFirstBufferLine(&producaoCSV)){
+    //printBufferFile(currentLine);
+
+    //Get docente's ID
+    long docenteId = stringToLong(getNthColumnData(currentLine, 1));
+
+    //Get producao ID
+    long id = stringToLong(getNthColumnData(currentLine, 2));
+
+    //Get producao type
+    char* type = getNthColumnData(currentLine, 3);
+
+    //Get producao issn
+    char* issn = getNthColumnData(currentLine, 4);
+
+    //Get producao title
+    char* title = getNthColumnData(currentLine, 5);
+
+    //Get producao local
+    char* local = getNthColumnData(currentLine, 6);
+
+    //Get producao year
+    int year = stringToInt(getNthColumnData(currentLine, 7));
+
+    //Destroy the removed line (Only the text inside of it)
+    destroyBufferFile(&currentLine);
+
+    //Insert it in the BST
+    insertProducao(&producaoBST,docenteId, id,  issn,  type,  title,  local,  year);
+
+  }
+}
+void postorderProducao(producao* producaoNode){
+     if (producaoNode != NULL){
+
+       // first recur on left subtree
+       postorderProducao(producaoNode->left);
+
+       // then recur on right subtree
+       postorderProducao(producaoNode->right);
+
+       // now print the current node title
+       cout << producaoNode->title << endl;
+     }
+}
+
 producao* createProducao(long docenteId,long id, char* issn, char* type, char* title, char* local, int year){
   producao* newProducao = NULL;
 

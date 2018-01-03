@@ -20,7 +20,7 @@ docente* loadAllDocentes(const char* filePath){
 
     //Create each "docente" based on the Buffer File
     while(currentLine = removeFirstBufferLine(&docenteCSV)){
-
+      
       //Get docente's ID
       long id = stringToLong(getNthColumnData(currentLine, 1));
       //Get docente's name
