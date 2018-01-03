@@ -45,7 +45,6 @@ int* loadAllRules(const char* filePath,int rulesNum){
         character* colon = createChar(':');
         character* qualisBufferString = concatenate(&iteratorChar,&colon);
         char* qualis = bufferStringToString(qualisBufferString);
-        cout << "qualis: " << qualis << endl;
 
         //Save its value
         rulesTemporary[i] = getRuleValue(rulesTemporaryTXT,qualis);

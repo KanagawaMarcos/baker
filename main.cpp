@@ -14,12 +14,18 @@ int main (int argv, char* argc[]){
     //Create an array with all capes values
     int* rules = loadAllRules("csv/regras/regraComp",22);
 
-
+    //=========================================================================
     //Create a binary search tree of all "periodicos"
     //periodico* periodicos = loadAllPeriodicos("csv/qualis_capes_periodicos.csv");
+    //=========================================================================
 
-    //destroyAllPeriodicos(&periodicos);
+    //Load qualis_capes_periodicos.csv into memory
+    character* periodicosCSV = createBufferFile("csv/qualis_capes_periodicos.csv");
+
+
+    destroyBufferFile(&periodicosCSV);
     destroyAllDocentes(&docentes);
+    //destroyAllPeriodicos(&periodicos);
 
 
 
