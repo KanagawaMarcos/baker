@@ -11,6 +11,9 @@
     char* local;
     int year;
 
+    //Atribute to baker know if this production was already used
+    int isUsedAlready;
+
     //Character next to cur
     struct _producao* next;
     //Character previous to cur

@@ -1,8 +1,9 @@
 #include "producao.h"
+#include "buffer.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include "buffer.h"
+
 using namespace std;
 
 void printProducoes(producao* producaoNode){
@@ -139,14 +140,18 @@ producao* createProducao(long docenteId,long id, char* issn, char* type, char* t
     newProducao->local = local;
     newProducao->year = year;
 
-    //Structure atributes
+    //Double linked list atributes
     newProducao->next = NULL;
     newProducao->prev = NULL;
     newProducao->last = NULL;
 
+    //Binary Search Tree atributes
     newProducao->right = NULL;
     newProducao->left = NULL;
 
+    //Baker atributes
+    newProducao->isUsedAlready = 0;
+    
   }
 
   return newProducao;

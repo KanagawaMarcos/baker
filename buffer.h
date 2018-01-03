@@ -15,6 +15,7 @@
     struct _character* last;
   }character;
 
+  int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos);
 
   character* createChar(char data);
   void destroyChar(character* charToDestroy);
@@ -37,7 +38,7 @@
 
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
-  
+
   int* loadAllRules(const char* filePath,int rulesNum);
 
   //Function to use with the "rules files"

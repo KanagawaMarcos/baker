@@ -6,6 +6,14 @@
 
 using namespace std;
 
+int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos){
+
+  if((*docentes) != NULL && (*producoes) != NULL){
+    if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
+
+    }
+  }
+}
 
 int* loadAllRules(const char* filePath,int rulesNum){
   if(rulesNum <= 25){
