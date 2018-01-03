@@ -1,11 +1,8 @@
 #include <iostream>
-#include <fstream>
+#include "buffer.h"
 #include "docente.h"
 #include "periodico.h"
-#include "buffer.h"
 #include "producao.h"
-
-using namespace std;
 
 int main (int argv, char* argc[]){
 
