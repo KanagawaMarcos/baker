@@ -9,7 +9,7 @@ producao* removeProducao(producao** allProducao){
   producao* lastProducao = NULL;
 
   if((*allProducao) != NULL){
-    if((*allProducao)->last != NULL){
+    if((*allProducao)->last != NULL && (*allProducao)->last != (*allProducao)){
 
       //Make the last producao one producao before the current
       (*allProducao)->last = (*allProducao)->last->prev;
@@ -17,9 +17,15 @@ producao* removeProducao(producao** allProducao){
       lastProducao = (*allProducao)->last->next;
       //Make the old last producao a unique node
       (*allProducao)->last->next->prev = NULL;
+
+    }
+
+    //If the current node is the last one remaing
+    if((*allProducao)->last == (*allProducao)){
+      (*allProducao)->last = NULL;
+      lastProducao = (*allProducao);
     }
   }
-
   return lastProducao;
 }
 producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId){

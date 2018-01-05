@@ -34,17 +34,18 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           //Iterate through all producoes
           producao* currentProducao = NULL;
           while(currentProducao = removeProducao(&allProducao)){
-            cout << "CATEGORIA: " << currentProducao->type;
-            //If the current producao has the correct type for this program
+
+            //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
-              cout << " --- >tipo certo" << endl;
+
             }else{
 
-              cout << " --- >tipo errado" << endl;
               sucess = -2;
             }
+
             destroyProducao(&currentProducao);
           }
+
         }
 
         currentDocente = currentDocente->next;
