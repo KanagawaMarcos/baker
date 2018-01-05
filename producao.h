@@ -27,7 +27,7 @@
 
   }producao;
 
-  producao* getAllProducoesFromThatDocente(producao** producoes, int docenteId);
+  producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId);
 
   producao* loadAllProducoes (const char* filePath);
   void postorderProducao(producao* producaoNode);

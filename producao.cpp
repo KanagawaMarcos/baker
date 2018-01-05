@@ -6,10 +6,11 @@
 
 using namespace std;
 
-producao* getAllProducoesFromThatDocente(producao** producoes, int docenteId){
+producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId){
 
     if((*producoes) != NULL){
       if(docenteId > -1){
+        cout << docenteId << "==" << (*producoes)->docenteId << endl;
         if(docenteId == (*producoes)->docenteId){
           return (*producoes);
         }
@@ -21,6 +22,7 @@ producao* getAllProducoesFromThatDocente(producao** producoes, int docenteId){
         }
       }
     }
+    return NULL;
 }
 
 void printProducoes(producao* producaoNode){

@@ -26,14 +26,14 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
         producao* allProducao = NULL;
 
         //It will receive the last "producao" whithing the current docente node at the BST
-        allProducao = getAllProducoesFromThatDocente( &producoes, currentDocente->id);
+        allProducao = getAllProducoesFromThatDocente(producoes, currentDocente->id);
 
         //If the docente has some producao
         if(allProducao != NULL){
 
           //Iterate through all producoes
           producao* currentProducao = NULL;
-          while(currentProducao = removeProducao(&allProducao)){
+          while(1 /*currentProducao = removeProducao(&allProducao)*/){
 
             //If the current producao has the correct type for this program
             if(currentProducao->type == "ARTIGO-PUBLICADO" || currentProducao->type == "ARTIGO-ACEITO-PARA-PUBLICACAO"){
@@ -677,6 +677,7 @@ char* getNthColumnData(character* bufferFile, int position){
 }
 
 long stringToLong(char* numberToConvert){
+  cout << numberToConvert << ">>>>" << atol(numberToConvert) << endl;
   return atol(numberToConvert);
 }
 

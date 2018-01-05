@@ -1,6 +1,9 @@
 #include "buffer.h"
 #include "docente.h"
 #include "producao.h"
+#include <iostream>
+
+using namespace std;
 
 int main (int argv, char* argc[]){
 
@@ -19,8 +22,7 @@ int main (int argv, char* argc[]){
     character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
 
     //Will fill all give a pontuation to all variables of type "docente"
-    baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos);
-
+    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos) << endl;
 
     destroyAllProducoes(&producoes);
     destroyAllDocentes(&docentes);
