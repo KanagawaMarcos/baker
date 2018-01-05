@@ -5,7 +5,23 @@
 #include <fstream>
 
 using namespace std;
+producao* removeProducao(producao** allProducao){
+  producao* lastProducao = NULL;
 
+  if((*allProducao) != NULL){
+    if((*allProducao)->last != NULL){
+
+      //Make the last producao one producao before the current
+      (*allProducao)->last = (*allProducao)->last->prev;
+      //Save the old last address
+      lastProducao = (*allProducao)->last->next;
+      //Make the old last producao a unique node
+      (*allProducao)->last->next->prev = NULL;
+    }
+  }
+
+  return lastProducao;
+}
 producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId){
 
     if((*producoes) != NULL){

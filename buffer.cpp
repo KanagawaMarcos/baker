@@ -26,25 +26,25 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
         producao* allProducao = NULL;
 
         //It will receive the last "producao" whithing the current docente node at the BST
-        allProducao = getAllProducoesFromThatDocente(producoes, currentDocente->id);
+        allProducao = getAllProducoesFromThatDocente( producoes, currentDocente->id);
 
         //If the docente has some producao
         if(allProducao != NULL){
 
           //Iterate through all producoes
           producao* currentProducao = NULL;
-          while(1 /*currentProducao = removeProducao(&allProducao)*/){
-
+          while(currentProducao = removeProducao(&allProducao)){
+            cout << "CATEGORIA: " << currentProducao->type;
             //If the current producao has the correct type for this program
-            if(currentProducao->type == "ARTIGO-PUBLICADO" || currentProducao->type == "ARTIGO-ACEITO-PARA-PUBLICACAO"){
-              cout << "tipo certo" << endl;
+            if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
+              cout << " --- >tipo certo" << endl;
             }else{
-              destroyProducao(&currentProducao);
+
+              cout << " --- >tipo errado" << endl;
               sucess = -2;
             }
+            destroyProducao(&currentProducao);
           }
-        }else{
-          sucess = -1;
         }
 
         currentDocente = currentDocente->next;
@@ -677,7 +677,6 @@ char* getNthColumnData(character* bufferFile, int position){
 }
 
 long stringToLong(char* numberToConvert){
-  cout << numberToConvert << ">>>>" << atol(numberToConvert) << endl;
   return atol(numberToConvert);
 }
 
