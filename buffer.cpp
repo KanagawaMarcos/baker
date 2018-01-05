@@ -41,6 +41,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
               //A flag to tell if the issn is valid
               int validIssn = 0;
+              character* currentIssnCSV;
 
               //If the issn is from a valid periodico using memoization for optimization
               if(memoization(issnDictionary, currentProducao->issn)){
@@ -49,22 +50,22 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               //If the issn was not found yet
               }else{
 
-                character* currentIssnCSV;
                 //Iterate through all issn values whiting the periodicos
                 while(currentIssnCSV = find(periodicos, currentProducao->issn)){
 
                   //If it finds some issn that matchs, save it
                   char* issn = getNthColumnDataFromCur(currentIssnCSV->prev, 1);
                   //Put the issn at the dictionary
-                  
-                  }
-                }
 
-                //Check if the issn was found at the text
-                if(validIssn){
-                  //Check if the type is the same at the rule file
-                  char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
-                  if(!strcmp(currentProducao->area,areaAvaliacao)){
+                }
+              }
+
+              //Check if the issn was found at the text
+              if(validIssn == 1){
+                //Check if the type is the same at the rule file
+                char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
+                if(!strcmp(curso,areaAvaliacao)){
+
                 }
               }
 
@@ -77,6 +78,58 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     }
   }
   return sucess;
+}
+
+char* loadAreaAvaliacao(const char* filePath){
+  char* areaDeAvaliacao = NULL;
+
+  if(filePath != NULL){
+
+    //Load the rule file into memory
+    character* ruleTxt = createBufferFile(filePath);
+    if(ruleTxt != NULL){
+
+        //Remove the header of the file
+        character* header = removeFirstBufferLine(&ruleTxt);
+        destroyBufferFile(&header);
+        //Get the "area de avaliacao"
+        character* area = removeFirstBufferLine(&ruleTxt);
+        areaDeAvaliacao = bufferStringToString(area);
+        destroyBufferFile(&area);
+    }
+    return areaDeAvaliacao;
+  }
+
+  return areaDeAvaliacao;
+}
+
+void addDictionaryWord(dictionary** dictionaryToAdd, char* word){
+  if((*dictionaryToAdd)!= NULL && word != NULL){
+
+    //If the last word was not set yet
+    if((*dictionaryToAdd)->last == NULL){
+      dictionary* iterator = (*dictionaryToAdd);
+
+      //Go until the last word
+      while(iterator->next != NULL){
+        iterator = iterator->next;
+      }
+
+      //Save its address
+      (*dictionaryToAdd)->last = iterator;
+    }
+
+    //create a new word and add it
+    dictionary* newWord = new dictionary[1];
+    if(newWord != NULL){
+      newWord->next = NULL;
+      strcpy(newWord->word,word);
+      newWord->prev = (*dictionaryToAdd)->last;
+      (*dictionaryToAdd)->last->next = newWord;
+      (*dictionaryToAdd)->last = newWord;
+    }
+  }
+
 }
 
 char* getNthColumnDataFromCur(character* bufferFile, int position){
@@ -92,7 +145,7 @@ char* getNthColumnDataFromCur(character* bufferFile, int position){
       character* finishPoint = NULL;
 
       int numberOfCommas = 0;
-
+      character* iterator = bufferFile;
       //Make a backup of the first character address
       character* firstCharAddress = iterator;
 

@@ -21,9 +21,14 @@ int main (int argv, char* argc[]){
     character* congressos = createBufferFile("csv/qualis_capes_congressos.csv");
     character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
 
-    //Will fill all give a pontuation to all variables of type "docente"
-    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos) << endl;
+    //Load "area de avaliacao"
+    const char* regrasCaminho = "csv/regras/regraComp";
+    char* area = loadAreaAvaliacao(regrasCaminho);
 
+    //Will fill all give a pontuation to all variables of type "docente"
+    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, area) << endl;
+
+    delete[] area;
     destroyBufferFile(&orientacoes);
     destroyBufferFile(&congressos);
     destroyBufferFile(&periodicos);

@@ -26,11 +26,14 @@
     struct _dictionary* next;
     //previous node
     struct _dictionary* prev;
+    struct _dictionary* last;
+
   }dictionary;
 
-  int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos);
+  int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso);
 
   int memoization(dictionary* dictionaryToSearch, char* word);
+  void addDictionaryWord(dictionary** dictionaryToAdd, char* word);
   dictionary* createDictionary(char* word);
   void destroyDictionary(dictionary** dictionary);
   void purgeDictionary(dictionary* dictionary);
@@ -59,7 +62,9 @@
   char* getNthColumnData(character* bufferFile, int position);
   char* getNthColumnDataFromCur(character* bufferFile, int position);
 
-  int* loadAllRules(const char* filePath,int rulesNum);
+  char* loadAreaAvaliacao(const char* filePath);
+  int*  loadAllRules(const char* filePath,int rulesNum);
+
 
   //Function to use with the "rules files"
   int getRuleValue(character* bufferFile,char* qualis);
