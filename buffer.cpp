@@ -38,21 +38,63 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
 
-            }else{
-
-              sucess = -2;
             }
-
             destroyProducao(&currentProducao);
           }
-
         }
-
         currentDocente = currentDocente->next;
       }
     }
   }
   return sucess;
+}
+
+character* findNth(character* bufferFile, char* string, int nth){
+  character* wordFound = NULL;
+
+  if(bufferFile != NULL){
+    if(string != NULL){
+      int stringSize = strlen(string);
+      int foundIt = 0;
+
+      character* iterator = bufferFile;
+      while(iterator->next){
+
+        //Make a copy of iterator to no lost the addres of the current character
+        character* iteratorCopy = iterator;
+
+        for(int i=0 ; i<stringSize ; i++){
+
+          //If the current char is equal to current character
+          if(string[i] != iteratorCopy->data){
+            break;
+          }
+
+          //Sinalize if some error happened
+          if(iteratorCopy->next == NULL){
+            break;
+          }else{
+            iteratorCopy = iteratorCopy->next;
+          }
+
+          //If the last char of the string is equal as well
+          if(i == (stringSize-1)){
+            foundIt++;
+          }
+        }
+        
+        //If the string was found for the nth time
+        if(foundIt == nth){
+
+          //Copy the addres of its first character
+          wordFound = iterator;
+          break;
+        }
+        iterator = iterator->next;
+      }
+    }
+  }
+  return wordFound;
 }
 
 int* loadAllRules(const char* filePath,int rulesNum){

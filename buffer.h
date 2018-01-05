@@ -35,6 +35,7 @@
   void printBufferFile(character* bufferFile);
   character* removeFirstBufferLine(character** bufferFile);
   character* find(character* bufferFile, char* string);
+  character* findNth(character* bufferFile, char* string, int nth);
   character* concatenate(character** destination, character** stringToConcatenate);
 
   char* bufferStringToString(character* string);
