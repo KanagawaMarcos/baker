@@ -12,7 +12,7 @@ buffer.o: buffer.cpp docente.o producao.o
 docente.o: docente.cpp
 	g++ -c docente.cpp
 
-producao.o:
+producao.o: producao.o buffer.o
 	g++ -c producao.cpp
 
 clean:

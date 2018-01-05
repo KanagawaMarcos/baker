@@ -1,6 +1,8 @@
 #ifndef PRODUCAO_H
   #define PRODUCAO_H
 
+  #include "buffer.h"
+  
   typedef struct _producao{
     //Basic info extracted from the .csv file
     long docenteId;
@@ -27,9 +29,11 @@
 
   }producao;
 
+  int qualisCodeToInt(char* qualisCode ,int* rules);
+
   producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId);
   producao* removeProducao(producao** allProducao);
-  
+
   producao* loadAllProducoes (const char* filePath);
   void postorderProducao(producao* producaoNode);
   void printProducoes(producao* producaoNode);

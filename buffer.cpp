@@ -13,7 +13,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
-      dictionary* issnDictionary = loadValidsIssn(periodicos);
+      dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
 
       //Get the first node from the Double Linked List
@@ -41,14 +41,19 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               //Iterate through all issns that match
               character* iterator = periodicos;
               while(find(iterator, currentProducao->issn)){
+
                 //Check if the type is the same at the rule file
                 char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
                 if(!strcmp(curso,areaAvaliacao)){
-                  //Contabiliza os pontos
+
+                  //Set docente points
+                  currentDocente->totalPoints += qualisCodeToInt(getNthColumnDataFromCur(iterator->prev, 4),rules);
                 }
+
                 delete[] areaAvaliacao;
+                //Create a '\n' char to find the end of the line
                 areaAvaliacao = new char[1];
-                areaAvaliacao = '\n';
+                areaAvaliacao[0] = '\n';
                 //Save the addres of the next \n
                 iterator = find(iterator, areaAvaliacao);
                 //Go to the next line
@@ -90,22 +95,6 @@ char* loadAreaAvaliacao(const char* filePath){
   }
 
   return areaDeAvaliacao;
-}
-
-dictionary* loadValidsIssn(bufferFile** periodicos){
-
-  if(*periodicos!= NULL){
-    //Remove the file header
-    removeFirstBufferLine(&periodicos);
-
-
-    //Remove line by line
-    character* currentLine = NULL;
-    while(currentLine = removeFirstBufferLine(&periodicos)){
-
-      if(getNthColumnData(currentLine,1))
-    }
-  }
 }
 
 void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
