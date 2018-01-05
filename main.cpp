@@ -23,10 +23,10 @@ int main (int argv, char* argc[]){
 
     //Load "area de avaliacao"
     const char* regrasCaminho = "csv/regras/regraComp";
-    char* area = loadAreaAvaliacao(regrasCaminho);
+    char* areaAvaliacao = loadAreaAvaliacao(regrasCaminho);
 
     //Will fill all give a pontuation to all variables of type "docente"
-    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, area) << endl;
+    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao) << endl;
 
     delete[] area;
     destroyBufferFile(&orientacoes);

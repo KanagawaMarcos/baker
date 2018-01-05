@@ -20,7 +20,8 @@
 
   //A dictionary to see faster if a issn already happened
   typedef struct _dictionary{
-    char* word;
+    char* word; //it's issn
+    int value;  //Value for its qualis
 
     //next node
     struct _dictionary* next;
@@ -32,9 +33,9 @@
 
   int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso);
 
-  int memoization(dictionary* dictionaryToSearch, char* word);
-  void addDictionaryWord(dictionary** dictionaryToAdd, char* word);
-  dictionary* createDictionary(char* word);
+  dictionary* memoization(dictionary* dictionaryToSearch, char* word);
+  void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value);
+  dictionary* createDictionary(char* word,  int value);
   void destroyDictionary(dictionary** dictionary);
   void purgeDictionary(dictionary* dictionary);
 

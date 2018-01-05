@@ -39,35 +39,13 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
 
-              //A flag to tell if the issn is valid
-              int validIssn = 0;
-              character* currentIssnCSV;
+              /*
+              //Check if the type is the same at the rule file
+              char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
+              if(!strcmp(curso,areaAvaliacao)){
 
-              //If the issn is from a valid periodico using memoization for optimization
-              if(memoization(issnDictionary, currentProducao->issn)){
-                validIssn = 1;
-
-              //If the issn was not found yet
-              }else{
-
-                //Iterate through all issn values whiting the periodicos
-                while(currentIssnCSV = find(periodicos, currentProducao->issn)){
-
-                  //If it finds some issn that matchs, save it
-                  char* issn = getNthColumnDataFromCur(currentIssnCSV->prev, 1);
-                  //Put the issn at the dictionary
-
-                }
               }
-
-              //Check if the issn was found at the text
-              if(validIssn == 1){
-                //Check if the type is the same at the rule file
-                char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
-                if(!strcmp(curso,areaAvaliacao)){
-
-                }
-              }
+              */
 
             }
             destroyProducao(&currentProducao);
@@ -103,7 +81,7 @@ char* loadAreaAvaliacao(const char* filePath){
   return areaDeAvaliacao;
 }
 
-void addDictionaryWord(dictionary** dictionaryToAdd, char* word){
+void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
   if((*dictionaryToAdd)!= NULL && word != NULL){
 
     //If the last word was not set yet
@@ -123,6 +101,7 @@ void addDictionaryWord(dictionary** dictionaryToAdd, char* word){
     dictionary* newWord = new dictionary[1];
     if(newWord != NULL){
       newWord->next = NULL;
+      newWord->value = value;
       strcpy(newWord->word,word);
       newWord->prev = (*dictionaryToAdd)->last;
       (*dictionaryToAdd)->last->next = newWord;
@@ -331,7 +310,7 @@ void destroyDictionary(dictionary** dictionaryToDestroy){
   }
 }
 
-dictionary* createDictionary(char* word){
+dictionary* createDictionary(char* word,int value){
   dictionary* newDictionary = NULL;
   newDictionary = new dictionary[1];
 
@@ -339,13 +318,14 @@ dictionary* createDictionary(char* word){
     strcpy(newDictionary->word, word);
     newDictionary->next = NULL;
     newDictionary->prev = NULL;
+    newDictionary->value = value;
   }
 
   return newDictionary;
 }
 
-int memoization(dictionary* dictionaryToSearch, char* word){
-  int foundIt = 0;
+dictionary* memoization(dictionary* dictionaryToSearch, char* word){
+  dictionary* foundIt = 0;
 
   if(dictionaryToSearch != NULL){
     if(word != NULL){
@@ -357,14 +337,14 @@ int memoization(dictionary* dictionaryToSearch, char* word){
 
         //If the word was found
         if(!strcmp(currentWord->word,word)){
-          foundIt = 1;
+          foundIt = currentWord;
         }
         currentWord = currentWord->next;
       }
 
       //If the last word of the dictionary is equal
       if(!strcmp(currentWord->word,word)){
-        foundIt = 1;
+        foundIt = currentWord;
       }
     }
   }
