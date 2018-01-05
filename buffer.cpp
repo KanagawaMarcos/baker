@@ -11,10 +11,9 @@ using namespace std;
 int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
   int sucess = 1;
 
-
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
-      dictionary* issnDictionary = NULL;
+      dictionary* issnDictionary = loadValidsIssn(periodicos);
       docente* currentDocente = NULL;
 
       //Get the first node from the Double Linked List
@@ -79,6 +78,22 @@ char* loadAreaAvaliacao(const char* filePath){
   }
 
   return areaDeAvaliacao;
+}
+
+dictionary* loadValidsIssn(bufferFile** periodicos){
+
+  if(*periodicos!= NULL){
+    //Remove the file header
+    removeFirstBufferLine(&periodicos);
+
+
+    //Remove line by line
+    character* currentLine = NULL;
+    while(currentLine = removeFirstBufferLine(&periodicos)){
+
+      if(getNthColumnData(currentLine,1))
+    }
+  }
 }
 
 void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
