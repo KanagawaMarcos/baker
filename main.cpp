@@ -1,4 +1,3 @@
-#include <iostream>
 #include "buffer.h"
 #include "docente.h"
 #include "producao.h"
