@@ -38,13 +38,25 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
 
-              /*
-              //Check if the type is the same at the rule file
-              char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
-              if(!strcmp(curso,areaAvaliacao)){
-
+              //Iterate through all issns that match
+              character* iterator = periodicos;
+              while(find(iterator, currentProducao->issn)){
+                //Check if the type is the same at the rule file
+                char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
+                if(!strcmp(curso,areaAvaliacao)){
+                  //Contabiliza os pontos
+                }
+                delete[] areaAvaliacao;
+                areaAvaliacao = new char[1];
+                areaAvaliacao = '\n';
+                //Save the addres of the next \n
+                iterator = find(iterator, areaAvaliacao);
+                //Go to the next line
+                iterator = iterator->next;
+                delete[] areaAvaliacao;
               }
-              */
+
+
 
             }
             destroyProducao(&currentProducao);
