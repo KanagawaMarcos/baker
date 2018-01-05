@@ -8,12 +8,13 @@
 
 using namespace std;
 
-int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos){
+int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
   int sucess = 1;
+
 
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
-
+      dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
 
       //Get the first node from the Double Linked List
@@ -38,6 +39,35 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
 
+              //A flag to tell if the issn is valid
+              int validIssn = 0;
+
+              //If the issn is from a valid periodico using memoization for optimization
+              if(memoization(issnDictionary, currentProducao->issn)){
+                validIssn = 1;
+
+              //If the issn was not found yet
+              }else{
+
+                character* currentIssnCSV;
+                //Iterate through all issn values whiting the periodicos
+                while(currentIssnCSV = find(periodicos, currentProducao->issn)){
+
+                  //If it finds some issn that matchs, save it
+                  char* issn = getNthColumnDataFromCur(currentIssnCSV->prev, 1);
+                  //Put the issn at the dictionary
+                  
+                  }
+                }
+
+                //Check if the issn was found at the text
+                if(validIssn){
+                  //Check if the type is the same at the rule file
+                  char* areaAvaliacao = getNthColumnDataFromCur(currentIssnCSV->prev, 3);
+                  if(!strcmp(currentProducao->area,areaAvaliacao)){
+                }
+              }
+
             }
             destroyProducao(&currentProducao);
           }
@@ -47,6 +77,245 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     }
   }
   return sucess;
+}
+
+char* getNthColumnDataFromCur(character* bufferFile, int position){
+  //A buffer line with a copy of the N position data
+  char* nthText = NULL;
+
+  if(bufferFile != NULL){
+    if(position > 0){
+
+      //The first character of the right data
+      character* startPoint = NULL;
+      //The last character of the right data
+      character* finishPoint = NULL;
+
+      int numberOfCommas = 0;
+
+      //Make a backup of the first character address
+      character* firstCharAddress = iterator;
+
+      //Count the number of commas int the text
+      while(iterator->next != NULL){
+        if(iterator->data == ','){
+          numberOfCommas++;
+        }
+        iterator = iterator->next;
+      }
+
+      iterator = firstCharAddress;
+
+      //The required collumn does not exist
+      if(position > (numberOfCommas+1)){
+
+      //The last collumn is bein required
+      }else if (position == (numberOfCommas+1)){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->data == ','){
+            numberOfCommas++;
+          }
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == (position-1)){
+
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
+
+            //Go foward one char, to ignore read the comma
+            iterator = iterator->next;
+            while(iterator->next != NULL){
+
+              //everything before this quotes, belongs to other data
+              if(iterator->data == ','){
+
+                break;
+              }
+
+              //if the character is diferent of a quote
+              if(iterator->data != '\"'){
+                numberOfChars++;
+              }
+              iterator = iterator->next;
+            }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            //int i = (numberOfChars-1);
+            int i = 0;
+
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->next;
+              while(iterator->next != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->data == ','){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i++;
+                }
+                iterator = iterator->next;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
+          }
+
+          iterator = iterator->next;
+        }
+      //The collumn given is anyone but the last
+      }else if((position < (numberOfCommas+1)) && position > 0){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->data == ','){
+            numberOfCommas++;
+          }
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == position){
+
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
+
+            //Go backwards one char, to ignore read the comma
+            iterator = iterator->prev;
+            while(iterator->prev != NULL){
+
+              //everything before this quotes, belongs to other data
+              if(iterator->data == ','){
+
+                break;
+              }
+
+              //if the character is diferent of a quote
+              if(iterator->data != '\"'){
+                numberOfChars++;
+              }
+              iterator = iterator->prev;
+            }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            int i = (numberOfChars-1);
+
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->prev;
+              while(iterator->prev != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->data == ','){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i--;
+                }
+                iterator = iterator->prev;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
+          }
+
+          iterator = iterator->next;
+        }
+      }
+      }
+    }
+
+  return nthText;
+}
+
+void purgeDictionary(dictionary* dictionaryToDestroy){
+  if(dictionaryToDestroy != NULL){
+    dictionary* current = dictionaryToDestroy;
+    //Go until the end of the dictionary
+    while(current->next != NULL){
+      current = current->next;
+    }
+
+    //Go until the first word
+    while(current->prev != NULL){
+      current = current->prev;
+      destroyDictionary(&(current->next));
+    }
+    //destroy the last one
+    destroyDictionary(&(current->next));
+  }
+}
+
+void destroyDictionary(dictionary** dictionaryToDestroy){
+  if(*dictionaryToDestroy != NULL){
+    if((*dictionaryToDestroy)->next == NULL){
+      delete[] (*dictionaryToDestroy)->word;
+      delete[] (*dictionaryToDestroy);
+    }
+  }
+}
+
+dictionary* createDictionary(char* word){
+  dictionary* newDictionary = NULL;
+  newDictionary = new dictionary[1];
+
+  if(newDictionary != NULL){
+    strcpy(newDictionary->word, word);
+    newDictionary->next = NULL;
+    newDictionary->prev = NULL;
+  }
+
+  return newDictionary;
+}
+
+int memoization(dictionary* dictionaryToSearch, char* word){
+  int foundIt = 0;
+
+  if(dictionaryToSearch != NULL){
+    if(word != NULL){
+
+      dictionary* currentWord = dictionaryToSearch;
+
+      //Iterate through the dictionary looking for the word
+      while(currentWord->next != NULL){
+
+        //If the word was found
+        if(!strcmp(currentWord->word,word)){
+          foundIt = 1;
+        }
+        currentWord = currentWord->next;
+      }
+
+      //If the last word of the dictionary is equal
+      if(!strcmp(currentWord->word,word)){
+        foundIt = 1;
+      }
+    }
+  }
+  return foundIt;
 }
 
 character* findNth(character* bufferFile, char* string, int nth){
@@ -82,7 +351,7 @@ character* findNth(character* bufferFile, char* string, int nth){
             foundIt++;
           }
         }
-        
+
         //If the string was found for the nth time
         if(foundIt == nth){
 
@@ -539,6 +808,7 @@ character* removeFirstBufferLine(character** bufferFile){
   }
   return iterator;
 }
+
 
 char* getNthColumnData(character* bufferFile, int position){
   //A buffer line with a copy of the N position data

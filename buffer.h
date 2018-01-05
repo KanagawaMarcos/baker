@@ -18,8 +18,22 @@
     struct _character* last;
   }character;
 
+  //A dictionary to see faster if a issn already happened
+  typedef struct _dictionary{
+    char* word;
+
+    //next node
+    struct _dictionary* next;
+    //previous node
+    struct _dictionary* prev;
+  }dictionary;
 
   int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos);
+
+  int memoization(dictionary* dictionaryToSearch, char* word);
+  dictionary* createDictionary(char* word);
+  void destroyDictionary(dictionary** dictionary);
+  void purgeDictionary(dictionary* dictionary);
 
   character* createChar(char data);
   void destroyChar(character* charToDestroy);
@@ -43,6 +57,7 @@
 
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
+  char* getNthColumnDataFromCur(character* bufferFile, int position);
 
   int* loadAllRules(const char* filePath,int rulesNum);
 

@@ -32,7 +32,6 @@ producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId){
 
     if((*producoes) != NULL){
       if(docenteId > -1){
-        cout << docenteId << "==" << (*producoes)->docenteId << endl;
         if(docenteId == (*producoes)->docenteId){
           return (*producoes);
         }
