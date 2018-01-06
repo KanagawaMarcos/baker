@@ -33,6 +33,7 @@ int main (int argv, char* argc[]){
       cout << docentes->name << endl;
       docentes = docentes->next;
     }
+    cout << docentes->name << endl;
     destroyBufferFile(&orientacoes);
     destroyBufferFile(&congressos);
     destroyBufferFile(&periodicos);
