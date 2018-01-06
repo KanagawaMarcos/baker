@@ -124,7 +124,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             destroyProducao(&currentProducao);
           }
         }
-        break;
         currentDocente = currentDocente->next;
         cout << "Numero de producoes = " << numDeProducoes << endl;
         cout << "==============================================" << endl;
