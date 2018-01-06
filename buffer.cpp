@@ -50,10 +50,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
                 if(!strcmp(curso,areaAvaliacao)){
                   //Set docente points
-                  //cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " = " << qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules) << currentProducao->issn << " - " <<currentProducao->title << endl;
-                  cout << clean(getNthColumnDataFromCur(iterator->prev, 4)) << endl;
-                  currentDocente->totalPoints += qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
-
+                  int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
+                  currentDocente->totalPoints += pontos;
+                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " <<currentProducao->title << endl;
                   break;
                 }
                 /*
