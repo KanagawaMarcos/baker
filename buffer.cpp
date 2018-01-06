@@ -83,19 +83,18 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               iterator = iterator->next;
 
               //Iterate through all congressos in BD
-              char* siglaCongressoCSV = NULL;
+              char* siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
+
               while(currentSigla != NULL){
 
                 //Receive the sigla from congressos.csv
-                siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
-
                 while(siglaCongressoCSV != NULL){
-
+                  cout << siglaCongressoCSV << endl;
                   //Congresso valid !!
                   if(!strcmp(siglaCongressoCSV,currentSigla)){
                       int pontos = 0;
                       pontos = qualisCodeCongressosToInt(siglaCongressoCSV,rules);
-                      cout << "\t" << clean2(getNthColumnDataFromCur(iterator,4)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                      //cout << "\t" << clean2(getNthColumnDataFromCur(iterator,4)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                       foundIt = 1;
                       break;
                   }
@@ -105,6 +104,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
                   //Go to the next line
                   iterator = iterator->next;
+
+                  //Receive the next text
+                  siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
                 }
 
 
