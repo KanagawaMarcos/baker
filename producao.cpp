@@ -153,7 +153,7 @@ producao* loadAllProducoes (const char* filePath){
     char* title = getNthColumnData(currentLine, 5);
 
     //Get producao local
-    char* local = getNthColumnData(currentLine, 6);
+    char* local = getNthColumnLocal(currentLine);
 
     //Get producao year
     int year = stringToInt(getNthColumnData(currentLine, 7));

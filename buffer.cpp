@@ -9,7 +9,71 @@
 
 using namespace std;
 
+char* getNthColumnLocal(character* bufferFile){
+  char* string = NULL;
+  if(bufferFile != NULL){
+    char* slashN = new char[2];
+    slashN[0] = '\n';
+    slashN[1] = '\0';
+    //Go until the end of the string
+    character* iterator = bufferFile;
+    while(iterator->next != NULL){
+      iterator = iterator->next;
+    }
 
+    delete[] slashN;
+    while(iterator->prev != NULL){
+      if(iterator->data == ',' && iterator->prev->data == '\"'){
+        //The last letter of the field local
+        iterator = iterator->prev->prev;
+        break;
+      }
+      iterator = iterator->prev;
+    }
+
+    while(iterator->prev != NULL){
+      if(iterator->prev->data == '\"'){
+        //Im at the first letter
+        break;
+      }
+      iterator = iterator->prev;
+    }
+
+    character* start = iterator;
+    character* end = NULL;
+
+
+      int numberOfChars = 0;
+
+      //Move through the line char by char
+      while(iterator->next != NULL && iterator->data != '\"'){
+
+        //Count how many character there are
+        numberOfChars++;
+        iterator = iterator->next;
+      }
+      end = iterator;
+
+      //Alocate a new string
+      string = new char[(numberOfChars+1)];
+      if(string != NULL){
+
+        //Load the first character again to move throught the line
+        iterator = start;
+
+        //Copy all chars from the buffer file to the new char array
+        for(int i=0; i<(numberOfChars); i++){
+          string[i] = iterator->data;
+          iterator = iterator->next;
+        }
+
+        //Put the special character at it's end
+        string[numberOfChars] = '\0';
+
+      }
+  }
+  return string;
+}
 
 char* convertToUpper(char* str){
   char* upperCaseStr = NULL;
