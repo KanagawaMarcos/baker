@@ -29,6 +29,7 @@ int main (int argv, char* argc[]){
 
     //Will fill all give a pontuation to all variables of type "docente"
     cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao) << endl;
+
     while(docentes->next != NULL){
       cout << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
       docentes = docentes->next;

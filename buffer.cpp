@@ -18,8 +18,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
       dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
-      char* slashN = new char[1];
+      char* slashN = new char[2];
       slashN[0] = '\n';
+      slashN[1] = '\0';
 
       cout << "======================"<< curso << "=======================" << endl;
 
@@ -70,38 +71,46 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 currentDocente->totalPoints += pontos;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
+
               int semEstratoQualis = 1;
               int foundIt = 0;
-
-              //Initial cases of works
-              char* tryChar = NULL;
 
               //Try to see words using tokens and combining them whith siglas
               char* currentSigla = strtok(currentProducao->title, " .-,()");
 
-              //remove the first line
+              //Jump the first line (header)
               character* iterator = find(congressos, slashN);
-              int i = 0;
-              while(currentSigla != NULL ){
+              iterator = iterator->next;
 
-                //Iterate through congressos.csv
-                char* siglaCongressoCSV = clean2(getNthColumnDataFromCur(congressos,4+i));
-                while(siglaCongressoCSV!= NULL){
+              //Iterate through all congressos in BD
+              char* siglaCongressoCSV = NULL;
+              while(currentSigla != NULL){
+
+                //Receive the sigla from congressos.csv
+                siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
+
+                while(siglaCongressoCSV != NULL){
+
                   //Congresso valid !!
                   if(!strcmp(siglaCongressoCSV,currentSigla)){
                       int pontos = 0;
-                      pontos = qualisCodeCongressosToInt(clean2(getNthColumnDataFromCur(congressos, 5+i)),rules);
-                      cout << "\t" << clean2(getNthColumnDataFromCur(congressos,4+i)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                      pontos = qualisCodeCongressosToInt(siglaCongressoCSV,rules);
+                      cout << "\t" << clean2(getNthColumnDataFromCur(iterator,4)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                       foundIt = 1;
                       break;
                   }
-                  i = i + 2;
-                  siglaCongressoCSV = clean2(getNthColumnDataFromCur(congressos,4+i));
+
+                  //Go until the end of the line
+                  iterator = find(iterator,slashN);
+
+                  //Go to the next line
+                  iterator = iterator->next;
                 }
 
+
+                //Remove the next word from the text using the tolkens given
                 currentSigla = strtok(NULL, " .-,()");
                 delete[] siglaCongressoCSV;
-                delete[] currentSigla;
                 if(foundIt == 1)
                   break;
               }
