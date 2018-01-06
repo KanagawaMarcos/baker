@@ -69,6 +69,7 @@
   int*  loadAllRules(const char* filePath,int rulesNum);
 
 
+
   //Function to use with the "rules files"
   int getRuleValue(character* bufferFile,char* qualis);
 
@@ -76,4 +77,5 @@
   int stringToInt(char* numberToConvert);
   char* stringToUpperCase(char* string);
   char* clean(char* string);
+  char* clean2(char* string);
 #endif

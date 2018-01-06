@@ -12,10 +12,14 @@ using namespace std;
 int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
   int sucess = 1;
 
+
+
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
       dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
+      char* slashN = new char[1];
+      slashN[0] = '\n';
 
       cout << "======================"<< curso << "=======================" << endl;
 
@@ -42,7 +46,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
               int semEstratoQualis = 1;
 
-              //Iterate through all issns that match
+              //Iterate through all issn's that match
               character* iterator = periodicos;
               while(iterator = find(iterator, currentProducao->issn)){
 
@@ -65,6 +69,42 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
               }
+            }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
+              int semEstratoQualis = 1;
+              int foundIt = 0;
+
+              //Initial cases of works
+              char* tryChar = NULL;
+
+              //Try to see words using tokens and combining them whith siglas
+              char* currentSigla = strtok(currentProducao->title, " .-,()");
+
+              //remove the first line
+              character* iterator = find(congressos, slashN);
+              int i = 0;
+              while(currentSigla != NULL ){
+
+                //Iterate through congressos.csv
+                char* siglaCongressoCSV = clean2(getNthColumnDataFromCur(congressos,4+i));
+                while(siglaCongressoCSV!= NULL){
+                  //Congresso valid !!
+                  if(!strcmp(siglaCongressoCSV,currentSigla)){
+                      int pontos = 0;
+                      pontos = qualisCodeCongressosToInt(clean2(getNthColumnDataFromCur(congressos, 5+i)),rules);
+                      cout << "\t" << clean2(getNthColumnDataFromCur(congressos,4+i)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                      foundIt = 1;
+                      break;
+                  }
+                  i = i + 2;
+                  siglaCongressoCSV = clean2(getNthColumnDataFromCur(congressos,4+i));
+                }
+
+                currentSigla = strtok(NULL, " .-,()");
+                delete[] siglaCongressoCSV;
+                delete[] currentSigla;
+                if(foundIt == 1)
+                  break;
+              }
             }
             destroyProducao(&currentProducao);
           }
@@ -76,6 +116,20 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     }
   }
   return sucess;
+}
+
+char* clean2(char* string){
+  char* cleanedString = NULL;
+  if(string != NULL){
+    cleanedString = new char[strlen(string)];
+    int lastPos = 0;
+    for(int i=0; i<strlen(string) && string[i] != '\n';i++){
+      cleanedString[i] = string[i];
+      lastPos = i;
+    }
+    cleanedString[lastPos+1] = '\0';
+  }
+  return cleanedString;
 }
 
 char* clean(char* string){
