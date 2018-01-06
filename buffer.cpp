@@ -12,8 +12,6 @@ using namespace std;
 int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
   int sucess = 1;
 
-
-
   if((*docentes) != NULL && (*producoes) != NULL){
     if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
       dictionary* issnDictionary = NULL;
@@ -21,6 +19,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       char* slashN = new char[2];
       slashN[0] = '\n';
       slashN[1] = '\0';
+
+      //It is here to avoid bug of going non stop through .csv
+      char* lastCongressoSigla = findLastSiglaCongresso(congressos);
 
       cout << "======================"<< curso << "=======================" << endl;
 
@@ -90,7 +91,8 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 //Receive the sigla from congressos.csv
                 while(siglaCongressoCSV != NULL){
                   cout << siglaCongressoCSV << endl;
-                  //Congresso valid !!
+
+                  //Congresso found
                   if(!strcmp(siglaCongressoCSV,currentSigla)){
                       int pontos = 0;
                       pontos = qualisCodeCongressosToInt(siglaCongressoCSV,rules);
@@ -127,6 +129,29 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     }
   }
   return sucess;
+}
+
+char* findLastSiglaCongresso(character* congressosCSV){
+
+  if(congressosCSV!= NULL){
+    char* slashN = new char[2];
+    slashN[0] = '\n';
+    slashN[1] = '\0';
+
+    int numberOfLines = 0;
+
+    //Jump the header
+    character* iterator = congressosCSV;
+
+    while(iterator = find(iterator->next,slashN)){
+
+      cout << "oi" << numberOfLines << endl;
+      numberOfLines++;
+      iterator = iterator->next;
+    }
+    cout << "heuaheua" << numberOfLines << endl;
+
+  }
 }
 
 char* clean2(char* string){
@@ -282,7 +307,6 @@ void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
 char* getNthColumnDataFromCur(character* bufferFile, int position){
   //A buffer line with a copy of the N position data
   char* nthText = NULL;
-
   if(bufferFile != NULL){
     if(position > 0){
 
@@ -308,7 +332,7 @@ char* getNthColumnDataFromCur(character* bufferFile, int position){
 
       //The required collumn does not exist
       if(position > (numberOfCommas+1)){
-
+        return NULL;
       //The last collumn is bein required
       }else if (position == (numberOfCommas+1)){
         numberOfCommas = 0;
