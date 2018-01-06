@@ -72,34 +72,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 currentDocente->totalPoints += pontos;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-              //Try to see words using tokens and combining them whith siglas
-              char* sigla = strtok(currentProducao->title, " .-,()");
-
-              //Remove the next word from the text using the tolkens given
-              while(sigla != NULL){
-
-                //Iterate through all SIGLA that match
-                character* iterator = congressos;
-                while(iterator = find(iterator, sigla)){
-
-                  //Check if the type is the same at the rule file
-                  char* siglaCSV = clean2(getNthColumnDataFromCur(iterator,4));;
-
-                  if(!strcmp(curso,siglaCSV)){
-                    //Set docente points
-                    semEstratoQualis = 0;
-                    int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
-                    currentDocente->totalPoints += pontos;
-                    //cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                    break;
-                  }
-
-                  iterator = iterator->next;
-                }
-
-                sigla = strtok(NULL, " .-,()");
-                delete[] siglaCSV;
-              }
+            
             }
             destroyProducao(&currentProducao);
           }
