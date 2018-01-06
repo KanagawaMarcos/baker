@@ -72,7 +72,21 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 currentDocente->totalPoints += pontos;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-            
+              character* iterator = congressos;
+
+              //Separate all words whiting the field LOCAL
+              char* siglaProducao = strtok(currentProducao->local, " .-,()");
+              char* siglaCSV = clean2(getNthColumnDataFromCur(iterator,4));
+
+              cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
+              //Update siglaCSV value
+              while(iterator != NULL){
+                cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
+                iterator = find(iterator->next,slashN);
+                siglaCSV = clean2(getNthColumnDataFromCur(iterator,4));
+              }
+              //Separate all words whiting the field take, the next one
+              siglaProducao = strtok(NULL, " ");
             }
             destroyProducao(&currentProducao);
           }
