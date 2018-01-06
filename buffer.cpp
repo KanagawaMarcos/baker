@@ -17,7 +17,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
 
-      cout << "==========="<< curso << "============" << endl;
+      cout << "======================"<< curso << "=======================" << endl;
 
       //Get the first node from the Double Linked List
       currentDocente = (*docentes);
@@ -40,6 +40,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           while(currentProducao = removeProducao(&allProducao)){
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
+              int semEstratoQualis = 1;
 
               //Iterate through all issns that match
               character* iterator = periodicos;
@@ -50,25 +51,19 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
                 if(!strcmp(curso,areaAvaliacao)){
                   //Set docente points
+                  semEstratoQualis = 0;
                   int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
                   currentDocente->totalPoints += pontos;
-                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " <<currentProducao->title << endl;
+                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                   break;
                 }
-                /*
-                if(areaAvaliacao != NULL)
-                  delete[] areaAvaliacao;
-                //Create a '\n' char to find the end of the line
-                areaAvaliacao = new char[1];
-                areaAvaliacao[0] = '\n';
-                //Save the addres of the next \n
-                iterator = find(iterator, areaAvaliacao);
-                //Go to the next line
-                if(areaAvaliacao != NULL)
-                  delete[] areaAvaliacao;
-                */
-                iterator = iterator->next;
 
+                iterator = iterator->next;
+              }
+              if(semEstratoQualis == 1){
+                int pontos = rules[8];
+                cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                currentDocente->totalPoints += pontos;
               }
             }
             destroyProducao(&currentProducao);
