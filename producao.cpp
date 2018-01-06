@@ -30,22 +30,21 @@ producao* removeProducao(producao** allProducao){
   }
   return lastProducao;
 }
-producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId){
-
-    if((*producoes) != NULL){
+producao* getAllProducoesFromThatDocente(producao* producoes, long docenteId){
+    if(producoes != NULL){
       if(docenteId > -1){
-        if(docenteId == (*producoes)->docenteId){
-          return (*producoes);
+
+        if(docenteId < producoes->docenteId){
+          return getAllProducoesFromThatDocente(producoes->right, docenteId);
         }
-        if(docenteId < (*producoes)->docenteId){
-          return getAllProducoesFromThatDocente(&((*producoes)->left), docenteId);
+        if(docenteId > producoes->docenteId){
+          return getAllProducoesFromThatDocente(producoes->left, docenteId);
         }
-        if(docenteId > (*producoes)->docenteId){
-          return getAllProducoesFromThatDocente(&((*producoes)->right), docenteId);
+        if(docenteId == producoes->docenteId || producoes == NULL){
+          return producoes;
         }
       }
     }
-    return NULL;
 }
 
 void printProducoes(producao* producaoNode){
@@ -132,7 +131,6 @@ producao* loadAllProducoes (const char* filePath){
 
   //Remove line by line from qualis_capes_periodicos.csv
   while(currentLine = removeFirstBufferLine(&producaoCSV)){
-    //printBufferFile(currentLine);
 
     //Get docente's ID
     long docenteId = stringToLong(getNthColumnData(currentLine, 1));

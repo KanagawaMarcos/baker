@@ -1,7 +1,7 @@
 #ifndef PRODUCAO_H
   #define PRODUCAO_H
 
-  
+
 
   typedef struct _producao{
     //Basic info extracted from the .csv file
@@ -31,7 +31,7 @@
 
 
 
-  producao* getAllProducoesFromThatDocente(producao** producoes, long docenteId);
+  producao* getAllProducoesFromThatDocente(producao* producoes, long docenteId);
   producao* removeProducao(producao** allProducao);
 
   producao* loadAllProducoes (const char* filePath);

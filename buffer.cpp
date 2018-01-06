@@ -26,10 +26,10 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
         producao* allProducao = NULL;
 
         //It will receive the last "producao" whithing the current docente node at the BST
-        allProducao = getAllProducoesFromThatDocente( producoes, currentDocente->id);
+        allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
         if(allProducao == NULL)
           cout << "========" << currentDocente->name << endl;
-        
+
         //If the docente has some producao
         if(allProducao != NULL){
 

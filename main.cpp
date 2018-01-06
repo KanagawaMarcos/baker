@@ -22,6 +22,7 @@ int main (int argv, char* argc[]){
     character* congressos = createBufferFile("csv/qualis_capes_congressos.csv");
     character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
 
+
     //Load "area de avaliacao"
     const char* regrasCaminho = "csv/regras/regraComp";
     char* areaAvaliacao = loadAreaAvaliacao(regrasCaminho);
