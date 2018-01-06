@@ -78,12 +78,11 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
               int hasNoQualis = 1;
               character* iteratorSiglaCongresso = congressos;
-              cout << currentProducao->local << endl;
+
               //Separate all words whiting the field LOCAL
               char* siglaProducao = strtok(currentProducao->local, " -.,():");
               char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
-              //if(strcmp(siglaProducao,siglaCSV))
-              //if(strlen(siglaProducao) == strlen(siglaCSV))
+
 
               //Update siglaCSV value
               while(siglaProducao != NULL){
@@ -91,9 +90,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                   //if(strlen(siglaProducao) == strlen(siglaCSV))
                   if(!strcmp(siglaProducao,siglaCSV)){
                     hasNoQualis = 0;
-                    int pontos = qualisCodePeriodicosToInt(getNthColumnDataCongresso(iteratorSiglaCongresso, 4),rules);
+                    int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
                     currentDocente->totalPoints += pontos;
-                    cout << "\t" << getNthColumnDataCongresso(iteratorSiglaCongresso, 4) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                    cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                     numDeProducoes++;
                   }
 
