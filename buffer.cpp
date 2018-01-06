@@ -73,23 +73,26 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
               character* iterator = congressos;
-
+              cout << currentProducao->local << endl;
               //Separate all words whiting the field LOCAL
-              char* siglaProducao = strtok(currentProducao->local, " .-,()");
+              char* siglaProducao = strtok(currentProducao->local, " . - , ) ( ");
               char* siglaCSV = getNthColumnDataCongresso(iterator,4);
-              //if(strcmp(siglaProducao,siglaCSV) == 0)
+              //if(strcmp(siglaProducao,siglaCSV))
+              //if(strlen(siglaProducao) == strlen(siglaCSV))
                 cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
               //Update siglaCSV value
               while(siglaCSV != NULL){
-                //if(strcmp(siglaProducao,siglaCSV) == 0)
+                //if(!strcmp(siglaProducao,siglaCSV))
+                //if(strlen(siglaProducao) == strlen(siglaCSV))
                   cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
                 iterator = find(iterator->next,slashN);
                 siglaCSV = getNthColumnDataCongresso(iterator,4);
               }
               //Separate all words whiting the field take, the next one
-              siglaProducao = strtok(NULL, " ");
+              siglaProducao = strtok(NULL, " -,)(");
             }
             destroyProducao(&currentProducao);
+            return 1;
           }
         }
         currentDocente = currentDocente->next;
