@@ -78,18 +78,17 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
               int hasNoQualis = 1;
               character* iteratorSiglaCongresso = congressos;
-
+              cout << currentProducao->local << endl;
               //Separate all words whiting the field LOCAL
-              char* siglaProducao = strtok(currentProducao->local, " -,():");
+              char* siglaProducao = strtok(currentProducao->local, " -.,():");
               char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
-              if(!strcmp(siglaProducao,siglaCSV))
-
+              //if(strcmp(siglaProducao,siglaCSV))
+              //if(strlen(siglaProducao) == strlen(siglaCSV))
 
               //Update siglaCSV value
               while(siglaProducao != NULL){
                 while(siglaCSV != NULL){
-
-                  //If the current congresso has qualis
+                  //if(strlen(siglaProducao) == strlen(siglaCSV))
                   if(!strcmp(siglaProducao,siglaCSV)){
                     hasNoQualis = 0;
                     int pontos = qualisCodePeriodicosToInt(getNthColumnDataCongresso(iteratorSiglaCongresso, 4),rules);
@@ -105,7 +104,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
                 //Separate all words whiting the field take, the next one
-                siglaProducao = strtok(NULL, " -,():");
+                siglaProducao = strtok(NULL, " -.,():");
               }
 
               if(hasNoQualis == 1){
