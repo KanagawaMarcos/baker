@@ -6,15 +6,6 @@
 
 using namespace std;
 
-int qualisCodeToInt(char* qualisCode ,int* rules){
-  int value = 666;
-  if(qualisCode != NULL){
-    if(rules != NULL){
-
-    }
-  }
-  return value;
-}
 
 producao* removeProducao(producao** allProducao){
   producao* lastProducao = NULL;

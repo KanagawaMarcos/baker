@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 
 using namespace std;
@@ -18,7 +19,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
       //Get the first node from the Double Linked List
       currentDocente = (*docentes);
-
       //Iterate through all docentes
       while(currentDocente != NULL){
 
@@ -27,7 +27,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
         //It will receive the last "producao" whithing the current docente node at the BST
         allProducao = getAllProducoesFromThatDocente( producoes, currentDocente->id);
-
+        if(allProducao == NULL)
+          cout << "========" << currentDocente->name << endl;
+        
         //If the docente has some producao
         if(allProducao != NULL){
 
@@ -40,38 +42,60 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
               //Iterate through all issns that match
               character* iterator = periodicos;
-              while(find(iterator, currentProducao->issn)){
+              while(iterator = find(iterator, currentProducao->issn)){
 
                 //Check if the type is the same at the rule file
                 char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
+
                 if(!strcmp(curso,areaAvaliacao)){
-
                   //Set docente points
-                  currentDocente->totalPoints += qualisCodeToInt(getNthColumnDataFromCur(iterator->prev, 4),rules);
+                  //currentDocente->totalPoints += qualisCodeToInt(getNthColumnDataFromCur(iterator->prev, 4),rules);
+                  // currentDocente->totalPoints += 10;
+                  cout << "========================" << endl;
+                  cout << areaAvaliacao << endl;
+                  cout << currentDocente->name << endl;
+                  cout << currentProducao->issn << " - " <<currentProducao->title << endl;
+                  cout << "========================" << endl;
+                  sucess += 10;
+                  break;
                 }
-
-                delete[] areaAvaliacao;
+                /*
+                if(areaAvaliacao != NULL)
+                  delete[] areaAvaliacao;
                 //Create a '\n' char to find the end of the line
                 areaAvaliacao = new char[1];
                 areaAvaliacao[0] = '\n';
                 //Save the addres of the next \n
                 iterator = find(iterator, areaAvaliacao);
                 //Go to the next line
+                if(areaAvaliacao != NULL)
+                  delete[] areaAvaliacao;
+                */
                 iterator = iterator->next;
-                delete[] areaAvaliacao;
+
               }
-
-
-
             }
             destroyProducao(&currentProducao);
           }
         }
         currentDocente = currentDocente->next;
       }
+
     }
   }
   return sucess;
+}
+
+char* stringToUpperCase(char* string){
+  char* upperCaseString = NULL;
+  if(string != NULL){
+    upperCaseString = new char[strlen(string)+1];
+    for(int i=0; i<strlen(string); i++){
+      upperCaseString[i] = toupper(string[i]);
+    }
+    upperCaseString[strlen(string)] = '\0';
+  }
+  return upperCaseString;
 }
 
 char* loadAreaAvaliacao(const char* filePath){
@@ -89,12 +113,25 @@ char* loadAreaAvaliacao(const char* filePath){
         //Get the "area de avaliacao"
         character* area = removeFirstBufferLine(&ruleTxt);
         areaDeAvaliacao = bufferStringToString(area);
+        //remove the '\n' from the end of the line
+        areaDeAvaliacao[strlen(areaDeAvaliacao)-1] = '\0' ;
         destroyBufferFile(&area);
     }
     return areaDeAvaliacao;
   }
 
   return areaDeAvaliacao;
+}
+
+
+int qualisCodeToInt(char* qualisCode ,int* rules){
+  int value = 666;
+  if(qualisCode != NULL){
+    if(rules != NULL){
+
+    }
+  }
+  return value;
 }
 
 void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
