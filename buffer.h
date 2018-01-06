@@ -57,6 +57,7 @@
   character* find(character* bufferFile, char* string);
   character* findNth(character* bufferFile, char* string, int nth);
   character* concatenate(character** destination, character** stringToConcatenate);
+  int numberOfLinesBufferFile(character* congressosCSV);
 
   char* bufferStringToString(character* string);
   character* intToBufferString(int integer);
@@ -64,7 +65,6 @@
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
   char* getNthColumnDataFromCur(character* bufferFile, int position);
-  char* findLastSiglaCongresso(character* congressosCSV);
 
   char* loadAreaAvaliacao(const char* filePath);
   int*  loadAllRules(const char* filePath,int rulesNum);

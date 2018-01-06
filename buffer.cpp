@@ -21,7 +21,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       slashN[1] = '\0';
 
       //It is here to avoid bug of going non stop through .csv
-      char* lastCongressoSigla = findLastSiglaCongresso(congressos);
+      int numberOfLinesCongressoCSV = numberOfLinesBufferFile(congressos);
 
       cout << "======================"<< curso << "=======================" << endl;
 
@@ -73,51 +73,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
 
-              int semEstratoQualis = 1;
-              int foundIt = 0;
 
-              //Try to see words using tokens and combining them whith siglas
-              char* currentSigla = strtok(currentProducao->title, " .-,()");
-
-              //Jump the first line (header)
-              character* iterator = find(congressos, slashN);
-              iterator = iterator->next;
-
-              //Iterate through all congressos in BD
-              char* siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
-
-              while(currentSigla != NULL){
-
-                //Receive the sigla from congressos.csv
-                while(siglaCongressoCSV != NULL){
-                  cout << siglaCongressoCSV << endl;
-
-                  //Congresso found
-                  if(!strcmp(siglaCongressoCSV,currentSigla)){
-                      int pontos = 0;
-                      pontos = qualisCodeCongressosToInt(siglaCongressoCSV,rules);
-                      //cout << "\t" << clean2(getNthColumnDataFromCur(iterator,4)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                      foundIt = 1;
-                      break;
-                  }
-
-                  //Go until the end of the line
-                  iterator = find(iterator,slashN);
-
-                  //Go to the next line
-                  iterator = iterator->next;
-
-                  //Receive the next text
-                  siglaCongressoCSV = clean2(getNthColumnDataFromCur(iterator,4));
-                }
-
-
-                //Remove the next word from the text using the tolkens given
-                currentSigla = strtok(NULL, " .-,()");
-                delete[] siglaCongressoCSV;
-                if(foundIt == 1)
-                  break;
-              }
             }
             destroyProducao(&currentProducao);
           }
@@ -131,27 +87,26 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
   return sucess;
 }
 
-char* findLastSiglaCongresso(character* congressosCSV){
+int numberOfLinesBufferFile(character* congressosCSV){
+  int numberOfLines = 0;
 
   if(congressosCSV!= NULL){
     char* slashN = new char[2];
     slashN[0] = '\n';
     slashN[1] = '\0';
 
-    int numberOfLines = 0;
 
     //Jump the header
     character* iterator = congressosCSV;
 
     while(iterator = find(iterator->next,slashN)){
 
-      cout << "oi" << numberOfLines << endl;
       numberOfLines++;
       iterator = iterator->next;
     }
-    cout << "heuaheua" << numberOfLines << endl;
 
   }
+  return (numberOfLines+1);
 }
 
 char* clean2(char* string){
