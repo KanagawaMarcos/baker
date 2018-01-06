@@ -4,6 +4,7 @@
 #include <string.h>
 #include <iostream>
 
+
 using namespace std;
 
 int main (int argv, char* argc[]){
@@ -39,6 +40,5 @@ int main (int argv, char* argc[]){
     destroyBufferFile(&congressos);
     destroyBufferFile(&periodicos);
 
-    return 0;
-
+  return 0;
 }
