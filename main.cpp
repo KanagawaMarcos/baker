@@ -76,6 +76,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 numDeProducoes++;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
+              cout << "Lugar: " << currentProducao->local << endl;
               int hasNoQualis = 1;
               character* iteratorSiglaCongresso = congressos;
 
@@ -88,6 +89,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               while(siglaProducao != NULL){
                 while(siglaCSV != NULL){
                   char* siglaUpperCase = convertToUpper(siglaProducao);
+                  cout << "Sigla Estrutura: " << siglaUpperCase << " // " << "Sigla qualis_capes: " << siglaCSV << endl;
                   if(!strcmp(siglaUpperCase,siglaCSV)){
                     delete[] siglaUpperCase;
                     hasNoQualis = 0;
@@ -119,10 +121,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               }
             }
             destroyProducao(&currentProducao);
-
-
           }
         }
+        break;
         currentDocente = currentDocente->next;
         cout << "Numero de producoes = " << numDeProducoes << endl;
         cout << "==============================================" << endl;
