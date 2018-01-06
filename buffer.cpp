@@ -72,11 +72,11 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 currentDocente->totalPoints += pontos;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-              character* iterator = congressos;
+              character* iteratorSiglaCongresso = congressos;
               cout << currentProducao->local << endl;
               //Separate all words whiting the field LOCAL
-              char* siglaProducao = strtok(currentProducao->local, " ");
-              char* siglaCSV = getNthColumnDataCongresso(iterator,4);
+              char* siglaProducao = strtok(currentProducao->local, " -");
+              char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
               //if(strcmp(siglaProducao,siglaCSV))
               //if(strlen(siglaProducao) == strlen(siglaCSV))
                 cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
@@ -86,13 +86,14 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                   //if(!strcmp(siglaProducao,siglaCSV))
                   //if(strlen(siglaProducao) == strlen(siglaCSV))
                     cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
-                  iterator = find(iterator->next,slashN);
-                  siglaCSV = getNthColumnDataCongresso(iterator,4);
+                  iteratorSiglaCongresso = find(iteratorSiglaCongresso->next,slashN);
+                  siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
                 }
+                iteratorSiglaCongresso = congressos;
+                siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
                 //Separate all words whiting the field take, the next one
-                siglaProducao = strtok(NULL, " ");
-
+                siglaProducao = strtok(NULL, " -");
               }
 
             }
