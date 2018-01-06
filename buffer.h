@@ -74,10 +74,10 @@
 
   //Function to use with the "rules files"
   int getRuleValue(character* bufferFile,char* qualis);
-
+  void convertToUpperCase(char** string);
   long stringToLong(char* numberToConvert);
   int stringToInt(char* numberToConvert);
-  char* stringToUpperCase(char* string);
+  char* convertToUpper(char* str);
   char* clean(char* string);
   char* clean2(char* string);
 #endif

@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 producao* removeProducao(producao** allProducao){
   producao* lastProducao = NULL;
 
@@ -24,8 +23,12 @@ producao* removeProducao(producao** allProducao){
 
     //If the current node is the last one remaing
     if((*allProducao)->last == (*allProducao)){
+
       (*allProducao)->last = NULL;
+
       lastProducao = (*allProducao);
+
+      (*allProducao) = NULL;
     }
   }
   return lastProducao;
@@ -56,8 +59,6 @@ void printProducoes(producao* producaoNode){
       num++;
       iterator = iterator->next;
     }
-    cout << "\t" << iterator->type << " - " << iterator->title << endl;
-    num++;
     cout << "num = " << num << endl;
   }
 }
@@ -211,7 +212,7 @@ void destroyProducao(producao* producaoToDestroy){
 void addProducao(producao** list, long docenteId,long id, char* issn, char* type, char* title, char* local, int year){
 
   //If the user actually pass a empty list
-  if(*list != NULL){
+  if((*list) != NULL){
 
     //Create a new producao
     producao* newProducao = createProducao(docenteId, id,  issn,  type,  title,  local, year);
