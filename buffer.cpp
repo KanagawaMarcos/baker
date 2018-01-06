@@ -24,11 +24,12 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       int numberOfLinesCongressoCSV = numberOfLinesBufferFile(congressos);
 
       cout << "======================"<< curso << "=======================" << endl;
-
+      int numDeProducoes = 0;
       //Get the first node from the Double Linked List
       currentDocente = (*docentes);
       //Iterate through all docentes
       while(currentDocente != NULL){
+        numDeProducoes = 0;
         cout << "Docente: " << currentDocente->name << endl;
 
         //Store the every single "producao" from the current docente
@@ -44,6 +45,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           //Iterate through all producoes
           producao* currentProducao = NULL;
           while(currentProducao = removeProducao(&allProducao)){
+
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
               int semEstratoQualis = 1;
@@ -61,6 +63,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                   int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
                   currentDocente->totalPoints += pontos;
                   cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                  numDeProducoes++;
                   break;
                 }
 
@@ -70,6 +73,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 int pontos = rules[8];
                 cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
+                numDeProducoes++;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
               int hasNoQualis = 1;
@@ -91,6 +95,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                     int pontos = qualisCodePeriodicosToInt(getNthColumnDataCongresso(iteratorSiglaCongresso, 4),rules);
                     currentDocente->totalPoints += pontos;
                     cout << "\t" << getNthColumnDataCongresso(iteratorSiglaCongresso, 4) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                    numDeProducoes++;
                   }
 
                   iteratorSiglaCongresso = find(iteratorSiglaCongresso->next,slashN);
@@ -107,12 +112,14 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 int pontos = rules[17];
                 cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
+                numDeProducoes++;
               }
             }
             destroyProducao(&currentProducao);
           }
         }
         currentDocente = currentDocente->next;
+        cout << "Numero de producoes = " << numDeProducoes << endl;
         cout << "==============================================" << endl;
       }
 

@@ -15,6 +15,7 @@ int main (int argv, char* argc[]){
     //A binary search tree for producoes (key = docenteId/ Value = list of producao)
     producao* producoes = loadAllProducoes("csv/producao_V2.csv");
 
+
     //Create an array with all capes values
     int* rules = loadAllRules("csv/regras/regraComp",22);
 
@@ -29,13 +30,13 @@ int main (int argv, char* argc[]){
     char* areaAvaliacao = loadAreaAvaliacao(regrasCaminho);
 
     //Will fill all give a pontuation to all variables of type "docente"
-    cout << baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao) << endl;
+    baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao);
 
     while(docentes->next != NULL){
-      cout << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
+      cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
       docentes = docentes->next;
     }
-    cout << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
+    cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
     destroyBufferFile(&orientacoes);
     destroyBufferFile(&congressos);
     destroyBufferFile(&periodicos);

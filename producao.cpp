@@ -48,13 +48,17 @@ producao* getAllProducoesFromThatDocente(producao* producoes, long docenteId){
 }
 
 void printProducoes(producao* producaoNode){
+  int num = 0;
   if(producaoNode != NULL){
     producao* iterator = producaoNode;
     while(iterator->next != NULL){
-      cout << "\t" << iterator->title << endl;
+      cout << "\t" << iterator->type << " - " << iterator->title << endl;
+      num++;
       iterator = iterator->next;
     }
-    cout << "\t" << iterator->title << endl;
+    cout << "\t" << iterator->type << " - " << iterator->title << endl;
+    num++;
+    cout << "num = " << num << endl;
   }
 }
 
