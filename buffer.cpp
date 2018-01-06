@@ -17,26 +17,27 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
       dictionary* issnDictionary = NULL;
       docente* currentDocente = NULL;
 
+      cout << "==========="<< curso << "============" << endl;
+
       //Get the first node from the Double Linked List
       currentDocente = (*docentes);
       //Iterate through all docentes
       while(currentDocente != NULL){
+        cout << "Docente: " << currentDocente->name << endl;
 
         //Store the every single "producao" from the current docente
         producao* allProducao = NULL;
 
         //It will receive the last "producao" whithing the current docente node at the BST
         allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
-        if(allProducao == NULL)
-          cout << "========" << currentDocente->name << endl;
 
         //If the docente has some producao
         if(allProducao != NULL){
+          cout << "Producoes: "<< endl;
 
           //Iterate through all producoes
           producao* currentProducao = NULL;
           while(currentProducao = removeProducao(&allProducao)){
-
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
 
@@ -49,14 +50,10 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
                 if(!strcmp(curso,areaAvaliacao)){
                   //Set docente points
-                  //currentDocente->totalPoints += qualisCodeToInt(getNthColumnDataFromCur(iterator->prev, 4),rules);
-                  // currentDocente->totalPoints += 10;
-                  cout << "========================" << endl;
-                  cout << areaAvaliacao << endl;
-                  cout << currentDocente->name << endl;
-                  cout << currentProducao->issn << " - " <<currentProducao->title << endl;
-                  cout << "========================" << endl;
-                  sucess += 10;
+                  //cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " = " << qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules) << currentProducao->issn << " - " <<currentProducao->title << endl;
+                  cout << clean(getNthColumnDataFromCur(iterator->prev, 4)) << endl;
+                  currentDocente->totalPoints += qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
+
                   break;
                 }
                 /*
@@ -79,11 +76,26 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           }
         }
         currentDocente = currentDocente->next;
+        cout << "==============================================" << endl;
       }
 
     }
   }
   return sucess;
+}
+
+char* clean(char* string){
+  char* cleanedString = NULL;
+  if(string != NULL){
+    cleanedString = new char[strlen(string)];
+    int lastPos = 0;
+    for(int i=0; i<strlen(string) && string[i] != '\n';i++){
+      cleanedString[i] = string[i];
+      lastPos = i;
+    }
+    cleanedString[lastPos] = '\0';
+  }
+  return cleanedString;
 }
 
 char* stringToUpperCase(char* string){
@@ -123,12 +135,56 @@ char* loadAreaAvaliacao(const char* filePath){
   return areaDeAvaliacao;
 }
 
-
-int qualisCodeToInt(char* qualisCode ,int* rules){
-  int value = 666;
+int qualisCodePeriodicosToInt(char* qualisCode ,int* rules){
+  int value = 0;
   if(qualisCode != NULL){
     if(rules != NULL){
 
+      if(!strcmp(qualisCode,"A1")){
+        value = rules[0];
+      }else if(!strcmp(qualisCode,"A2")){
+        value = rules[1];
+      }else if(!strcmp(qualisCode,"B1")){
+        value = rules[2];
+      }else if(!strcmp(qualisCode,"B2")){
+        value = rules[3];
+      }else if(!strcmp(qualisCode,"B3")){
+        value = rules[4];
+      }else if(!strcmp(qualisCode,"B4")){
+        value = rules[5];
+      }else if(!strcmp(qualisCode,"B5")){
+        value = rules[6];
+      }else if(!strcmp(qualisCode,"C")){
+        value = rules[7];
+      }
+      //0 = sem estrato no qualis ??
+    }
+  }
+  return value;
+}
+
+int qualisCodeCongressosToInt(char* qualisCode ,int* rules){
+  int value = 0;
+  if(qualisCode != NULL){
+    if(rules != NULL){
+      if(!strcmp(qualisCode,"A1")){
+        value = rules[9];
+      }else if(!strcmp(qualisCode,"A2")){
+        value = rules[10];
+      }else if(!strcmp(qualisCode,"B1")){
+        value = rules[11];
+      }else if(!strcmp(qualisCode,"B2")){
+        value = rules[12];
+      }else if(!strcmp(qualisCode,"B3")){
+        value = rules[13];
+      }else if(!strcmp(qualisCode,"B4")){
+        value = rules[14];
+      }else if(!strcmp(qualisCode,"B5")){
+        value = rules[15];
+      }else if(!strcmp(qualisCode,"C")){
+        value = rules[16];
+      }
+      //0 = sem estrato no qualis ??
     }
   }
   return value;

@@ -32,7 +32,8 @@
   }dictionary;
 
   int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso);
-  int qualisCodeToInt(char* qualisCode ,int* rules);
+  int qualisCodePeriodicosToInt(char* qualisCode ,int* rules);
+  int qualisCodeCongressosToInt(char* qualisCode ,int* rules);
 
   dictionary* memoization(dictionary* dictionaryToSearch, char* word);
   void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value);
@@ -74,4 +75,5 @@
   long stringToLong(char* numberToConvert);
   int stringToInt(char* numberToConvert);
   char* stringToUpperCase(char* string);
+  char* clean(char* string);
 #endif
