@@ -76,14 +76,15 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
               //Separate all words whiting the field LOCAL
               char* siglaProducao = strtok(currentProducao->local, " .-,()");
-              char* siglaCSV = clean2(getNthColumnDataFromCur(iterator,4));
-
-              cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
-              //Update siglaCSV value
-              while(iterator != NULL){
+              char* siglaCSV = getNthColumnDataCongresso(iterator,4);
+              //if(strcmp(siglaProducao,siglaCSV) == 0)
                 cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
+              //Update siglaCSV value
+              while(siglaCSV != NULL){
+                //if(strcmp(siglaProducao,siglaCSV) == 0)
+                  cout << "siglaProducao:" << siglaProducao << "/===/siglaCSV:" << siglaCSV << endl;
                 iterator = find(iterator->next,slashN);
-                siglaCSV = clean2(getNthColumnDataFromCur(iterator,4));
+                siglaCSV = getNthColumnDataCongresso(iterator,4);
               }
               //Separate all words whiting the field take, the next one
               siglaProducao = strtok(NULL, " ");
@@ -98,6 +99,178 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
     }
   }
   return sucess;
+}
+
+char* getNthColumnDataCongresso(character* bufferFile, int position){
+
+  //A buffer line with a copy of the N position data
+  char* nthText = NULL;
+  if(bufferFile != NULL){
+    if(position > 0){
+
+      //The first character of the right data
+      character* startPoint = NULL;
+      //The last character of the right data
+      character* finishPoint = NULL;
+
+      int numberOfCommas = 0;
+      character* iterator = bufferFile;
+      //Make a backup of the first character address
+      character* firstCharAddress = iterator;
+
+      //Count the number of VALID commas int the text
+      while(iterator->next != NULL){
+        if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+          numberOfCommas++;
+        }
+        iterator = iterator->next;
+      }
+
+      iterator = firstCharAddress;
+
+      //The required collumn does not exist
+      if(position > (numberOfCommas+1)){
+        return NULL;
+      //The last collumn is bein required
+      }else if (position == (numberOfCommas+1)){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+            numberOfCommas++;
+          }
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == (position-1)){
+
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
+
+            //Go foward one char, to ignore read the comma
+            iterator = iterator->next;
+            while(iterator->next != NULL){
+
+              //everything before this quotes, belongs to other data
+              if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+
+                break;
+              }
+
+              //if the character is diferent of a quote
+              if(iterator->data != '\"'){
+                numberOfChars++;
+              }
+              iterator = iterator->next;
+            }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            //int i = (numberOfChars-1);
+            int i = 0;
+
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->next;
+              while(iterator->next != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i++;
+                }
+                iterator = iterator->next;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
+          }
+
+          iterator = iterator->next;
+        }
+      //The collumn given is anyone but the last
+      }else if((position < (numberOfCommas+1)) && position > 0){
+        numberOfCommas = 0;
+        //Goes until the given collumn
+        while(iterator->next != NULL){
+          if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+            numberOfCommas++;
+          }
+          //Everything behind this comma until another is the wanted data
+          if(numberOfCommas == position){
+
+            //Count how many valid characters there's (Quotes are not valid)
+            character* commaPosition = iterator;
+            int numberOfChars = 0;
+
+            //Go backwards one char, to ignore read the comma
+            iterator = iterator->prev;
+            while(iterator->prev != NULL){
+
+              //everything before this quotes, belongs to other data
+              if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+
+                break;
+              }
+
+              //if the character is diferent of a quote
+              if(iterator->data != '\"'){
+                numberOfChars++;
+              }
+              iterator = iterator->prev;
+            }
+            //Alocate the string to receive each character
+            nthText = new char[numberOfChars+1];
+            //The extra char is for \0
+            nthText[numberOfChars] = '\0';
+            //The last valid character
+            int i = (numberOfChars-1);
+
+            //If the text was successfully allocated
+            if(nthText != NULL){
+              iterator = commaPosition->prev;
+              while(iterator->prev != NULL){
+
+                //Everything before this quotes, belongs to other data
+                if(iterator->prev != NULL && iterator->next != NULL && iterator->prev->data == '\"' && iterator->data == ',' && iterator->next->data == '\"'){
+                  break;
+                }
+                //if the character is diferent of a quote
+                if(iterator->data != '"'){
+                  nthText[i] = iterator->data;
+                  i--;
+                }
+                iterator = iterator->prev;
+              }
+
+            }else{
+              cerr << "Error: Function: getNthColumnData. Desc: error while allocating nthText." << endl;
+            }
+
+            //Make the iterator go back to the position where it was
+            iterator = commaPosition;
+            //End the function
+            break;
+          }
+
+          iterator = iterator->next;
+        }
+      }
+      }
+    }
+
+  return nthText;
 }
 
 int numberOfLinesBufferFile(character* congressosCSV){

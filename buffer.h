@@ -65,6 +65,7 @@
   //Function to use whith .csv files
   char* getNthColumnData(character* bufferFile, int position);
   char* getNthColumnDataFromCur(character* bufferFile, int position);
+  char* getNthColumnDataCongresso(character* bufferFile, int position);
 
   char* loadAreaAvaliacao(const char* filePath);
   int*  loadAllRules(const char* filePath,int rulesNum);
