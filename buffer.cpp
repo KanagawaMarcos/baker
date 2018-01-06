@@ -90,7 +90,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                   //if(strlen(siglaProducao) == strlen(siglaCSV))
                   if(!strcmp(siglaProducao,siglaCSV)){
                     hasNoQualis = 0;
-                    int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
+                    int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
                     currentDocente->totalPoints += pontos;
                     cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                     numDeProducoes++;
