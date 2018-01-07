@@ -151,7 +151,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           char* tmpIdOrientacao = getNthColumnLocalOrientacao(orientacoes,2);
           char* typeOrientacao = getNthColumnLocalOrientacao(orientacoes,3);
           char* titleOrientacao = getNthColumnLocalOrientacao(orientacoes,4);
-          char* nameOrientando = getNthColumnLocalOrientacao(orientacoes,5);
           char* tmpYear = getNthColumnLocalOrientacao(orientacoes,6);
           int year = stringToInt(tmpYear);
           int idOrientacao = stringToInt(tmpIdOrientacao);
@@ -177,7 +176,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
           }
 
-          cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - " << tmpIdOrientacao << " - " << typeOrientacao << " - " << titleOrientacao << endl;
+          cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - " << idOrientacao << " - " << typeOrientacao << " - " << titleOrientacao << endl;
           iterator = iterator->next;
           delete[] idDocente;
         }
@@ -378,7 +377,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           break;
         }
         case 5:{
-          
+
         }
         case 6:{
           character* cur = bufferFile;
