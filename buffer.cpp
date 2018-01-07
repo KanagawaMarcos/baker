@@ -135,6 +135,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           }
         }
 
+        cout << "debug" << endl;
         //Count the number of orientacoes
         character* iterator = orientacoes;
 
