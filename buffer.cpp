@@ -294,6 +294,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
 
               //Move to the first character
               cur = cur->next->next;
+              start = cur;
               break;
             }
             cur = cur->next;
