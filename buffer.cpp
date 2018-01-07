@@ -116,7 +116,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
               if(hasNoQualis == 1){
                 int pontos = rules[17];
-                cout << "\t" <<" Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
