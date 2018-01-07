@@ -9,7 +9,7 @@
 using namespace std;
 
 
-int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,char** regrasNomeArquivo, int numeroDeArqRegras, int currentFile){
+int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso, const char* regrasNomeArquivo){
   int sucess = 1;
 
   if((*docentes) != NULL && (*producoes) != NULL){
@@ -142,18 +142,17 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
         //Count the number of orientacoes
         char* idDocente = new char[257];
         long sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
-        if((*orientacoes) == NULL){
-          (*orientacoes) = createBufferFile(regrasNomeArquivo[currentFile]);
-        }
 
-        while((*orientacoes) != NULL){
+        character* txt = createBufferFile(regrasNomeArquivo);
+
+        while(txt != NULL){
 
           //Go to the start of the line
-          char* titleOrientacao = getNthColumnLocalOrientacao(*orientacoes,4);
-          char* idDoDocenteTmp = getNthColumnLocalOrientacao(*orientacoes,1);
-          long idDoDocente = stringToLong(getNthColumnLocalOrientacao(*orientacoes,1));
-          char* typeOrientacao = getNthColumnLocalOrientacao(*orientacoes,3);
-          char* tmpYear = getNthColumnLocalOrientacao(*orientacoes,6);
+          char* titleOrientacao = getNthColumnLocalOrientacao(txt,4);
+          char* idDoDocenteTmp = getNthColumnLocalOrientacao(txt,1);
+          long idDoDocente = stringToLong(getNthColumnLocalOrientacao(txt,1));
+          char* typeOrientacao = getNthColumnLocalOrientacao(txt,3);
+          char* tmpYear = getNthColumnLocalOrientacao(txt,6);
           int year = stringToInt(tmpYear);
           delete[] tmpYear;
           delete[] idDoDocenteTmp;
@@ -181,7 +180,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
           }
           //delete[] idDocente;
-          charater* deleteme = removeFirstBufferLine(orientacoes);
+          character* deleteme = removeFirstBufferLine(&txt);
           destroyBufferFile(&deleteme);
         }
 

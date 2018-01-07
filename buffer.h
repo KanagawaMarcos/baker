@@ -31,7 +31,7 @@
 
   }dictionary;
 
-  int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,char** regrasNomeArquivo, int numeroDeArqRegras,int currentFile);
+  int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,  const char* regrasNomeArquivo);
   int qualisCodePeriodicosToInt(char* qualisCode ,int* rules);
   int qualisCodeCongressosToInt(char* qualisCode ,int* rules);
 
@@ -40,6 +40,7 @@
   dictionary* createDictionary(char* word,  int value);
   void destroyDictionary(dictionary** dictionary);
   void purgeDictionary(dictionary* dictionary);
+  character* copyBufferFile(character* bufferFile);
 
   character* createChar(char data);
   void destroyChar(character* charToDestroy);
