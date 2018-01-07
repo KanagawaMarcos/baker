@@ -23,6 +23,10 @@ int main (int argv, char* argc[]){
     character* orientacoes = createBufferFile("csv/orientacao.csv");
     character* congressos = createBufferFile("csv/qualis_capes_congressos.csv");
     character* periodicos = createBufferFile("csv/qualis_capes_periodicos.csv");
+    //Remove the headers
+    removeFirstBufferLine(&orientacoes);
+    removeFirstBufferLine(&congressos);
+    //removeFirstBufferLine(&periodicos);
 
 
     //Load "area de avaliacao"
