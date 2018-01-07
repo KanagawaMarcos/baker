@@ -81,4 +81,5 @@
   char* convertToUpper(char* str);
   char* clean(char* string);
   char* clean2(char* string);
+  char* clean3(char* string);
 #endif

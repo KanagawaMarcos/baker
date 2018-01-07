@@ -78,7 +78,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 numDeProducoes++;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-
+              //char* localProducao;
+              //strcpy(localProducao,(currentProducao->local));
+              //cout << "LOCAL: " << localProducao << endl;
               int hasNoQualis = 1;
               character* iteratorSiglaCongresso = congressos;
 
@@ -91,7 +93,10 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               while(siglaProducao != NULL){
                 while(siglaCSV != NULL){
                   char* siglaUpperCase = convertToUpper(siglaProducao);
-                  if(!strcmp(siglaUpperCase,siglaCSV)){
+                  cout << "NOME?? " << clean3(getNthColumnDataCongresso(iteratorSiglaCongresso, 1)) << endl;
+                  //Check if the name OR sigla match of congresso match with the local
+                  //Ponha um strstr aqui tendo o local da producao e o nome do congresso
+                  if((!strcmp(siglaUpperCase,siglaCSV))  /*|| (strstr(localProducao,getNthColumnDataCongresso(iteratorSiglaCongresso, 4)) != NULL)*/){
                     delete[] siglaUpperCase;
                     hasNoQualis = 0;
                     int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
@@ -404,6 +409,36 @@ int numberOfLinesBufferFile(character* congressosCSV){
 
   }
   return (numberOfLines+1);
+}
+
+char* clean3(char* string){
+  char* cleanedString = NULL;
+  char* tmp;
+  if(string != NULL){
+
+    tmp = strtok (string ,"-");
+    while (tmp != NULL){
+      tmp = strtok (NULL, "-");
+    }
+    cleanedString = new char[strlen(tmp)];
+    
+    cout << "cleanedString" << strlen(tmp) << endl;
+
+    for(int i=1; i<strlen(tmp); i++){
+      cleanedString[i-1] = tmp[i];
+    }
+    cleanedString[strlen(tmp)] = '\0';
+    /*
+    cleanedString = new char[strlen(string)];
+    int lastPos = 0;
+    for(int i=0; i<strlen(string) && (string[i] != '\n' && );i++){
+      cleanedString[i] = string[i];
+      lastPos = i;
+    }
+    cleanedString[lastPos+1] = '\0';
+    */
+  }
+  return cleanedString;
 }
 
 char* clean2(char* string){
