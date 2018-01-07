@@ -97,7 +97,7 @@ int main (int argv, char* argc[]){
       char* areaAvaliacao = loadAreaAvaliacao(regrasNomeArquivo[i]);
 
       //Will fill all give a pontuation to all variables of type "docente"
-      baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao);
+      baker(&docentes, &producoes, rules, &orientacoes, congressos, periodicos, areaAvaliacao, regrasNomeArquivo, numeroDeArqRegras, i);
 
        while(docentes->next != NULL){
          cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;

@@ -9,7 +9,7 @@
 using namespace std;
 
 
-int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
+int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,char** regrasNomeArquivo, int numeroDeArqRegras, int currentFile){
   int sucess = 1;
 
   if((*docentes) != NULL && (*producoes) != NULL){
@@ -22,7 +22,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
       //It is here to avoid bug of going non stop through .csv
       int numberOfLinesCongressoCSV = numberOfLinesBufferFile(congressos);
-
       cout << "======================"<< curso << "=======================" << endl;
       int numDeProducoes = 0;
       int numDeCogressos = 0;
@@ -38,7 +37,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
         //It willcurrentProducao = removeProducao(&allProducao) receive the last "producao" whithing the current docente node at the BST
         allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
-
+        /*
         //If the docente has some producao
         if(allProducao != NULL){
           cout << "Producoes: "<< endl;
@@ -139,51 +138,54 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           }
 
         }
-        /*
+        */
         //Count the number of orientacoes
-        character* iterator = orientacoes;
-
         char* idDocente = new char[257];
         long sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
-        while(iterator = find(iterator, idDocente)){
+        if((*orientacoes) == NULL){
+          (*orientacoes) = createBufferFile(regrasNomeArquivo[currentFile]);
+        }
+
+        while((*orientacoes) != NULL){
+
           //Go to the start of the line
-          iterator = iterator->prev;
-          char* tmpIdOrientacao = getNthColumnLocalOrientacao(orientacoes,2);
-          char* typeOrientacao = getNthColumnLocalOrientacao(orientacoes,3);
-          char* titleOrientacao = getNthColumnLocalOrientacao(orientacoes,4);
-          char* tmpYear = getNthColumnLocalOrientacao(orientacoes,6);
+          char* titleOrientacao = getNthColumnLocalOrientacao(*orientacoes,4);
+          char* idDoDocenteTmp = getNthColumnLocalOrientacao(*orientacoes,1);
+          long idDoDocente = stringToLong(getNthColumnLocalOrientacao(*orientacoes,1));
+          char* typeOrientacao = getNthColumnLocalOrientacao(*orientacoes,3);
+          char* tmpYear = getNthColumnLocalOrientacao(*orientacoes,6);
           int year = stringToInt(tmpYear);
-          int idOrientacao = stringToInt(tmpIdOrientacao);
           delete[] tmpYear;
-          delete[] tmpIdOrientacao;
+          delete[] idDoDocenteTmp;
 
           int pontos = 0;
-          if(!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA")){
+          if(!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA") && idDoDocente == currentDocente->id){
             pontos = rules[18];
             currentDocente->totalPoints += pontos;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
 
-          }else if(!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")){
+          }else if(!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")&& idDoDocente == currentDocente->id){
             pontos = rules[19];
             currentDocente->totalPoints += pontos;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
 
-          }else if(!strcmp(typeOrientacao,"Dissertação de mestrado")){
+          }else if(!strcmp(typeOrientacao,"Dissertação de mestrado")&& idDoDocente == currentDocente->id){
             pontos = rules[20];
             currentDocente->totalPoints += pontos;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
 
-          }else if(!strcmp(typeOrientacao,"Tese de doutorado")){
+          }else if(!strcmp(typeOrientacao,"Tese de doutorado")&& idDoDocente == currentDocente->id){
             pontos = rules[21];
             currentDocente->totalPoints += pontos;
 
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
           }
-
-          cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - " << idOrientacao << " - " << typeOrientacao << " - " << titleOrientacao << endl;
-          iterator = iterator->next;
-          delete[] idDocente;
+          //delete[] idDocente;
+          charater* deleteme = removeFirstBufferLine(orientacoes);
+          destroyBufferFile(&deleteme);
         }
-        */
+
         currentDocente = currentDocente->next;
-        cout << "Numero de periodicos = " << numDeProducoes << endl;
-        cout << "Numero de congressos = " << numDeCogressos << endl;
         cout << "==============================================" << endl;
       }
 
@@ -191,6 +193,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
   }
   return sucess;
 }
+
 
 char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
   char* data = NULL;
