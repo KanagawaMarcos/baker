@@ -196,7 +196,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
   char* data = NULL;
   if(bufferFile!= NULL){
-    if(collumn > 0){
+    if(collumn > 0 || collumn < 7){
 
       switch (collumn) {
         case 1:{
@@ -294,6 +294,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
 
               //Move to the first character
               cur = cur->next->next;
+              start = cur;
               break;
             }
             cur = cur->next;
