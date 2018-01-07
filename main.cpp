@@ -47,7 +47,7 @@ int main (int argv, char* argc[]){
             regrasNomeArquivo = new char*[input];
             for(int i=0;i<input;i++){
               regrasNomeArquivo[i] = new char[1024];
-              cout << "Nome do arquivo " << (i+1) << " :" << endl;
+              cout << "Nome do arquivo " << (i+1) << " :";
               char* buffer = new char[1024];
               cin >> buffer;
 
@@ -97,12 +97,12 @@ int main (int argv, char* argc[]){
       char* areaAvaliacao = loadAreaAvaliacao(regrasCaminho);
 
       //Will fill all give a pontuation to all variables of type "docente"
-      //baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao);
+      baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao);
 
-       // while(docentes->next != NULL){
-       //   cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
-       //   docentes = docentes->next;
-       // }
+       while(docentes->next != NULL){
+         cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
+         docentes = docentes->next;
+       }
       cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
       destroyBufferFile(&orientacoes);
       destroyBufferFile(&congressos);
