@@ -378,64 +378,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           break;
         }
         case 5:{
-          character* cur = bufferFile;
-          character* start = NULL;
-
-          int numberOfChars = 0;
-          int numberOfCommas = 0;
-          int numberOfQuotes = 0;
-
-          cur = bufferFile;
-          start = NULL;
-
-          //Go to the end of the string
-          while(cur->next != NULL){
-            if(cur->data == '\n'){
-              break;
-            }
-            cur = cur->next;
-          }
-
-          //Count the number of commas
-          while(cur->prev != NULL){
-            if(cur->data == ','){
-              numberOfCommas++;
-              break;
-            }
-            if(numberOfCommas == 2){
-              //Go to the first letter
-              cur = cur->next->next;
-              break;
-            }
-            cur = cur->next;
-          }
-
-          //save its address
-          start = cur;
-
-          //Count the number of characters
-          while(cur->next != NULL){
-            if(cur->data == '"'){
-              break;
-            }else{
-              numberOfChars++;
-            }
-            cur = cur->next;
-          }
-
-          //alocate it
-          data = new char[numberOfChars+1];
-
-          //Go back to the start of the data
-          cur = start;
-
-          //Copy the string
-          for(int i=0; i < numberOfChars; i++){
-            data[i] = cur->data;
-            cur = cur->next;
-          }
-          data[numberOfChars] = '\0';
-          break;
+          
         }
         case 6:{
           character* cur = bufferFile;
