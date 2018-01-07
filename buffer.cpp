@@ -44,7 +44,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           //Iterate through all producoes
           producao* currentProducao = NULL;
 
-          int lastRemaing = 1;
+
           while((currentProducao = removeProducao(&allProducao))){
 
             //If the current producao is a normal publicacao
@@ -78,7 +78,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                 numDeProducoes++;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-              char* localProducao;
+              char* localProducao = new char[120];
               strcpy(localProducao,(currentProducao->local));
 
               int hasNoQualis = 1;
@@ -86,7 +86,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
               //Separate all words whiting the field LOCAL
               char* siglaProducao = strtok(currentProducao->local, " -.,():");
-              cout << "debug " << siglaProducao << endl;
+
               char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
 
@@ -100,6 +100,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                   congressoCompleteName++;
                   //Check if the name OR sigla match of congresso match with the local
                   //Ponha um strstr aqui tendo o local da producao e o nome do congresso
+
                   if((!strcmp(siglaUpperCase,siglaCSV))  || (strstr(localProducao,congressoCompleteName) != NULL)){
                     delete[] siglaUpperCase;
                     hasNoQualis = 0;
@@ -134,7 +135,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
             destroyProducao(&currentProducao);
           }
         }
-        /*
+
         //Count the number of orientacoes
         char* idDocente = new char[257];
         long sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
@@ -179,7 +180,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           character* deleteme = removeFirstBufferLine(&txt);
           destroyBufferFile(&deleteme);
         }
-        */
+        
 
         currentDocente = currentDocente->next;
         cout << "==============================================" << endl;
