@@ -115,7 +115,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                 }
 
                 if(hasNoQualis == 0){
-                  cout << "debug " << endl;
+
                   break;
                 }
                 iteratorSiglaCongresso = congressos;
@@ -134,11 +134,12 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               }
               strcpy(currentProducao->local, localProducao);
             }
-
             destroyProducao(&currentProducao);
-          }
-        }
 
+          }
+
+        }
+        /*
         //Count the number of orientacoes
         character* iterator = orientacoes;
 
@@ -180,6 +181,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
           iterator = iterator->next;
           delete[] idDocente;
         }
+        */
         currentDocente = currentDocente->next;
         cout << "Numero de periodicos = " << numDeProducoes << endl;
         cout << "Numero de congressos = " << numDeCogressos << endl;
@@ -227,6 +229,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
         case 2:{
           int numberOfChars = 0;
@@ -267,6 +270,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
         case 3:{
           int numberOfChars = 0;
@@ -317,6 +321,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
         case 4:{
           character* cur = bufferFile;
@@ -369,6 +374,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
         case 5:{
           character* cur = bufferFile;
@@ -428,6 +434,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
         case 6:{
           character* cur = bufferFile;
@@ -484,6 +491,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             cur = cur->next;
           }
           data[numberOfChars] = '\0';
+          break;
         }
       }
 
