@@ -106,7 +106,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                     int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
                     currentDocente->totalPoints += pontos;
                     cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                    numDeCogressos++;
+                    numDeProducoes++;
                     break;
                   }
 
@@ -114,8 +114,10 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
                   siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
                 }
 
-                if(hasNoQualis == 0)
+                if(hasNoQualis == 0){
+                  cout << "debug " << endl;
                   break;
+                }
                 iteratorSiglaCongresso = congressos;
                 siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
@@ -124,23 +126,24 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
               }
 
               if(hasNoQualis == 1){
+                // cout << "rule " << rules[17] << endl;
                 int pontos = rules[17];
                 cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
-              currentProducao->local = localProducao;
+              strcpy(currentProducao->local, localProducao);
             }
+
             destroyProducao(&currentProducao);
           }
         }
 
-        cout << "debug" << endl;
         //Count the number of orientacoes
         character* iterator = orientacoes;
 
-        char* idDocente;
-        int sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
+        char* idDocente = new char[257];
+        long sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
         while(iterator = find(iterator, idDocente)){
           //Go to the start of the line
           iterator = iterator->prev;
@@ -175,6 +178,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character* orien
 
           cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - " << tmpIdOrientacao << " - " << typeOrientacao << " - " << titleOrientacao << endl;
           iterator = iterator->next;
+          delete[] idDocente;
         }
         currentDocente = currentDocente->next;
         cout << "Numero de periodicos = " << numDeProducoes << endl;

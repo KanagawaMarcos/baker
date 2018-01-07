@@ -93,8 +93,8 @@ int main (int argv, char* argc[]){
 
 
       //Load "area de avaliacao"
-      const char* regrasCaminho = "regraComp";
-      char* areaAvaliacao = loadAreaAvaliacao(regrasCaminho);
+      //const char* regrasCaminho = "regraComp";
+      char* areaAvaliacao = loadAreaAvaliacao(regrasNomeArquivo[i]);
 
       //Will fill all give a pontuation to all variables of type "docente"
       baker(&docentes, &producoes, rules, orientacoes, congressos, periodicos, areaAvaliacao);
