@@ -445,27 +445,25 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           int numberOfCommas = 0;
           int numberOfQuotes = 0;
 
+          int numberOfMarks = 0;
+
           cur = bufferFile;
           start = NULL;
 
-          //Go to the end of the string
+          //Go to the last comma
           while(cur->next != NULL){
-            if(cur->data == '\n'){
-              break;
+
+            if(cur->data == ',' && cur->prev->data == '"'){
+              numberOfMarks++;
+            }
+            if(numberOfMarks == 4){
+            	break;
             }
             cur = cur->next;
           }
 
-          //Go back until the previous comma
-          while(cur->prev != NULL){
-            if(cur->data == ','){
-
-              //Go to the first number
-              cur = cur->next;
-              break;
-            }
-            cur = cur->next;
-          }
+          //Go to the first number
+          cur = cur->next;
 
           //save its address
           start = cur;
@@ -475,10 +473,15 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
             if(cur->data == '\n'){
               break;
             }else{
+
               numberOfChars++;
             }
+
             cur = cur->next;
           }
+          numberOfChars--;
+
+
 
           //alocate it
           data = new char[numberOfChars+1];
