@@ -167,7 +167,7 @@ char* getNthColumnLocal(character* bufferFile){
 
     while(iterator->prev != NULL){
       if(iterator->prev->data == '\"'){
-        //Im at the first letter
+        //Iterator points to first letter
         break;
       }
       iterator = iterator->prev;
@@ -538,31 +538,34 @@ int qualisCodeCongressosToInt(char* qualisCode ,int* rules){
 }
 
 void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
-  if((*dictionaryToAdd)!= NULL && word != NULL){
+  if((*dictionaryToAdd)!= NULL ){
+    if(word != NULL){
+      //If the last word was not set yet
+      if((*dictionaryToAdd)->last == NULL){
+        dictionary* iterator = (*dictionaryToAdd);
 
-    //If the last word was not set yet
-    if((*dictionaryToAdd)->last == NULL){
-      dictionary* iterator = (*dictionaryToAdd);
+        //Go until the last word
+        while(iterator->next != NULL){
+          iterator = iterator->next;
+        }
 
-      //Go until the last word
-      while(iterator->next != NULL){
-        iterator = iterator->next;
+        //Save its address
+        (*dictionaryToAdd)->last = iterator;
       }
 
-      //Save its address
-      (*dictionaryToAdd)->last = iterator;
+      //create a new word and add it
+      dictionary* newWord = new dictionary[1];
+      if(newWord != NULL){
+        newWord->next = NULL;
+        newWord->value = value;
+        strcpy(newWord->word,word);
+        newWord->prev = (*dictionaryToAdd)->last;
+        (*dictionaryToAdd)->last->next = newWord;
+        (*dictionaryToAdd)->last = newWord;
+      }
     }
-
-    //create a new word and add it
-    dictionary* newWord = new dictionary[1];
-    if(newWord != NULL){
-      newWord->next = NULL;
-      newWord->value = value;
-      strcpy(newWord->word,word);
-      newWord->prev = (*dictionaryToAdd)->last;
-      (*dictionaryToAdd)->last->next = newWord;
-      (*dictionaryToAdd)->last = newWord;
-    }
+  }else{
+    (*dictionaryToAdd) = createDictionary(word,value);
   }
 
 }
