@@ -78,7 +78,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                 numDeProducoes++;
               }
             }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-              char* localProducao = new char[120];
+              char* localProducao = new char[2048];
               strcpy(localProducao,(currentProducao->local));
 
               int hasNoQualis = 1;
@@ -130,7 +130,8 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
-              currentProducao->local = localProducao;
+              strcpy(currentProducao->local, localProducao);
+              delete[] localProducao;
             }
             destroyProducao(&currentProducao);
           }
@@ -151,8 +152,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           char* typeOrientacao = getNthColumnLocalOrientacao(txt,3);
           char* tmpYear = getNthColumnLocalOrientacao(txt,6);
           int year = stringToInt(tmpYear);
-          delete[] tmpYear;
-          delete[] idDoDocenteTmp;
 
           int pontos = 0;
           if(!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA") && idDoDocente == currentDocente->id){
@@ -176,11 +175,14 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
           }
-          //delete[] idDocente;
+          delete[] titleOrientacao;
+          delete[] idDoDocenteTmp;
+          delete[] typeOrientacao;
+          delete[] tmpYear;
           character* deleteme = removeFirstBufferLine(&txt);
           destroyBufferFile(&deleteme);
         }
-        
+
 
         currentDocente = currentDocente->next;
         cout << "==============================================" << endl;
