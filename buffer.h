@@ -67,6 +67,7 @@
   char* getNthColumnDataFromCur(character* bufferFile, int position);
   char* getNthColumnDataCongresso(character* bufferFile, int position);
   char* getNthColumnLocal(character* bufferFile);
+  char* getNthColumnLocalOrientacao(character* bufferFile, int collumn);
 
   char* loadAreaAvaliacao(const char* filePath);
   int*  loadAllRules(const char* filePath,int rulesNum);

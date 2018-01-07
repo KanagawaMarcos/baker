@@ -6,8 +6,308 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-
 using namespace std;
+
+char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
+  char* data = NULL;
+  if(bufferFile!= NULL){
+    if(collumn > 0){
+
+      switch (collumn) {
+        case 1:{
+          int numberOfChars = 0;
+          character* cur = bufferFile;
+
+          //Move to the first letter
+          cur = cur->next;
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          data = new char[numberOfChars+1];
+
+          //Go back to start
+          cur = bufferFile;
+          //Jump the first quote
+          cur = cur->next;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+        case 2:{
+          int numberOfChars = 0;
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          while(cur->next != NULL){
+            if(cur->data == ',' && cur->prev->data == '"'){
+
+              //Move to the first number
+              cur = cur->next;
+              //Save it's address
+              start = cur;
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          //alocate it
+          data = new char[numberOfChars+1];
+
+          //Go back to the start of the data
+          cur = start;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+        case 3:{
+          int numberOfChars = 0;
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          int numberOfCommas = 0;
+          int numberOfQuotes = 0;
+
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              numberOfQuotes++;
+            }
+            if(cur->data == ','){
+              numberOfCommas++;
+            }
+            if((numberOfCommas == 2) && (numberOfQuotes == 2)){
+
+              //Move to the first character
+              cur = cur->next->next;
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          //alocate it
+          data = new char[numberOfChars+1];
+
+          //Go back to the start of the data
+          cur = start;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+        case 4:{
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          int numberOfChars = 0;
+          int numberOfCommas = 0;
+          int numberOfQuotes = 0;
+
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              numberOfQuotes++;
+            }
+            if(cur->data == ','){
+              numberOfCommas++;
+            }
+            if((numberOfCommas == 3) && (numberOfQuotes == 4)){
+
+              //Move to the first character
+              cur = cur->next->next;
+              break;
+            }
+            cur = cur->next;
+          }
+
+          start = cur;
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          //alocate it
+          data = new char[numberOfChars+1];
+
+          //Go back to the start of the data
+          cur = start;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+        case 5:{
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          int numberOfChars = 0;
+          int numberOfCommas = 0;
+          int numberOfQuotes = 0;
+
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          //Go to the end of the string
+          while(cur->next != NULL){
+            if(cur->next == '\n'){
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //Count the number of commas
+          while(cur->prev != NULL){
+            if(cur->prev == ','){
+              numberOfCommas++;
+              break;
+            }
+            if(numberOfCommas == 2){
+              //Go to the first letter
+              cur = cur->next->next;
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //save its address
+          start = cur;
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '"'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          //alocate it
+          data = new char[numberOfChars+1];
+
+          //Go back to the start of the data
+          cur = start;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+        case 6:{
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          int numberOfChars = 0;
+          int numberOfCommas = 0;
+          int numberOfQuotes = 0;
+
+          character* cur = bufferFile;
+          character* start = NULL;
+
+          //Go to the end of the string
+          while(cur->next != NULL){
+            if(cur->next == '\n'){
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //Go back until the previous comma
+          while(cur->prev != NULL){
+            if(cur->prev == ','){
+
+              //Go to the first number
+              cur = cur->next;
+              break;
+            }
+            cur = cur->next;
+          }
+
+          //save its address
+          start = cur;
+
+          //Count the number of characters
+          while(cur->next != NULL){
+            if(cur->data == '\n'){
+              break;
+            }else{
+              numberOfChars++;
+            }
+            cur = cur->next;
+          }
+
+          //alocate it
+          data = new char[numberOfChars+1];
+
+          //Go back to the start of the data
+          cur = start;
+
+          //Copy the string
+          for(int i=0; i < numberOfChars; i++){
+            data[i] = cur->data;
+            cur = cur->next;
+          }
+          data[numberOfChars] = '\0';
+        }
+      }
+
+    }
+  }
+  return data;
+}
 
 int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
   int sucess = 1;
