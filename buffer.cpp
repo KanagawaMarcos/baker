@@ -8,6 +8,184 @@
 
 using namespace std;
 
+
+int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
+  int sucess = 1;
+
+  if((*docentes) != NULL && (*producoes) != NULL){
+    if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
+      dictionary* issnDictionary = NULL;
+      docente* currentDocente = NULL;
+      char* slashN = new char[2];
+      slashN[0] = '\n';
+      slashN[1] = '\0';
+
+      //It is here to avoid bug of going non stop through .csv
+      int numberOfLinesCongressoCSV = numberOfLinesBufferFile(congressos);
+
+      cout << "======================"<< curso << "=======================" << endl;
+      int numDeProducoes = 0;
+      int numDeCogressos = 0;
+      //Get the first node from the Double Linked List
+      currentDocente = (*docentes);
+      //Iterate through all docentes
+      while(currentDocente != NULL){
+        numDeProducoes = 0;
+        cout << "Docente: " << currentDocente->name << endl;
+
+        //Store the every single "producao" from the current docente
+        producao* allProducao = NULL;
+
+        //It willcurrentProducao = removeProducao(&allProducao) receive the last "producao" whithing the current docente node at the BST
+        allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
+
+        //If the docente has some producao
+        if(allProducao != NULL){
+          cout << "Producoes: "<< endl;
+
+          //Iterate through all producoes
+          producao* currentProducao = NULL;
+
+          int lastRemaing = 1;
+          while((currentProducao = removeProducao(&allProducao))){
+
+            //If the current producao is a normal publicacao
+            if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
+              int semEstratoQualis = 1;
+
+              //Iterate through all issn's that match
+              character* iterator = periodicos;
+              while(iterator = find(iterator, currentProducao->issn)){
+
+                //Check if the type is the same at the rule file
+                char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
+
+                if(!strcmp(curso,areaAvaliacao)){
+                  //Set docente points
+                  semEstratoQualis = 0;
+                  int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
+                  currentDocente->totalPoints += pontos;
+                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                  numDeProducoes++;
+                  break;
+                }
+
+                iterator = iterator->next;
+              }
+              if(semEstratoQualis == 1){
+                int pontos = rules[8];
+                cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                currentDocente->totalPoints += pontos;
+                numDeProducoes++;
+              }
+            }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
+              char* localProducao;
+              strcpy(localProducao,(currentProducao->local));
+
+              int hasNoQualis = 1;
+              character* iteratorSiglaCongresso = congressos;
+
+              //Separate all words whiting the field LOCAL
+              char* siglaProducao = strtok(currentProducao->local, " -.,():");
+              char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
+
+
+              //Update siglaCSV value
+              while(siglaProducao != NULL){
+                while(siglaCSV != NULL){
+                  char* siglaUpperCase = convertToUpper(siglaProducao);
+                  char* congressoCompleteName = strstr(getNthColumnDataCongresso(iteratorSiglaCongresso, 1)," - ");
+                  congressoCompleteName++;
+                  congressoCompleteName++;
+                  congressoCompleteName++;
+                  //Check if the name OR sigla match of congresso match with the local
+                  //Ponha um strstr aqui tendo o local da producao e o nome do congresso
+                  if((!strcmp(siglaUpperCase,siglaCSV))  || (strstr(localProducao,congressoCompleteName) != NULL)){
+                    delete[] siglaUpperCase;
+                    hasNoQualis = 0;
+                    int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
+                    currentDocente->totalPoints += pontos;
+                    cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                    numDeCogressos++;
+                    break;
+                  }
+
+                  iteratorSiglaCongresso = find(iteratorSiglaCongresso->next,slashN);
+                  siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
+                }
+
+                if(hasNoQualis == 0)
+                  break;
+                iteratorSiglaCongresso = congressos;
+                siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
+
+                //Separate all words whiting the field take, the next one
+                siglaProducao = strtok(NULL, " -.,():");
+              }
+
+              if(hasNoQualis == 1){
+                int pontos = rules[17];
+                cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                currentDocente->totalPoints += pontos;
+                numDeProducoes++;
+              }
+              currentProducao->local = localProducao;
+            }
+            destroyProducao(&currentProducao);
+          }
+        }
+
+        //Count the number of orientacoes
+        character* iterator = orientacoes;
+
+        char* idDocente;
+        int sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
+        while(iterator = find(iterator, idDocente)){
+          //Go to the start of the line
+          iterator = iterator->prev;
+          char* tmpIdOrientacao = getNthColumnLocalOrientacao(orientacoes,2);
+          char* typeOrientacao = getNthColumnLocalOrientacao(orientacoes,3);
+          char* titleOrientacao = getNthColumnLocalOrientacao(orientacoes,4);
+          char* nameOrientando = getNthColumnLocalOrientacao(orientacoes,5);
+          char* tmpYear = getNthColumnLocalOrientacao(orientacoes,6);
+          int year = stringToInt(tmpYear);
+          int idOrientacao = stringToInt(tmpIdOrientacao);
+          delete[] tmpYear;
+          delete[] tmpIdOrientacao;
+
+          int pontos = 0;
+          if(!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA")){
+            pontos = rules[18];
+            currentDocente->totalPoints += pontos;
+
+          }else if(!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")){
+            pontos = rules[19];
+            currentDocente->totalPoints += pontos;
+
+          }else if(!strcmp(typeOrientacao,"Dissertação de mestrado")){
+            pontos = rules[20];
+            currentDocente->totalPoints += pontos;
+
+          }else if(!strcmp(typeOrientacao,"Tese de doutorado")){
+            pontos = rules[21];
+            currentDocente->totalPoints += pontos;
+
+          }
+
+          cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - " << tmpIdOrientacao << " - " << typeOrientacao << " - " << titleOrientacao << endl;
+          iterator = iterator->next;
+        }
+        currentDocente = currentDocente->next;
+        cout << "Numero de periodicos = " << numDeProducoes << endl;
+        cout << "Numero de congressos = " << numDeCogressos << endl;
+        cout << "==============================================" << endl;
+      }
+
+    }
+  }
+  return sucess;
+}
+
 char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
   char* data = NULL;
   if(bufferFile!= NULL){
@@ -93,8 +271,8 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           int numberOfCommas = 0;
           int numberOfQuotes = 0;
 
-          character* cur = bufferFile;
-          character* start = NULL;
+          cur = bufferFile;
+          start = NULL;
 
           while(cur->next != NULL){
             if(cur->data == '"'){
@@ -143,8 +321,8 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           int numberOfCommas = 0;
           int numberOfQuotes = 0;
 
-          character* cur = bufferFile;
-          character* start = NULL;
+          cur = bufferFile;
+          start = NULL;
 
           while(cur->next != NULL){
             if(cur->data == '"'){
@@ -195,12 +373,12 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           int numberOfCommas = 0;
           int numberOfQuotes = 0;
 
-          character* cur = bufferFile;
-          character* start = NULL;
+          cur = bufferFile;
+          start = NULL;
 
           //Go to the end of the string
           while(cur->next != NULL){
-            if(cur->next == '\n'){
+            if(cur->data == '\n'){
               break;
             }
             cur = cur->next;
@@ -208,7 +386,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
 
           //Count the number of commas
           while(cur->prev != NULL){
-            if(cur->prev == ','){
+            if(cur->data == ','){
               numberOfCommas++;
               break;
             }
@@ -254,12 +432,12 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
           int numberOfCommas = 0;
           int numberOfQuotes = 0;
 
-          character* cur = bufferFile;
-          character* start = NULL;
+          cur = bufferFile;
+          start = NULL;
 
           //Go to the end of the string
           while(cur->next != NULL){
-            if(cur->next == '\n'){
+            if(cur->data == '\n'){
               break;
             }
             cur = cur->next;
@@ -267,7 +445,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
 
           //Go back until the previous comma
           while(cur->prev != NULL){
-            if(cur->prev == ','){
+            if(cur->data == ','){
 
               //Go to the first number
               cur = cur->next;
@@ -307,140 +485,6 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
     }
   }
   return data;
-}
-
-int baker(docente** docentes, producao** producoes, int* rules, character* orientacoes, character* congressos, character* periodicos, char* curso){
-  int sucess = 1;
-
-  if((*docentes) != NULL && (*producoes) != NULL){
-    if(rules != NULL && orientacoes != NULL && congressos != NULL && periodicos != NULL){
-      dictionary* issnDictionary = NULL;
-      docente* currentDocente = NULL;
-      char* slashN = new char[2];
-      slashN[0] = '\n';
-      slashN[1] = '\0';
-
-      //It is here to avoid bug of going non stop through .csv
-      int numberOfLinesCongressoCSV = numberOfLinesBufferFile(congressos);
-
-      cout << "======================"<< curso << "=======================" << endl;
-      int numDeProducoes = 0;
-      //Get the first node from the Double Linked List
-      currentDocente = (*docentes);
-      //Iterate through all docentes
-      while(currentDocente != NULL){
-        numDeProducoes = 0;
-        cout << "Docente: " << currentDocente->name << endl;
-
-        //Store the every single "producao" from the current docente
-        producao* allProducao = NULL;
-
-        //It willcurrentProducao = removeProducao(&allProducao) receive the last "producao" whithing the current docente node at the BST
-        allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
-
-        //If the docente has some producao
-        if(allProducao != NULL){
-          cout << "Producoes: "<< endl;
-
-          //Iterate through all producoes
-          producao* currentProducao = NULL;
-
-          int lastRemaing = 1;
-          while((currentProducao = removeProducao(&allProducao))){
-
-            //If the current producao is a normal publicacao
-            if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
-              int semEstratoQualis = 1;
-
-              //Iterate through all issn's that match
-              character* iterator = periodicos;
-              while(iterator = find(iterator, currentProducao->issn)){
-
-                //Check if the type is the same at the rule file
-                char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
-
-                if(!strcmp(curso,areaAvaliacao)){
-                  //Set docente points
-                  semEstratoQualis = 0;
-                  int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
-                  currentDocente->totalPoints += pontos;
-                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                  numDeProducoes++;
-                  break;
-                }
-
-                iterator = iterator->next;
-              }
-              if(semEstratoQualis == 1){
-                int pontos = rules[8];
-                cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                currentDocente->totalPoints += pontos;
-                numDeProducoes++;
-              }
-            }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
-              char* localProducao;
-              strcpy(localProducao,(currentProducao->local));
-
-              int hasNoQualis = 1;
-              character* iteratorSiglaCongresso = congressos;
-
-              //Separate all words whiting the field LOCAL
-              char* siglaProducao = strtok(currentProducao->local, " -.,():");
-              char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
-
-
-              //Update siglaCSV value
-              while(siglaProducao != NULL){
-                while(siglaCSV != NULL){
-                  char* siglaUpperCase = convertToUpper(siglaProducao);
-                  char* congressoCompleteName = strstr(getNthColumnDataCongresso(iteratorSiglaCongresso, 1)," - ");
-                  congressoCompleteName++;
-                  congressoCompleteName++;
-                  congressoCompleteName++;
-                  //Check if the name OR sigla match of congresso match with the local
-                  //Ponha um strstr aqui tendo o local da producao e o nome do congresso
-                  if((!strcmp(siglaUpperCase,siglaCSV))  || (strstr(localProducao,congressoCompleteName) != NULL)){
-                    delete[] siglaUpperCase;
-                    hasNoQualis = 0;
-                    int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
-                    currentDocente->totalPoints += pontos;
-                    cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                    numDeProducoes++;
-                    break;
-                  }
-
-                  iteratorSiglaCongresso = find(iteratorSiglaCongresso->next,slashN);
-                  siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
-                }
-
-                if(hasNoQualis == 0)
-                  break;
-                iteratorSiglaCongresso = congressos;
-                siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
-
-                //Separate all words whiting the field take, the next one
-                siglaProducao = strtok(NULL, " -.,():");
-              }
-
-              if(hasNoQualis == 1){
-                int pontos = rules[17];
-                cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
-                currentDocente->totalPoints += pontos;
-                numDeProducoes++;
-              }
-              currentProducao->local = localProducao;
-            }
-            destroyProducao(&currentProducao);
-          }
-        }
-        currentDocente = currentDocente->next;
-        cout << "Numero de producoes = " << numDeProducoes << endl;
-        cout << "==============================================" << endl;
-      }
-
-    }
-  }
-  return sucess;
 }
 
 char* getNthColumnLocal(character* bufferFile){

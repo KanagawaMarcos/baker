@@ -90,7 +90,6 @@ int main (int argv, char* argc[]){
       //Remove the headers
       removeFirstBufferLine(&orientacoes);
       removeFirstBufferLine(&congressos);
-      //removeFirstBufferLine(&periodicos);
 
 
       //Load "area de avaliacao"
