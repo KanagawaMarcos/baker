@@ -500,6 +500,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
   return data;
 }
 
+
 char* getNthColumnLocal(character* bufferFile){
   char* string = NULL;
   if(bufferFile != NULL){
