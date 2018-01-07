@@ -24,7 +24,7 @@ docente* loadAllDocentes(const char* filePath){
       //Get docente's ID
       long id = stringToLong(getNthColumnData(currentLine, 1));
       //Get docente's name
-      char* name = getNthColumnData(currentLine, 2);      
+      char* name = getNthColumnData(currentLine, 2);
 
       //Destroy the removed line (Only the text inside of it)
       destroyBufferFile(&currentLine);
@@ -43,9 +43,11 @@ docente* createDocente(long id, char* name){
   if(newDocente != NULL){
     newDocente->id = id;
     newDocente->name = name;
+    newDocente->points = new int[22];
     newDocente->next = NULL;
-    newDocente->prev = NULL;
     newDocente->last = NULL;
+    newDocente->prev = NULL;
+
   }
 
   return newDocente;
@@ -54,6 +56,7 @@ docente* createDocente(long id, char* name){
 void destroyDocente(docente* docenteToDestroy){
   //If the user actually pass a valid "docente"
   if(docenteToDestroy != NULL){
+    delete[]docenteToDestroy->points;
     delete[] docenteToDestroy;
   }
 }

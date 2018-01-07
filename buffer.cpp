@@ -62,10 +62,13 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                 if(!strcmp(curso,areaAvaliacao) ){
                   //Set docente points
                   semEstratoQualis = 0;
-                  int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
+                  char* qualis = clean(getNthColumnDataFromCur(iterator->prev, 4));
+                  int pontos = qualisCodePeriodicosToInt(qualis,rules);
+                  currentDocente->points[getPosQualisPeriodico(qualis)] += pontos;
                   currentDocente->totalPoints += pontos;
                   cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " << currentProducao->title << " - " <<currentProducao->year<< endl;
                   numDeProducoes++;
+                  delete[] qualis;
                   break;
                 }
 
@@ -73,6 +76,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
               }
               if(semEstratoQualis == 1){
                 int pontos = rules[8];
+                currentDocente->points[8] += pontos;
                 cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
@@ -104,7 +108,9 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                   if((!strcmp(siglaUpperCase,siglaCSV))  || (strstr(localProducao,congressoCompleteName) != NULL)){
                     delete[] siglaUpperCase;
                     hasNoQualis = 0;
-                    int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
+                    char* qualis = clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5));
+                    int pontos = qualisCodeCongressosToInt(qualis,rules);
+                    currentDocente->points[getPosQualisCongresso(qualis)] += pontos;
                     currentDocente->totalPoints += pontos;
                     cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                     numDeProducoes++;
@@ -126,6 +132,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
               if(hasNoQualis == 1){
                 int pontos = rules[17];
+                currentDocente->points[17] += pontos;
                 cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
@@ -156,21 +163,25 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           int pontos = 0;
           if((!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[18];
+            currentDocente->points[18] += pontos;
             currentDocente->totalPoints += pontos;
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
           }else if((!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[19];
+            currentDocente->points[19] += pontos;
             currentDocente->totalPoints += pontos;
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
           }else if((!strcmp(typeOrientacao,"Dissertação de mestrado")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[20];
+            currentDocente->points[20] += pontos;
             currentDocente->totalPoints += pontos;
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
           }else if((!strcmp(typeOrientacao,"Tese de doutorado")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[21];
+            currentDocente->points[21] += pontos;
             currentDocente->totalPoints += pontos;
 
             cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
@@ -193,6 +204,54 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
   return sucess;
 }
 
+int getPosQualisPeriodico(char* qualisCode){
+  int pos = -1;
+  if(qualisCode != NULL){
+    if(!strcmp(qualisCode,"A1")){
+      pos = 0;
+    }else if(!strcmp(qualisCode,"A2")){
+      pos = 1;
+    }else if(!strcmp(qualisCode,"B1")){
+      pos = 2;
+    }else if(!strcmp(qualisCode,"B2")){
+      pos = 3;
+    }else if(!strcmp(qualisCode,"B3")){
+      pos = 4;
+    }else if(!strcmp(qualisCode,"B4")){
+      pos = 5;
+    }else if(!strcmp(qualisCode,"B5")){
+      pos = 6;
+    }else if(!strcmp(qualisCode,"C")){
+      pos = 7;
+    }
+    //0 = sem estrato no qualis ??
+  }
+  return pos;
+}
+
+int getPosQualisCongresso(char* qualisCode){
+  int pos = -1;
+  if(qualisCode != NULL){
+    if(!strcmp(qualisCode,"A1")){
+      pos = 9;
+    }else if(!strcmp(qualisCode,"A2")){
+      pos = 10;
+    }else if(!strcmp(qualisCode,"B1")){
+      pos = 11;
+    }else if(!strcmp(qualisCode,"B2")){
+      pos = 12;
+    }else if(!strcmp(qualisCode,"B3")){
+      pos = 13;
+    }else if(!strcmp(qualisCode,"B4")){
+      pos = 14;
+    }else if(!strcmp(qualisCode,"B5")){
+      pos = 15;
+    }else if(!strcmp(qualisCode,"C")){
+      pos = 16;
+    }
+  }
+  return pos;
+}
 
 char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
   char* data = NULL;
@@ -720,8 +779,6 @@ int numberOfLinesBufferFile(character* congressosCSV){
   }
   return (numberOfLines+1);
 }
-
-
 
 char* clean2(char* string){
   char* cleanedString = NULL;

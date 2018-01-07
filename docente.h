@@ -8,11 +8,13 @@
 
     //Info used during the processing
     int totalPoints;
-
+    int* points;
     //Double linked list struct atributes
     struct _docente* next;
     struct _docente* prev;
     struct _docente* last;
+
+
   }docente;
 
   docente* createDocente(long id, char* name);
