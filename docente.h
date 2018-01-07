@@ -16,6 +16,10 @@
 
 
   }docente;
+  
+  docente* orderDocentes(docente* docentes);
+  docente* split(docente* docentes);
+  docente* merge(docente*first, docente*second);
 
   docente* createDocente(long id, char* name);
   void destroyDocente(docente* docenteToDestroy);

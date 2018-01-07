@@ -111,12 +111,34 @@ int main (int argv, char* argc[]){
 
       //Will fill all give a pontuation to all variables of type "docente"
       baker(&docentes, &producoes, rules, &orientacoes, congressos, periodicos, areaAvaliacao,"csv/orientacao.csv",anoEntrada[i],anoSaida[i]);
+      docente* ranking = orderDocentes(docentes);
+      ofstream saidaCSV(areaAvaliacao);
+      while(ranking->next != NULL){
+         saidaCSV << ranking->name << endl;
+         cout << "("<< ranking->id << ") " << ranking->name << endl << " pontos:" << ranking->totalPoints << endl;
 
-       while(docentes->next != NULL){
-         cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
-         docentes = docentes->next;
+         for(int i=0;i<22;i++){
+           saidaCSV << ranking->points[i];
+           if(i != 21)
+            saidaCSV << ',';
+           cout << i << ": " << ranking->points[i] << endl;
+         }
+         saidaCSV << endl;
+         saidaCSV << ranking->totalPoints << endl;
+         ranking = ranking->next;
        }
-      cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
+
+      cout << "("<< ranking->id << ") " << ranking->name << endl << " pontos:" << ranking->totalPoints << endl;
+      saidaCSV << ranking->name << endl;
+      for(int i=0;i<22;i++){
+        saidaCSV << ranking->points[i];
+        if(i != 21)
+         saidaCSV << ',';
+        cout << i << ": " << ranking->points[i] << endl;
+      }
+      saidaCSV << ranking->totalPoints << endl;
+      saidaCSV.close();
+
       destroyBufferFile(&orientacoes);
       destroyBufferFile(&congressos);
       destroyBufferFile(&periodicos);

@@ -5,6 +5,70 @@
 
 using namespace std;
 
+// Function to do merge sort
+docente* orderDocentes(docente* docentes){
+    if (!docentes || !docentes->next)
+        return docentes;
+    docente* second = split(docentes);
+
+    // Recur for left and right halves
+    docentes = orderDocentes(docentes);
+    second = orderDocentes(second);
+
+    // Merge the two sorted halves
+    return merge(docentes,second);
+}
+
+docente* split(docente* docentes){
+    docente*fast = docentes,*slow = docentes;
+    while (fast->next && fast->next->next){
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    docente*temp = slow->next;
+    slow->next = NULL;
+    return temp;
+}
+
+// Function to merge two linked lists
+docente* merge(docente*first, docente*second){
+    // If first linked list is empty
+    if (!first)
+        return second;
+
+    // If second linked list is empty
+    if (!second)
+        return first;
+
+    // Pick the smaller value
+    if (first->totalPoints < second->totalPoints)    {
+        first->next = merge(first->next,second);
+        first->next->prev = first;
+        first->prev = NULL;
+        return first;
+    }else{
+        second->next = merge(first,second->next);
+        second->next->prev = second;
+        second->prev = NULL;
+        return second;
+    }
+}
+
+
+/*
+docente* orderDocentes(docente* docentes){
+  docente* ordedDocentes = NULL;
+  if(docentes != NULL){
+    docente* i = docentes;
+    while(i->next != NULL){
+
+      i = i->next;
+    }
+  }
+  return orderDocentes;
+}
+*/
+
 docente* loadAllDocentes(const char* filePath){
 
   //A double linked list of type "docente"
@@ -44,6 +108,8 @@ docente* createDocente(long id, char* name){
     newDocente->id = id;
     newDocente->name = name;
     newDocente->points = new int[22];
+    for(int i=0;i<22;i++)
+      newDocente->points[i] = 0;
     newDocente->next = NULL;
     newDocente->last = NULL;
     newDocente->prev = NULL;
