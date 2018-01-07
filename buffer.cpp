@@ -250,7 +250,7 @@ char* getNthColumnLocalOrientacao(character* bufferFile, int collumn){
 
           //Count the number of characters
           while(cur->next != NULL){
-            if(cur->data == '"'){
+            if(cur->data == ','){
               break;
             }else{
               numberOfChars++;
