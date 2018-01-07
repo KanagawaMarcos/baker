@@ -11,6 +11,8 @@ using namespace std;
 int main (int argv, char* argc[]){
     int numeroDeArqRegras = 0;
     char** regrasNomeArquivo = NULL;
+    int* anoEntrada = NULL;
+    int* anoSaida = NULL;
     int opcao = 0;
 
     do{
@@ -45,17 +47,28 @@ int main (int argv, char* argc[]){
             }
 
             regrasNomeArquivo = new char*[input];
+            anoEntrada = new int[input];
+            anoSaida = new int[input];
+
             for(int i=0;i<input;i++){
               regrasNomeArquivo[i] = new char[1024];
               cout << "Nome do arquivo " << (i+1) << " :";
               char* buffer = new char[1024];
               cin >> buffer;
+              cout << "Filtro (Menor ano)" << (i+1) << " :";
+              int menor;
+              cin >> menor;
+              cout << "Filtro (Maior ano)" << (i+1) << " :";
+              int maior;
+              cin >> maior;
 
               ifstream arquivo;
               arquivo.open(buffer);
               if(arquivo.is_open()){
                 cout << "Arquivo de regras " << buffer << " encontrado!" << endl;
                 strcpy(regrasNomeArquivo[i], buffer);
+                anoEntrada[i] = menor;
+                anoSaida[i] = maior;
                 arquivo.close();
               }else{
                 cout << "Arquivo de regras " << buffer << " NÃO foi encontrado!" << endl;
@@ -97,7 +110,7 @@ int main (int argv, char* argc[]){
       char* areaAvaliacao = loadAreaAvaliacao(regrasNomeArquivo[i]);
 
       //Will fill all give a pontuation to all variables of type "docente"
-      baker(&docentes, &producoes, rules, &orientacoes, congressos, periodicos, areaAvaliacao,"csv/orientacao.csv");
+      baker(&docentes, &producoes, rules, &orientacoes, congressos, periodicos, areaAvaliacao,"csv/orientacao.csv",anoEntrada[i],anoSaida[i]);
 
        while(docentes->next != NULL){
          cout << "("<< docentes->id << ") " << docentes->name << endl << " pontos:" << docentes->totalPoints << endl;
@@ -107,7 +120,13 @@ int main (int argv, char* argc[]){
       destroyBufferFile(&orientacoes);
       destroyBufferFile(&congressos);
       destroyBufferFile(&periodicos);
+      delete[] rules;
     }
+    for(int i =0; i<numeroDeArqRegras;i++)
+      delete[] regrasNomeArquivo;
+    delete[] anoEntrada;
+    delete[] anoSaida;
+
 
 
   return 0;

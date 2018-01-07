@@ -9,7 +9,7 @@
 using namespace std;
 
 
-int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso, const char* regrasNomeArquivo){
+int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso, const char* regrasNomeArquivo, int anoEntrada ,int anoSaida){
   int sucess = 1;
 
   if((*docentes) != NULL && (*producoes) != NULL){
@@ -48,7 +48,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           while((currentProducao = removeProducao(&allProducao))){
 
             //If the current producao is a normal publicacao
-            if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
+            if(((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))) && (currentProducao->year >= anoEntrada) && (currentProducao->year <= anoSaida)){
               int semEstratoQualis = 1;
 
 
@@ -59,12 +59,12 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                 //Check if the type is the same at the rule file
                 char* areaAvaliacao = getNthColumnDataFromCur(iterator->prev, 3);
 
-                if(!strcmp(curso,areaAvaliacao)){
+                if(!strcmp(curso,areaAvaliacao) ){
                   //Set docente points
                   semEstratoQualis = 0;
                   int pontos = qualisCodePeriodicosToInt(clean(getNthColumnDataFromCur(iterator->prev, 4)),rules);
                   currentDocente->totalPoints += pontos;
-                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                  cout << "\t" << clean(getNthColumnDataFromCur(iterator->prev, 4)) << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " << currentProducao->title << " - " <<currentProducao->year<< endl;
                   numDeProducoes++;
                   break;
                 }
@@ -73,11 +73,11 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
               }
               if(semEstratoQualis == 1){
                 int pontos = rules[8];
-                cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                cout << "\t" << "Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->issn << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
-            }else if(!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO")){
+            }else if((!strcmp(currentProducao->type, "TRABALHO_EM_EVENTO") )&& (currentProducao->year >= anoEntrada) && (currentProducao->year <= anoSaida)){
               char* localProducao = new char[2048];
               strcpy(localProducao,(currentProducao->local));
 
@@ -106,7 +106,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                     hasNoQualis = 0;
                     int pontos = qualisCodeCongressosToInt(clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)),rules);
                     currentDocente->totalPoints += pontos;
-                    cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                    cout << "\t" << clean(getNthColumnDataCongresso(iteratorSiglaCongresso, 5)) << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                     numDeProducoes++;
                     break;
                   }
@@ -126,7 +126,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
               if(hasNoQualis == 1){
                 int pontos = rules[17];
-                cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
+                cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title <<" - " << currentProducao->year << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
@@ -154,26 +154,26 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           int year = stringToInt(tmpYear);
 
           int pontos = 0;
-          if(!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA") && idDoDocente == currentDocente->id){
+          if((!strcmp(typeOrientacao,"INICIACAO_CIENTIFICA")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[18];
             currentDocente->totalPoints += pontos;
-            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
-          }else if(!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")&& idDoDocente == currentDocente->id){
+          }else if((!strcmp(typeOrientacao,"TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[19];
             currentDocente->totalPoints += pontos;
-            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
-          }else if(!strcmp(typeOrientacao,"Dissertação de mestrado")&& idDoDocente == currentDocente->id){
+          }else if((!strcmp(typeOrientacao,"Dissertação de mestrado")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[20];
             currentDocente->totalPoints += pontos;
-            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
 
-          }else if(!strcmp(typeOrientacao,"Tese de doutorado")&& idDoDocente == currentDocente->id){
+          }else if((!strcmp(typeOrientacao,"Tese de doutorado")) && idDoDocente == currentDocente->id && (year >= anoEntrada) && (year <= anoSaida)){
             pontos = rules[21];
             currentDocente->totalPoints += pontos;
 
-            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao << endl;
+            cout << "\t" << typeOrientacao << " (" << pontos << ")"  << " - "  << typeOrientacao << " - " << titleOrientacao <<" - " << year << endl;
           }
           delete[] titleOrientacao;
           delete[] idDoDocenteTmp;

@@ -31,7 +31,7 @@
 
   }dictionary;
 
-  int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,  const char* regrasNomeArquivo);
+  int baker(docente** docentes, producao** producoes, int* rules, character** orientacoes, character* congressos, character* periodicos, char* curso,  const char* regrasNomeArquivo, int anoEntrada ,int anoSaida);
   int qualisCodePeriodicosToInt(char* qualisCode ,int* rules);
   int qualisCodeCongressosToInt(char* qualisCode ,int* rules);
 
