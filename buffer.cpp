@@ -37,7 +37,6 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
         //It willcurrentProducao = removeProducao(&allProducao) receive the last "producao" whithing the current docente node at the BST
         allProducao = getAllProducoesFromThatDocente(*producoes, currentDocente->id);
-        /*
         //If the docente has some producao
         if(allProducao != NULL){
           cout << "Producoes: "<< endl;
@@ -51,6 +50,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
             //If the current producao is a normal publicacao
             if((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))){
               int semEstratoQualis = 1;
+
 
               //Iterate through all issn's that match
               character* iterator = periodicos;
@@ -86,6 +86,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
               //Separate all words whiting the field LOCAL
               char* siglaProducao = strtok(currentProducao->local, " -.,():");
+              cout << "debug " << siglaProducao << endl;
               char* siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
 
@@ -113,10 +114,8 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
                   siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
                 }
 
-                if(hasNoQualis == 0){
-
+                if(hasNoQualis == 0)
                   break;
-                }
                 iteratorSiglaCongresso = congressos;
                 siglaCSV = getNthColumnDataCongresso(iteratorSiglaCongresso,4);
 
@@ -125,20 +124,17 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
               }
 
               if(hasNoQualis == 1){
-                // cout << "rule " << rules[17] << endl;
                 int pontos = rules[17];
                 cout << "\t" <<"Sem Estrato Qualis" << " (" << pontos << ")"  << " - " << currentProducao->type << " - " <<currentProducao->title << endl;
                 currentDocente->totalPoints += pontos;
                 numDeProducoes++;
               }
-              strcpy(currentProducao->local, localProducao);
+              currentProducao->local = localProducao;
             }
             destroyProducao(&currentProducao);
-
           }
-
         }
-        */
+        /*
         //Count the number of orientacoes
         char* idDocente = new char[257];
         long sizeIdDocente = sprintf (idDocente,"%ld", currentDocente->id);
@@ -183,6 +179,7 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
           character* deleteme = removeFirstBufferLine(&txt);
           destroyBufferFile(&deleteme);
         }
+        */
 
         currentDocente = currentDocente->next;
         cout << "==============================================" << endl;
@@ -873,7 +870,6 @@ void addDictionaryWord(dictionary** dictionaryToAdd, char* word, int value){
   }else{
     (*dictionaryToAdd) = createDictionary(word,value);
   }
-
 }
 
 char* getNthColumnDataFromCur(character* bufferFile, int position){
