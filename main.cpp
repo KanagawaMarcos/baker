@@ -53,14 +53,14 @@ int main (int argv, char* argc[]){
               cout << "Nome do arquivo " << (i+1) << " :";
               char* buffer = new char[1024];
               cin >> buffer;
+              int menor;
               do{
-                cout << "Filtro (Menor ano)" << (i+1) << " :";
-                int menor;
+                cout << "Filtro (Menor ano)" << (i+1) << " :";  
                 cin >> menor;
               }while(menor < 1966);
+              int maior;
               do{
                 cout << "Filtro (Maior ano)" << (i+1) << " :";
-                int maior;
                 cin >> maior;
               }while(maior > 2018);
 
