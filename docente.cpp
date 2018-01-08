@@ -41,7 +41,7 @@ docente* merge(docente*first, docente*second){
         return first;
 
     // Pick the smaller value
-    if (first->totalPoints < second->totalPoints)    {
+    if (first->totalPoints > second->totalPoints)    {
         first->next = merge(first->next,second);
         first->next->prev = first;
         first->prev = NULL;
