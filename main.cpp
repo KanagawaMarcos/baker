@@ -32,19 +32,17 @@ int main (int argv, char* argc[]){
           cout << "=============================BAKER=========================================" << endl;
           cout << "Quantos arquivos de regras devem ser importados? (0 = sair)" << endl;
           do{
+            achouArquivo = 1;
             int input;
             do{
+              cin.ignore();
               cout << "Numero: ";
               cin >> input;
             }while(input < 0);
+
             if(input == 0 )
               break;
-            if(numeroDeArqRegras > 0){
-              for(int i=0; i< numeroDeArqRegras;i++){
-                delete[]  regrasNomeArquivo[i];
-              }
-              delete[] regrasNomeArquivo;
-            }
+
 
             regrasNomeArquivo = new char*[input];
             anoEntrada = new int[input];
@@ -72,6 +70,11 @@ int main (int argv, char* argc[]){
                 arquivo.close();
               }else{
                 cout << "Arquivo de regras " << buffer << " NÃO foi encontrado!" << endl;
+                for(int j=0; j< numeroDeArqRegras;j++){
+                  delete[]  regrasNomeArquivo[j];
+                }
+                delete[] regrasNomeArquivo;
+                input = -1;
                 achouArquivo = 0;
               }
               delete[] buffer;
@@ -114,8 +117,6 @@ int main (int argv, char* argc[]){
 
       docentes = orderDocentes(docentes);
       ofstream saidaCSV(areaAvaliacao);
-
-
 
       while(docentes->next != NULL){
          saidaCSV << docentes->name << endl;
