@@ -46,10 +46,10 @@ int baker(docente** docentes, producao** producoes, int* rules, character** orie
 
 
           while((currentProducao = removeProducao(&allProducao))){
-
             //If the current producao is a normal publicacao
             if(((!strcmp(currentProducao->type, "ARTIGO-PUBLICADO")) || (!strcmp(currentProducao->type, "ARTIGO-ACEITO-PARA-PUBLICACAO"))) && (currentProducao->year >= anoEntrada) && (currentProducao->year <= anoSaida)){
               int semEstratoQualis = 1;
+              cout << currentProducao->year << endl;
 
 
               //Iterate through all issn's that match

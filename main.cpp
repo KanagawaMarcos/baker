@@ -53,12 +53,16 @@ int main (int argv, char* argc[]){
               cout << "Nome do arquivo " << (i+1) << " :";
               char* buffer = new char[1024];
               cin >> buffer;
-              cout << "Filtro (Menor ano)" << (i+1) << " :";
-              int menor;
-              cin >> menor;
-              cout << "Filtro (Maior ano)" << (i+1) << " :";
-              int maior;
-              cin >> maior;
+              do{
+                cout << "Filtro (Menor ano)" << (i+1) << " :";
+                int menor;
+                cin >> menor;
+              }while(menor < 1966);
+              do{
+                cout << "Filtro (Maior ano)" << (i+1) << " :";
+                int maior;
+                cin >> maior;
+              }while(maior > 2018);
 
               ifstream arquivo;
               arquivo.open(buffer);
@@ -152,12 +156,5 @@ int main (int argv, char* argc[]){
       destroyBufferFile(&periodicos);
       delete[] rules;
     }
-    for(int i =0; i<numeroDeArqRegras;i++)
-      delete[] regrasNomeArquivo;
-    delete[] anoEntrada;
-    delete[] anoSaida;
-
-
-
   return 0;
 }
