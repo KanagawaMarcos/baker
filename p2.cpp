@@ -17,8 +17,8 @@ int main (int argv, char* argc[]){
   for(int i=0; i<2; i++)
     trajetoria[i] = new char[3];
 
-  trajetoria[0][0] = '1'; trajetoria[0][1] = '1'; trajetoria[0][2] = '1';
-  trajetoria[1][0] = '0'; trajetoria[1][1] = '0'; trajetoria[1][2] = '0';
+  trajetoria[0][0] = '1'; trajetoria[0][1] = '1'; trajetoria[0][2] = '0';
+  trajetoria[1][0] = '0'; trajetoria[1][1] = '0'; trajetoria[1][2] = '1';
 
 
   cout << "return = " << primeira(trajetoria, 2, 3) << endl;
@@ -39,10 +39,13 @@ int primeira(char**trajetoria, int rows, int collumns){
 
   //Itera pela matriz trajetoria criando a pilha do caminho feito
   for( pilhaI[0] = 0; pilhaI[top] < rows; ){
+    // cout << "primeiro for" << endl;
     for( pilhaJ[0] = 0; pilhaJ[top] < collumns; ){
+      // cout << "segundo for" << endl;
 
       //Tenta mover para frente (PUSH)
       for(int dir=0; dir<7; dir++){
+
         switch (dir) {
           //Testa para direita
           case 0:{
@@ -198,16 +201,13 @@ int primeira(char**trajetoria, int rows, int collumns){
         }
       }
 
-      //Se achar o final da trajetoria
-      if(pilhaI[top] < rows && pilhaJ[top] < collumns)
-        break;
-
       //Move para trás (POP)
       top--;
       cout << "pop, newTop=" << top <<endl;
 
     }
   }
+
   return 1;
 }
 /*
