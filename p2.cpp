@@ -6,8 +6,9 @@ using namespace std;
 
 //char* primeira(char**trajetoria, int rows, int collumns, int i, int j);
 //int primeira(char**trajetoria, int rows, int collumns);
-int estaNoVetor(int* vet, int size, int num);
+//int estaNoVetor(int* vet, int size, int num);
 //char** segunda(char*** trajetorias, int* linhas, int* colunas, int numeroTrajetorias);
+int primeira (char** trajetoria, int rows, int collumns, int i, int j);
 
 int main (int argv, char* argc[]){
 
@@ -18,11 +19,11 @@ int main (int argv, char* argc[]){
   for(int i=0; i<2; i++)
     trajetoria[i] = new char[3];
 
-  trajetoria[0][0] = '1'; trajetoria[0][1] = '1'; trajetoria[0][2] = '1';
-  trajetoria[1][0] = '0'; trajetoria[1][1] = '0'; trajetoria[1][2] = '1';
+  trajetoria[0][0] = '1'; trajetoria[0][1] = '0'; trajetoria[0][2] = '0';
+  trajetoria[1][0] = '1'; trajetoria[1][1] = '1'; trajetoria[1][2] = '0';
 
 
-  cout << "return = " << primeira(trajetoria, 2, 3) << endl;
+  cout << "return = " << primeira(trajetoria, 2, 3, 0, 0) << endl;
   char* trajetoriaReduzida; //3:0 1:7 2:0 1:7 2:0 3:6 1:0
   //trajetoriaReduzida = primeira(trajetoria, 8,10, 0, 0);
   return 0;
@@ -34,9 +35,60 @@ int main (int argv, char* argc[]){
   */
 }
 
+int primeira (char** trajetoria, int rows, int collumns, int i, int j){
+  int res = 0;
+  if(trajetoria != NULL){
 
+    if((i == (rows-1)) && (j == (collumns-1)) && trajetoria[i][j] != '0' ){
+        return 1;
+    }
 
-//int primeira(char**trajetoria, int rows, int collumns){
+    //Move para direita
+    if((j+1) < collumns && trajetoria[i][j+1] != '0'){
+      cout << "direita" << endl;
+      res += primeira(trajetoria, rows, collumns, i, (j+1));
+    }
+
+    //Move para diagonal direita inferior
+    if( (j+1) < collumns && (i+1) < rows && trajetoria[i+1][j+1] != '0') {
+      cout << "diagonal direita inferior" << endl;
+      res += primeira(trajetoria, rows, collumns, (i+1), (j+1));
+    }
+
+    //Move para baixo
+    if((i+1) < rows && trajetoria[i+1][j] != '0'){
+      cout << "baixo" << endl;
+      res += primeira(trajetoria, rows, collumns, (i+1), j);
+    }
+
+    //Move para diagonal esquerda inferior
+    if((j-1) > -1 && (i+1) < rows && trajetoria[i+1][j-1] != '0'){
+      cout << "diagonal esquerda inferior" << endl;
+      res += primeira(trajetoria, rows, collumns, (i+1), (j-1));
+    }
+
+    //Move para esquerda
+    if((j-1) > -1 && trajetoria[i][j-1] != '0'){
+      cout << "esquerda" << endl;
+      res += primeira(trajetoria, rows, collumns, i, (j-1));
+    }
+
+    //Move para diagonal esquerda superior
+    if((j-1) > -1 && (i-1) > -1 && trajetoria[i-1][j-1] != '0'){
+      cout << "diagonal esquerda superior" << endl;
+      res += primeira(trajetoria, rows, collumns, (i-1), (j-1));
+    }
+
+    //Move para cima
+    if((i-1) > -1 && trajetoria[i+1][j] != '0'){
+      cout << "cima" << endl;
+      res += primeira(trajetoria, rows, collumns, (i-1), j);
+    }
+  }
+  return res;
+}
+/*
+int primeira(char**trajetoria, int rows, int collumns){
   int size = rows*collumns;
   int* pilhaI = new int[size];
   int* pilhaJ = new int[size];
@@ -219,7 +271,8 @@ int main (int argv, char* argc[]){
 
   return 1;
 }
-
+*/
+/*
 int estaNoVetor(int* vet, int size, int num){
   int esta = 0;
   if(vet != NULL){
@@ -234,6 +287,7 @@ int estaNoVetor(int* vet, int size, int num){
   }
   return esta;
 }
+*/
 /*
 char** segunda(char*** trajetorias, int* linhas, int* colunas, int numeroTrajetorias){
   char** trajetoriaRes = NULL;
