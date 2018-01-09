@@ -6,6 +6,7 @@ using namespace std;
 
 //char* primeira(char**trajetoria, int rows, int collumns, int i, int j);
 int primeira(char**trajetoria, int rows, int collumns);
+int estaNoVetor(int* vet, int size, int num);
 //char** segunda(char*** trajetorias, int* linhas, int* colunas, int numeroTrajetorias);
 
 int main (int argv, char* argc[]){
@@ -25,6 +26,7 @@ int main (int argv, char* argc[]){
   char* trajetoriaReduzida; //3:0 1:7 2:0 1:7 2:0 3:6 1:0
   //trajetoriaReduzida = primeira(trajetoria, 8,10, 0, 0);
   return 0;
+  
   /*
   *   3   2   1
   *   4       0
@@ -33,8 +35,9 @@ int main (int argv, char* argc[]){
 }
 
 int primeira(char**trajetoria, int rows, int collumns){
-  int* pilhaI = new int[rows*collumns];
-  int* pilhaJ = new int[rows*collumns];
+  int size = rows*collumns;
+  int* pilhaI = new int[size];
+  int* pilhaJ = new int[size];
   int top = 0;
 
   //Itera pela matriz trajetoria criando a pilha do caminho feito
@@ -51,7 +54,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 0:{
 
             //Se é possível mover para direita
-            if((pilhaJ[top]+1) < collumns && trajetoria[pilhaI[top]][(pilhaJ[top]+1)] != '0' ){
+            if((pilhaJ[top]+1) < collumns && trajetoria[pilhaI[top]][(pilhaJ[top]+1)] != '0' && !estaNoVetor(pilhaJ,size,(pilhaJ[top]+1)) ){
 
               //Push nova posicao
               top++;
@@ -70,7 +73,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 1:{
 
             //Se é possível mover para diagonal direita superior
-            if((pilhaJ[top]+1) < collumns && (pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top]+1)] != '0' ){
+            if((pilhaJ[top]+1) < collumns && (pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top]+1)] != '0' && !estaNoVetor(pilhaJ,size,(pilhaJ[top]+1)) && !estaNoVetor(pilhaI,size,(pilhaI[top]-1))  ){
 
               //Push nova posicao
               top++;
@@ -89,7 +92,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 2:{
 
             //Se é possível mover para cima
-            if((pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top])] != '0'){
+            if((pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top])] != '0' && !estaNoVetor(pilhaI,size,(pilhaI[top]-1))){
 
               //Push nova posicao
               top++;
@@ -108,7 +111,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 3:{
 
             //Se é possível mover para diagonal esquerda superior
-            if((pilhaJ[top]-1) > -1 && (pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top]-1)] != '0'){
+            if((pilhaJ[top]-1) > -1 && (pilhaI[top]-1) > -1 && trajetoria[(pilhaI[top]-1)][(pilhaJ[top]-1)] != '0' && !estaNoVetor(pilhaI,size,(pilhaI[top]-1)) && !estaNoVetor(pilhaJ,size,(pilhaJ[top]-1))){
 
               //Push nova posicao
               top++;
@@ -127,7 +130,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 4:{
 
             //Se é possível mover para esquerda
-            if((pilhaJ[top]-1) > -1 && trajetoria[pilhaI[top]][(pilhaJ[top]-1)] != '0' && (pilhaJ[top-1]) != (pilhaJ[top]-1) ){
+            if((pilhaJ[top]-1) > -1 && trajetoria[pilhaI[top]][(pilhaJ[top]-1)] != '0' && !estaNoVetor(pilhaJ,size,(pilhaJ[top]-1))){
 
               //Push nova posicao
               top++;
@@ -146,7 +149,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 5:{
 
             //Se é possível mover para diagonal esquerda inferior
-            if((pilhaJ[top]-1) > -1 && (pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top]-1)] != '0'){
+            if((pilhaJ[top]-1) > -1 && (pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top]-1)] != '0' && !estaNoVetor(pilhaI,size,(pilhaI[top]+1)) && !estaNoVetor(pilhaJ,size,(pilhaJ[top]-1))){
 
               //Push nova posicao
               top++;
@@ -165,7 +168,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           case 6:{
 
             //Se é possível mover para baixo
-            if((pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top])] != '0'){
+            if((pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top])] != '0' && !estaNoVetor(pilhaI,size,(pilhaI[top]+1))){
 
               //Push nova posicao
               top++;
@@ -183,7 +186,7 @@ int primeira(char**trajetoria, int rows, int collumns){
           //Testa para diagonal direita inferior
           case 7:{
             //Se é possível mover para diagonal direita inferior
-            if((pilhaJ[top]+1) < collumns && (pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top]+1)] != '0'){
+            if((pilhaJ[top]+1) < collumns && (pilhaI[top]+1) < rows && trajetoria[(pilhaI[top]+1)][(pilhaJ[top]+1)] != '0' && !estaNoVetor(pilhaI,size,(pilhaI[top]+1)) && !estaNoVetor(pilhaJ,size,(pilhaJ[top]+1))){
 
               //Push nova posicao
               top++;
@@ -209,6 +212,21 @@ int primeira(char**trajetoria, int rows, int collumns){
   }
 
   return 1;
+}
+
+int estaNoVetor(int* vet, int size, int num){
+  int esta = 0;
+  if(vet != NULL){
+    if(size > 0){
+      for(int i=0; i<size; i++){
+        if(num == vet[i]){
+          esta = 1;
+          break;
+        }
+      }
+    }
+  }
+  return esta;
 }
 /*
 char** segunda(char*** trajetorias, int* linhas, int* colunas, int numeroTrajetorias){
