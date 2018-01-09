@@ -5,7 +5,7 @@
 using namespace std;
 
 //char* primeira(char**trajetoria, int rows, int collumns, int i, int j);
-int primeira(char**trajetoria, int rows, int collumns);
+//int primeira(char**trajetoria, int rows, int collumns);
 int estaNoVetor(int* vet, int size, int num);
 //char** segunda(char*** trajetorias, int* linhas, int* colunas, int numeroTrajetorias);
 
@@ -18,7 +18,7 @@ int main (int argv, char* argc[]){
   for(int i=0; i<2; i++)
     trajetoria[i] = new char[3];
 
-  trajetoria[0][0] = '1'; trajetoria[0][1] = '1'; trajetoria[0][2] = '0';
+  trajetoria[0][0] = '1'; trajetoria[0][1] = '1'; trajetoria[0][2] = '1';
   trajetoria[1][0] = '0'; trajetoria[1][1] = '0'; trajetoria[1][2] = '1';
 
 
@@ -26,7 +26,7 @@ int main (int argv, char* argc[]){
   char* trajetoriaReduzida; //3:0 1:7 2:0 1:7 2:0 3:6 1:0
   //trajetoriaReduzida = primeira(trajetoria, 8,10, 0, 0);
   return 0;
-  
+
   /*
   *   3   2   1
   *   4       0
@@ -34,7 +34,9 @@ int main (int argv, char* argc[]){
   */
 }
 
-int primeira(char**trajetoria, int rows, int collumns){
+
+
+//int primeira(char**trajetoria, int rows, int collumns){
   int size = rows*collumns;
   int* pilhaI = new int[size];
   int* pilhaJ = new int[size];
@@ -201,12 +203,16 @@ int primeira(char**trajetoria, int rows, int collumns){
             }
             break;
           }
-        }
-      }
 
+        }
+        cout << dir << endl;
+      }
       //Move para trás (POP)
+      cout << "atualmente i= " << pilhaI[top] << " j= " << pilhaJ[top] << endl;
       top--;
       cout << "pop, newTop=" << top <<endl;
+      cout << "novo i= " << pilhaI[top] << " j= " << pilhaJ[top] << endl;
+
 
     }
   }
