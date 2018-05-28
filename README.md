@@ -36,55 +36,20 @@ Then simple run the code using:
 
 ## Running
 
-Explain how to run the automated tests for this system
+While runing the first thing you will look is that:
 
-### Break down into end to end tests
+![main menu](https://github.com/Marcos-Costa/baker/blob/master/screenshots/menu1.png)
 
-Explain what these tests test and why
+Enter 1 and than you will be asked about the rule file and the baker parameters that you want to use (the interface is in portuguese).
 
-```
-Give an example
-```
+![menu 2](https://github.com/Marcos-Costa/baker/blob/master/screenshots/menu2.png)
 
-### And coding style tests
+The rule file follows a structure explained in the .pdf.
+After those two step, you should watch the code running.
+![app running](https://github.com/Marcos-Costa/baker/blob/master/screenshots/final.png)
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+By the end of it, a file containing the result will be generated.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
